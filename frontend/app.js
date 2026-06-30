@@ -68,6 +68,9 @@ askForm.addEventListener("submit", (event) => {
   event.preventDefault();
   answerQuestion(askInput.value);
 });
+window.addEventListener("sunguo:avatarPresence", (event) => {
+  renderAvatar3dPresence(event.detail || {});
+});
 document.querySelectorAll("[data-question]").forEach((button) => {
   button.addEventListener("click", () => {
     askInput.value = button.dataset.question || "";
@@ -289,6 +292,15 @@ function renderAvatar3d(avatar3d) {
   }
   const routeHint = document.querySelector("#avatar3dRouteHint");
   const storyboard = avatar3d.space_storyboard || [];
+  renderAvatar3dPresence({
+    location: storyboard[0]?.location || runtime.default_location || "briefing_spot",
+    action: storyboard[0]?.action || "idle_greeting",
+    camera: storyboard[0]?.camera || "medium",
+    section: "opening",
+    mood: "warm",
+    speaking: false,
+    mode: "loading"
+  });
   if (routeHint) {
     routeHint.textContent = storyboard.length
       ? `已经为松果规划了 ${storyboard.length} 个空间动作节点，涵盖入场、天气讲解、桌边解读、提醒和结束回位。`
@@ -306,6 +318,52 @@ function renderAvatar3d(avatar3d) {
   window.dispatchEvent(new CustomEvent("sunguo:avatar3d", { detail: avatar3d }));
 }
 
+function renderAvatar3dPresence(detail = {}) {
+  const moodNode = document.querySelector("#avatar3dMood");
+  const actionNode = document.querySelector("#avatar3dAction");
+  if (!moodNode || !actionNode) return;
+
+  const locationLabels = {
+    briefing_spot: "主讲位",
+    window_side: "窗边",
+    desk_side: "桌边",
+    owner_side: "主人身边",
+    weather_window: "窗边",
+    desk_console: "桌边",
+    reminder_corner: "提醒区"
+  };
+  const actionLabels = {
+    idle_greeting: "温柔问候",
+    weather_commentary: "讲天气和穿衣建议",
+    market_briefing: "解读市场和项目重点",
+    active_reminder: "靠近提醒和陪伴确认",
+    warm_closing: "收尾并回到待机位"
+  };
+  const sectionLabels = {
+    opening: "开场",
+    care: "生活提醒",
+    agenda: "今天安排",
+    reminders: "主动提醒",
+    finance: "财经解读",
+    closing: "收尾",
+    idle: "待机"
+  };
+  const cameraLabels = {
+    full_body: "全身镜头",
+    medium: "中景镜头",
+    medium_close: "近景镜头"
+  };
+
+  const place = locationLabels[detail.location] || detail.location || "主讲位";
+  const action = actionLabels[detail.action] || detail.action || "陪你看早报";
+  const section = sectionLabels[detail.section] || detail.section || "待机";
+  const camera = cameraLabels[detail.camera] || detail.camera || "中景镜头";
+  const speaking = detail.speaking ? "正在说话" : "轻声待机";
+  const mode = detail.mode === "vrm" ? "真人数字人模式" : (detail.mode === "fallback" ? "占位展示模式" : "准备中");
+
+  moodNode.textContent = `当前状态：松果在${place}，正在${action}。`;
+  actionNode.textContent = `${section} | ${camera} | ${speaking} | ${mode}`;
+}
 function renderReminderPanel(plan) {
   let panel = document.querySelector("#reminderPanel");
   if (!panel) {
@@ -623,6 +681,8 @@ function getLocalDateText() {
   const now = new Date();
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 }
+
+
 
 
 

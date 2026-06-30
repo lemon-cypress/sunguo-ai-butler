@@ -313,7 +313,9 @@ function replaceAvatarVisual(model, mode) {
   model.name = "SunguoVrmModel";
   model.position.set(0, 0, 0);
   model.rotation.y = 0;
-  model.scale.setScalar(mode === "vrm" ? 1.45 : 1.0);
+  model.userData.baseScale = mode === "vrm" ? 1.45 : 1.0;
+  model.scale.setScalar(model.userData.baseScale * 0.94);
+  avatar.userData.entryMix = 0;
   avatar.add(model);
 }
 
@@ -346,10 +348,12 @@ function setMotionState(detail) {
   motionState.speaking = Boolean(detail.speaking || detail.mouth === "open" || detail.lip_sync === "enabled");
   motionState.section = detail.section || motionState.section || "idle";
   motionPulse = clock.elapsedTime;
+  publishAvatarPresence(route[routeIndex] || {}, { mode: currentVrm ? "vrm" : "loading" });
 }
 
 function setAvatarVoiceState(detail) {
   voiceSpeaking = Boolean(detail.speaking);
+  publishAvatarPresence(route[routeIndex] || {}, { mode: currentVrm ? "vrm" : "loading" });
 }
 
 function updateAvatarRuntime(elapsed) {
@@ -357,7 +361,6 @@ function updateAvatarRuntime(elapsed) {
   updateVrmExpressions(elapsed);
   updateVrmPose(elapsed);
 }
-
 function updateVrmExpressions(elapsed) {
   const blink = getBlinkValue(elapsed);
   const talking = voiceSpeaking || motionState.speaking;
@@ -563,6 +566,19 @@ function setModelStatus(mode, percent = null) {
   }
 }
 
+function publishAvatarPresence(step = {}, extra = {}) {
+  window.dispatchEvent(new CustomEvent("sunguo:avatarPresence", {
+    detail: {
+      location: step.location || "briefing_spot",
+      action: step.action || "idle_greeting",
+      camera: step.camera || "medium",
+      section: motionState.section || step.section || "idle",
+      mood: motionState.expression || "warm",
+      speaking: voiceSpeaking || motionState.speaking,
+      mode: extra.mode || (currentVrm ? "vrm" : "loading")
+    }
+  }));
+}
 function addMarker(point) {
   const location = point.location || [0, 0, 0];
   const marker = new THREE.Group();
@@ -609,11 +625,23 @@ function animate() {
 
   if (route.length && routeTimer > 3.2) {
     routeTimer = 0;
+    publishAvatarPresence(route[0], { mode: currentVrm ? "vrm" : "loading" });
     routeIndex = (routeIndex + 1) % route.length;
     moveAvatarTo(route[routeIndex].coordinates || [0, 0, 0]);
+    publishAvatarPresence(route[routeIndex], { mode: currentVrm ? "vrm" : "loading" });
   }
 
   if (avatar) {
+    const activeVisual = avatar.children[0];
+    if (activeVisual) {
+      const nextEntry = Math.min(1, Number(avatar.userData.entryMix ?? 1) + delta * 1.35);
+      avatar.userData.entryMix = nextEntry;
+      const eased = 1 - Math.pow(1 - nextEntry, 3);
+      const baseScale = Number(activeVisual.userData.baseScale || 1);
+      activeVisual.scale.setScalar(baseScale * (0.94 + eased * 0.06));
+      activeVisual.position.y = (1 - eased) * 0.08;
+    }
+
     const target = avatar.userData.target || avatar.position;
     const before = avatar.position.clone();
     avatar.position.lerp(target, Math.min(delta * 1.4, 1));
@@ -649,6 +677,11 @@ function resizeRenderer() {
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
 }
+
+
+
+
+
 
 
 
