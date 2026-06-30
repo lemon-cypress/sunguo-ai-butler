@@ -75,6 +75,11 @@
           <div class="avatar-3d-stage">
             <div class="avatar-3d-canvas-wrap">
               <canvas id="avatar3dCanvas" aria-label="?? 3D ????"></canvas>
+              <div id="avatar3dLoading" class="avatar-3d-loading" aria-live="polite">
+                <div class="avatar-3d-loading-spinner" aria-hidden="true"></div>
+                <p id="avatar3dLoadingTitle">松果正在入场</p>
+                <p id="avatar3dLoadingMeta">首次打开会加载 3D 模型，请稍等几秒。</p>
+              </div>
             </div>
             <div class="avatar-3d-copy">
               <h3 id="avatar3dName">松果</h3>
@@ -190,6 +195,7 @@
     <script src="./memory_admin.js"></script>
   </body>
 </html>
+
 
 
 

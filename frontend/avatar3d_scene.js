@@ -28,6 +28,7 @@ const motionState = {
 };
 const clock = new THREE.Clock();
 const markers = new Map();
+const modelWarmCache = new Map();
 
 if (canvas) {
   initScene();
@@ -245,15 +246,31 @@ function loadAvatarPackage(payload) {
 
 function tryLoadAvatarModel(profile) {
   const url = resolveModelUrl(profile.model_assets?.primary_vrm);
-  if (!url || activeModelUrl === url) return;
+  if (!url) {
+    setModelStatus("fallback");
+    return;
+  }
+  if (activeModelUrl === url && currentVrm) return;
   activeModelUrl = url;
+  setModelStatus("loading");
+  warmModelCache(url).catch(() => {});
+  loadVrmModel(url);
+}
 
-  fetch(url, { method: "HEAD", cache: "no-store" })
+function warmModelCache(url) {
+  if (!url) return Promise.resolve();
+  if (modelWarmCache.has(url)) return modelWarmCache.get(url);
+  const task = fetch(url, { cache: "force-cache" })
     .then((response) => {
       if (!response.ok) throw new Error(`model not found: ${url}`);
-      loadVrmModel(url);
+      return response.blob();
     })
-    .catch(() => setModelStatus("placeholder"));
+    .catch((error) => {
+      modelWarmCache.delete(url);
+      throw error;
+    });
+  modelWarmCache.set(url, task);
+  return task;
 }
 
 function resolveModelUrl(path) {
@@ -280,7 +297,12 @@ function loadVrmModel(url) {
       replaceAvatarVisual(vrm.scene, "vrm");
       setModelStatus("vrm");
     },
-    undefined,
+    (event) => {
+      const total = Number(event.total) || 0;
+      const loaded = Number(event.loaded) || 0;
+      const percent = total > 0 ? Math.max(1, Math.min(100, Math.round((loaded / total) * 100))) : null;
+      setModelStatus("loading", percent);
+    },
     () => setModelStatus("fallback")
   );
 }
@@ -503,12 +525,42 @@ function setBoneRotationSmooth(name, x, y, z, smoothing = 0.12) {
   bone.rotation.z = THREE.MathUtils.lerp(bone.rotation.z, z, smoothing);
 }
 
-function setModelStatus(mode) {
+function setModelStatus(mode, percent = null) {
   const status = document.querySelector("#avatar3dStatus");
-  if (!status) return;
-  if (mode === "vrm") status.textContent = "VRM model loaded";
-  if (mode === "placeholder") status.textContent = "waiting for sunguo.vrm";
-  if (mode === "fallback") status.textContent = "model fallback active";
+  const overlay = document.querySelector("#avatar3dLoading");
+  const title = document.querySelector("#avatar3dLoadingTitle");
+  const meta = document.querySelector("#avatar3dLoadingMeta");
+
+  if (mode === "loading") {
+    if (status) status.textContent = percent ? `3D 模型加载中 ${percent}%` : "3D 模型加载中";
+    if (title) title.textContent = "松果正在入场";
+    if (meta) meta.textContent = percent ? `正在加载 3D 模型 ${percent}% ，首次打开会慢一点。` : "首次打开会加载 3D 模型，请稍等几秒。";
+    overlay?.classList.remove("is-hidden");
+    return;
+  }
+
+  if (mode === "vrm") {
+    if (status) status.textContent = "3D 数字人已就位";
+    if (title) title.textContent = "松果已到位";
+    if (meta) meta.textContent = "3D 模型已加载完成。";
+    overlay?.classList.add("is-hidden");
+    return;
+  }
+
+  if (mode === "placeholder") {
+    if (status) status.textContent = "正在等待 3D 模型";
+    if (title) title.textContent = "松果还在准备";
+    if (meta) meta.textContent = "模型文件正在同步，当前先显示加载状态。";
+    overlay?.classList.remove("is-hidden");
+    return;
+  }
+
+  if (mode === "fallback") {
+    if (status) status.textContent = "占位形象展示中";
+    if (title) title.textContent = "暂时使用占位形象";
+    if (meta) meta.textContent = "3D 模型没有及时加载成功，当前先展示占位角色。";
+    overlay?.classList.add("is-hidden");
+  }
 }
 
 function addMarker(point) {
@@ -597,6 +649,8 @@ function resizeRenderer() {
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
 }
+
+
 
 
 

@@ -1254,6 +1254,57 @@ h2 {
   overflow: hidden;
 }
 
+.avatar-3d-loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  padding: 24px;
+  background: linear-gradient(180deg, rgba(247, 251, 250, 0.92), rgba(232, 240, 237, 0.84));
+  color: var(--text);
+  text-align: center;
+  transition: opacity 220ms ease, visibility 220ms ease;
+  z-index: 2;
+}
+
+.avatar-3d-loading.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.avatar-3d-loading p {
+  margin: 0;
+}
+
+#avatar3dLoadingTitle {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+#avatar3dLoadingMeta {
+  max-width: 240px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.avatar-3d-loading-spinner {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 3px solid rgba(46, 125, 103, 0.18);
+  border-top-color: var(--green);
+  animation: avatar3d-spin 0.95s linear infinite;
+}
+
+@keyframes avatar3d-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 #avatar3dCanvas {
   display: block;
   width: 100%;
@@ -1382,3 +1433,4 @@ h2 {
   cursor: wait;
   opacity: 0.65;
 }
+

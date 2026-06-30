@@ -281,18 +281,18 @@ function renderAvatar3d(avatar3d) {
   if (name) name.textContent = profile.name || runtime.character_name || "Sunguo";
   const meta = document.querySelector("#avatar3dMeta");
   if (meta) {
-    meta.textContent = `height ${body.height_cm || "?"}cm | build ${body.build || "balanced"} | outfit ${outfit.default || "daily_home_v1"}`;
+    meta.textContent = `身高 ${body.height_cm || "?"}cm | 体型 ${body.build || "balanced"} | 服装 ${outfit.default || "daily_home_v1"}`;
   }
   const status = document.querySelector("#avatar3dStatus");
   if (status) {
-    status.textContent = `${avatar3d.version || "avatar-3d"} | ${runtime.default_location || "briefing_spot"}`;
+    status.textContent = "3D 模型准备中";
   }
   const routeHint = document.querySelector("#avatar3dRouteHint");
   const storyboard = avatar3d.space_storyboard || [];
   if (routeHint) {
     routeHint.textContent = storyboard.length
-      ? `We already mapped ${storyboard.length} movement steps for the 3D butler, from entrance to weather, briefing, reminder, and closing.`
-      : "The next step is to connect this package to modeling, rigging, and in-scene movement.";
+      ? `已经为松果规划了 ${storyboard.length} 个空间动作节点，涵盖入场、天气讲解、桌边解读、提醒和结束回位。`
+      : "下一步会把这份数字人数据接到建模、骨骼绑定和场景动作里。";
   }
   const routeList = document.querySelector("#avatar3dRoute");
   if (routeList) {
@@ -623,6 +623,7 @@ function getLocalDateText() {
   const now = new Date();
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 }
+
 
 
 
