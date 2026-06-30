@@ -363,9 +363,9 @@ function updateAvatarRuntime(elapsed) {
 }
 function updateVrmExpressions(elapsed) {
   const blink = getBlinkValue(elapsed);
-  const talking = voiceSpeaking || motionState.speaking;
-  const mouth = talking ? 0.18 + Math.abs(Math.sin(elapsed * 13.5)) * 0.62 : 0;
-  const smile = motionState.expression === "smile" || motionState.expression === "warm" ? 0.18 : 0.06;
+  const talking = voiceBlend > 0.08;
+  const mouth = talking ? (0.08 + Math.abs(Math.sin(elapsed * 13.5)) * 0.42) * voiceBlend : 0;
+  const smile = motionState.expression === "smile" || motionState.expression === "warm" ? 0.18 + voiceBlend * 0.06 : 0.06;
   setExpressionValue(["blink", "Blink"], blink);
   setExpressionValue(["happy", "relaxed", "smile"], smile);
   setExpressionValue(["aa", "A", "a"], mouth);
@@ -398,16 +398,20 @@ function setExpressionValue(names, value) {
 
 function updateVrmPose(elapsed) {
   const breath = Math.sin(elapsed * (motionClips.defaults?.breathSpeed || 1.55)) * 0.035;
+  const idleSway = Math.sin(elapsed * 0.46) * 0.018;
+  const idleTilt = Math.sin(elapsed * 0.31 + 0.6) * 0.012;
   const nod = Math.sin(elapsed * 0.9) * 0.035;
-  const talking = voiceSpeaking || motionState.speaking;
+  const talking = voiceBlend > 0.08;
+  const speakingLean = voiceBlend * 0.028;
+  const listeningSettle = (1 - voiceBlend) * 0.012;
   const walking = movementSpeed > (motionClips.defaults?.walkSpeedThreshold || 0.018);
   const gesture = normalizeGesture(motionState.gesture || "small_nod");
   const pose = buildGesturePose(gesture, elapsed, walking);
 
-  setBoneRotationSmooth("spine", 0.02 + breath + (pose.spine?.[0] || 0), pose.spine?.[1] || 0, pose.spine?.[2] || 0, 0.08);
-  setBoneRotationSmooth("chest", 0.025 + breath + (pose.chest?.[0] || 0), pose.chest?.[1] || 0, pose.chest?.[2] || 0, 0.08);
-  setBoneRotationSmooth("neck", 0.02 + nod * 0.35, Math.sin(elapsed * 0.7) * 0.025, 0, 0.1);
-  setBoneRotationSmooth("head", (talking ? Math.sin(elapsed * 5.4) * 0.018 : 0) + nod * 0.45 + (pose.head?.[0] || 0), Math.sin(elapsed * 0.55) * 0.035 + (pose.head?.[1] || 0), pose.head?.[2] || 0, 0.1);
+  setBoneRotationSmooth("spine", 0.02 + breath + speakingLean + (pose.spine?.[0] || 0), pose.spine?.[1] || 0, idleTilt + (pose.spine?.[2] || 0), 0.08);
+  setBoneRotationSmooth("chest", 0.025 + breath + idleSway * 0.35 + speakingLean + (pose.chest?.[0] || 0), pose.chest?.[1] || 0, idleTilt * 1.2 + (pose.chest?.[2] || 0), 0.08);
+  setBoneRotationSmooth("neck", 0.02 + nod * 0.35 + listeningSettle, Math.sin(elapsed * 0.7) * 0.025, idleTilt * 0.4, 0.1);
+  setBoneRotationSmooth("head", (talking ? Math.sin(elapsed * 5.4) * 0.018 * voiceBlend : 0) + nod * 0.45 + (pose.head?.[0] || 0), Math.sin(elapsed * 0.55) * 0.035 + (pose.head?.[1] || 0), idleTilt * 0.35 + (pose.head?.[2] || 0), 0.1);
 
   applyPoseBone("leftUpperArm", pose.leftUpperArm || [0.08, 0.02, -0.72], 0.13);
   applyPoseBone("rightUpperArm", pose.rightUpperArm || [0.08, -0.02, 0.72], 0.13);
@@ -621,11 +625,11 @@ function animate() {
 
   const delta = clock.getDelta();
   const elapsed = clock.elapsedTime;
+  voiceBlend = THREE.MathUtils.lerp(voiceBlend, voiceSpeaking || motionState.speaking ? 1 : 0, Math.min(delta * 6.5, 1));
   routeTimer += delta;
 
   if (route.length && routeTimer > 3.2) {
     routeTimer = 0;
-    publishAvatarPresence(route[0], { mode: currentVrm ? "vrm" : "loading" });
     routeIndex = (routeIndex + 1) % route.length;
     moveAvatarTo(route[routeIndex].coordinates || [0, 0, 0]);
     publishAvatarPresence(route[routeIndex], { mode: currentVrm ? "vrm" : "loading" });
@@ -649,7 +653,9 @@ function animate() {
     const travel = target.clone().sub(avatar.position);
     const facing = travel.lengthSq() > 0.0025 ? Math.atan2(travel.x, travel.z) : Math.sin(elapsed * 0.7) * 0.08;
     avatar.rotation.y = THREE.MathUtils.lerp(avatar.rotation.y, facing, 0.08);
-    const walkBounce = movementSpeed > (motionClips.defaults?.walkSpeedThreshold || 0.018) ? Math.abs(Math.sin(elapsed * (motionClips.defaults?.walkCycleSpeed || 8.4))) * (motionClips.walk?.bounce || 0.035) : 0;
+    const walkBounce = movementSpeed > (motionClips.defaults?.walkSpeedThreshold || 0.018)
+      ? Math.abs(Math.sin(elapsed * (motionClips.defaults?.walkCycleSpeed || 8.4))) * (motionClips.walk?.bounce || 0.035)
+      : 0;
     avatar.position.y = Math.sin(elapsed * 2.2) * 0.012 + walkBounce;
     previousAvatarPosition.copy(avatar.position);
   }
@@ -663,11 +669,49 @@ function animate() {
 
   const focusX = avatar ? avatar.position.x : 0;
   const focusZ = avatar ? avatar.position.z : 0;
-  camera.position.set(focusX * 0.72 + Math.sin(elapsed * 0.13) * 0.12, 1.55, focusZ + 3.15);
-  camera.lookAt(focusX, 1.05, focusZ - 0.05);
+  const cameraMode = route[routeIndex]?.camera || "medium";
+  const cameraPose = resolveCameraPose(cameraMode, elapsed, focusX, focusZ);
+  camera.position.set(cameraPose.x, cameraPose.y, cameraPose.z);
+  camera.lookAt(cameraPose.lookX, cameraPose.lookY, cameraPose.lookZ);
   renderer.render(scene, camera);
 }
 
+function resolveCameraPose(mode, elapsed, focusX, focusZ) {
+  const driftX = Math.sin(elapsed * 0.18) * 0.08;
+  const driftY = Math.sin(elapsed * 0.22 + 0.8) * 0.03;
+  const driftLook = Math.sin(elapsed * 0.27) * 0.03;
+
+  if (mode === "full_body") {
+    return {
+      x: focusX * 0.66 + driftX,
+      y: 1.68 + driftY,
+      z: focusZ + 3.45,
+      lookX: focusX,
+      lookY: 1.08 + driftLook,
+      lookZ: focusZ - 0.02
+    };
+  }
+
+  if (mode === "medium_close") {
+    return {
+      x: focusX * 0.78 + 0.12 + driftX * 0.7,
+      y: 1.58 + driftY * 0.8,
+      z: focusZ + 2.46,
+      lookX: focusX,
+      lookY: 1.22 + driftLook,
+      lookZ: focusZ + 0.04
+    };
+  }
+
+  return {
+    x: focusX * 0.72 + driftX,
+    y: 1.55 + driftY,
+    z: focusZ + 3.05,
+    lookX: focusX,
+    lookY: 1.1 + driftLook,
+    lookZ: focusZ - 0.03
+  };
+}
 function resizeRenderer() {
   if (!renderer || !camera || !canvas) return;
   const rect = canvas.parentElement.getBoundingClientRect();
@@ -677,6 +721,8 @@ function resizeRenderer() {
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
 }
+
+
 
 
 
