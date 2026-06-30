@@ -1,0 +1,65 @@
+{
+  "version": "avatar-3d-profile-v1",
+  "name": "松果",
+  "archetype": "sunny_gentle_butler",
+  "age_look": "18",
+  "body": {
+    "height_cm": 166,
+    "build": "slim_balanced",
+    "proportion": "stylized_realistic"
+  },
+  "face": {
+    "shape": "soft_oval",
+    "eyes": "bright_almond",
+    "nose": "small_straight",
+    "lips": "soft_natural",
+    "skin_tone": "light_warm"
+  },
+  "hair": {
+    "color": "dark_brown",
+    "style": "long_soft_layers",
+    "bangs": "light_air_bangs"
+  },
+  "outfit": {
+    "default": "mint_housekeeper_dress",
+    "variants": [
+      "mint_housekeeper_dress",
+      "cream_home_cardigan",
+      "navy_briefing_uniform"
+    ]
+  },
+  "voice_style": {
+    "tone": "warm_reliable",
+    "pace": "medium_soft",
+    "emotion_range": [
+      "smile",
+      "warm",
+      "gentle",
+      "focused",
+      "encouraging"
+    ]
+  },
+  "rig_requirements": {
+    "full_body": true,
+    "finger_rig": true,
+    "facial_blendshape_target": "arkit_52_or_equivalent",
+    "physics": [
+      "hair_secondary_motion",
+      "skirt_secondary_motion"
+    ]
+  },
+  "model_assets": {
+    "primary_vrm": "frontend/assets/avatar/sunguo.vrm",
+    "fallback": "low_poly_placeholder",
+    "supported_formats": [
+      "vrm",
+      "glb",
+      "gltf"
+    ]
+  },
+  "authoring_tools": {
+    "prototype": "VRoid Studio",
+    "cleanup": "Blender",
+    "runtime_preview": "Three.js"
+  }
+}

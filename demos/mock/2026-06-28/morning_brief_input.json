@@ -1,0 +1,689 @@
+{
+  "date": "2026-06-28",
+  "city": "北京-朝阳",
+  "weather": {
+    "source": "mock",
+    "condition": "多云转晴",
+    "temperature": "22-31°C",
+    "rain": "降雨概率较低",
+    "outfit": "建议穿轻薄短袖或衬衫，早晚如果外出久一些，可以带一件薄外套。"
+  },
+  "markets": [
+    {
+      "region": "中国",
+      "summary": "主要指数小幅震荡，市场继续关注政策预期和成交量变化。",
+      "possible_driver": "宏观政策、人民币汇率、地产和消费数据。"
+    },
+    {
+      "region": "美国",
+      "summary": "科技股仍是市场关注焦点，投资者关注通胀、利率和大型公司财报。",
+      "possible_driver": "美联储利率路径、AI 资本开支、企业盈利。"
+    },
+    {
+      "region": "日本/韩国",
+      "summary": "出口、半导体和汇率仍然影响市场情绪。",
+      "possible_driver": "日元走势、芯片产业链、全球需求。"
+    },
+    {
+      "region": "欧洲",
+      "summary": "市场关注通胀回落、央行政策和能源价格。",
+      "possible_driver": "欧洲央行政策、能源供给、制造业数据。"
+    }
+  ],
+  "market_data": {
+    "source": "mock",
+    "indices": [
+      {
+        "name": "上证指数",
+        "region": "中国",
+        "regular_market_price": null,
+        "change_percent_from_previous_close": null
+      },
+      {
+        "name": "纳斯达克综合",
+        "region": "美国",
+        "regular_market_price": null,
+        "change_percent_from_previous_close": null
+      },
+      {
+        "name": "日经225",
+        "region": "日本",
+        "regular_market_price": null,
+        "change_percent_from_previous_close": null
+      },
+      {
+        "name": "德国DAX",
+        "region": "欧洲",
+        "regular_market_price": null,
+        "change_percent_from_previous_close": null
+      }
+    ],
+    "note": "市场数据暂时使用占位符，真实接口失败时回退。"
+  },
+  "industry": [
+    "AI 算力、半导体、机器人、创新药、新能源和消费电子是第一批需要持续跟踪的方向。",
+    "后续真实版本会抓取公司公告、财报和行业新闻，并区分事实、推测和投资线索。"
+  ],
+  "news_data": {
+    "source": "mock",
+    "categories": [
+      {
+        "category": "world",
+        "label": "国际新闻",
+        "articles": []
+      },
+      {
+        "category": "business",
+        "label": "商业财经",
+        "articles": []
+      }
+    ],
+    "note": "新闻数据暂时使用占位符，真实接口失败时回退。",
+    "event_summary": [],
+    "enrichment_version": "news-enrichment-v1"
+  },
+  "theme_data": {
+    "source": "mock",
+    "items": [
+      {
+        "name": "WTI原油",
+        "theme": "能源价格",
+        "regular_market_price": null,
+        "change_percent_from_previous_close": null,
+        "affected_industries": [
+          "油气",
+          "化工",
+          "航运",
+          "航空"
+        ]
+      },
+      {
+        "name": "铜",
+        "theme": "工业金属",
+        "regular_market_price": null,
+        "change_percent_from_previous_close": null,
+        "affected_industries": [
+          "电力设备",
+          "新能源",
+          "制造业"
+        ]
+      },
+      {
+        "name": "半导体ETF",
+        "theme": "半导体",
+        "regular_market_price": null,
+        "change_percent_from_previous_close": null,
+        "affected_industries": [
+          "芯片",
+          "AI算力",
+          "消费电子"
+        ]
+      }
+    ],
+    "note": "主题价格暂时使用占位符，真实接口失败时回退。"
+  },
+  "company_data": {
+    "source": "mock",
+    "items": [
+      {
+        "symbol": "NVDA",
+        "name": "英伟达",
+        "sector": "AI算力/半导体",
+        "quote": {
+          "regular_market_price": null,
+          "change_percent_from_previous_close": null
+        },
+        "articles": [],
+        "event_summary": []
+      },
+      {
+        "symbol": "TSM",
+        "name": "台积电",
+        "sector": "半导体制造",
+        "quote": {
+          "regular_market_price": null,
+          "change_percent_from_previous_close": null
+        },
+        "articles": [],
+        "event_summary": []
+      }
+    ],
+    "note": "公司观察池暂时使用占位符，真实接口失败时回退。",
+    "enrichment_version": "news-enrichment-v1"
+  },
+  "politics_and_society": [
+    "政治和军事板块会关注地缘冲突、选举、制裁、外交和军费变化。",
+    "社会新闻会筛选公共安全、科技应用、教育、医疗和城市治理相关事件。"
+  ],
+  "sunguo_project": [
+    "今天的松果项目任务是把日程能力从 Outlook 迁移到本地日程文件。",
+    "保留 Outlook 模块作为以后公司授权后的可选能力。",
+    "下一步优先推进财经/新闻真实数据源。"
+  ],
+  "schedule": {
+    "source": "local",
+    "date": "2026-06-28",
+    "events": [
+      {
+        "start": "09:30",
+        "end": "10:00",
+        "title": "检查今日日程和项目优先级",
+        "location": "本地",
+        "importance": "high",
+        "preparation": "打开松果项目目录，确认今天要完成的最小交付物。"
+      },
+      {
+        "start": "14:00",
+        "end": "15:00",
+        "title": "整理松果早报固定栏目",
+        "location": "本地",
+        "importance": "normal",
+        "preparation": "看一遍昨天保存的早报，标记哪些栏目需要真实数据。"
+      },
+      {
+        "start": "16:00",
+        "end": "16:30",
+        "title": "整理松果下一步任务",
+        "location": "本地",
+        "importance": "high",
+        "preparation": "把今天遇到的问题写成 3 条。"
+      },
+      {
+        "start": "20:30",
+        "end": "20:50",
+        "title": "复盘学习和项目进度",
+        "location": "本地",
+        "importance": "normal",
+        "preparation": "记录今天学到了什么、代码跑通了什么、明天接什么能力。"
+      }
+    ],
+    "write_proposals": [],
+    "safety_note": "当前使用本地日程文件，不依赖公司 Outlook 授权。"
+  },
+  "outlook_tasks": [
+    {
+      "time": "09:30",
+      "title": "检查今日日程和项目优先级",
+      "priority": "高"
+    },
+    {
+      "time": "14:00",
+      "title": "整理松果早报固定栏目",
+      "priority": "中"
+    },
+    {
+      "time": "16:00",
+      "title": "整理松果下一步任务",
+      "priority": "高"
+    },
+    {
+      "time": "20:30",
+      "title": "复盘学习和项目进度",
+      "priority": "中"
+    }
+  ],
+  "life_reminders": [
+    "记得刷牙、喝水，出门前看一下钥匙和手机。",
+    "如果今天久坐，上午和下午各做一次 3 分钟拉伸。",
+    "晚上可以简单整理桌面，让明天早上开始得更轻松。"
+  ],
+  "history_story": "今天的小故事：乔布斯早年非常重视产品演示。他明白用户往往不是先理解技术细节，而是先被一个清楚、有画面感的体验打动。松果也一样，第一版先把每天早上的核心体验做顺。",
+  "joke": "今天的小笑话：程序员说自己很会做饭，因为他每次都严格按照菜谱执行，直到发现盐也有版本兼容问题。",
+  "user_profile": {
+    "owner_name": "小主人",
+    "city": "北京-朝阳",
+    "project_name": "松果",
+    "persona": {
+      "name": "松果",
+      "style": "温柔、阳光、聪明、可靠",
+      "avatar": "18岁左右的女生形象"
+    },
+    "focus": {
+      "regions": [
+        "中国",
+        "日本",
+        "韩国",
+        "美国",
+        "欧洲"
+      ],
+      "markets": [
+        "主要指数",
+        "股市板块",
+        "宏观政策",
+        "利率",
+        "汇率"
+      ],
+      "industries": [
+        "AI算力",
+        "半导体",
+        "机器人",
+        "创新药",
+        "新能源",
+        "消费电子",
+        "能源",
+        "航运"
+      ],
+      "companies": [
+        "英伟达",
+        "AMD",
+        "台积电",
+        "ASML",
+        "微软"
+      ],
+      "news_topics": [
+        "经济",
+        "政治",
+        "军事",
+        "社会新闻",
+        "科技应用"
+      ]
+    },
+    "output_preferences": {
+      "tone": "先讲结论，再讲证据，语气温柔自然",
+      "morning_brief_order": [
+        "松果解读",
+        "三件重要事",
+        "天气穿衣",
+        "市场宏观",
+        "行业公司",
+        "政治社会",
+        "今日待办",
+        "生活提醒"
+      ],
+      "risk_style": "财经内容只做线索整理，不直接给买卖建议",
+      "detail_level": "中等详细，重要信息解释为什么值得关注"
+    },
+    "life_reminders": [
+      "刷牙",
+      "喝水",
+      "出门前检查钥匙和手机",
+      "久坐时拉伸",
+      "晚上简单整理桌面"
+    ],
+    "project_memory": {
+      "current_stage": "早报原型和输出层",
+      "current_priority": "提升早报质量、追问能力、本地记忆、语音和数字人输出",
+      "paused_items": [
+        "Outlook公司日历接入，等待管理员授权"
+      ]
+    }
+  },
+  "memory_summary": {
+    "owner_name": "小主人",
+    "city": "北京-朝阳",
+    "project_name": "松果",
+    "regions": [
+      "中国",
+      "日本",
+      "韩国",
+      "美国",
+      "欧洲"
+    ],
+    "industries": [
+      "AI算力",
+      "半导体",
+      "机器人",
+      "创新药",
+      "新能源",
+      "消费电子",
+      "能源",
+      "航运"
+    ],
+    "companies": [
+      "英伟达",
+      "AMD",
+      "台积电",
+      "ASML",
+      "微软"
+    ],
+    "life_reminders": [
+      "刷牙",
+      "喝水",
+      "出门前检查钥匙和手机",
+      "久坐时拉伸",
+      "晚上简单整理桌面"
+    ],
+    "current_priority": "提升早报质量、追问能力、本地记忆、语音和数字人输出",
+    "tone": "先讲结论，再讲证据，语气温柔自然"
+  },
+  "insights": {
+    "market": {
+      "source": "mock",
+      "tone": "数据不足，暂不判断市场情绪",
+      "notable_movers": [],
+      "region_summary": [],
+      "watch_points": [
+        "先确认主要指数是否有一致方向，再看行业和公司新闻是否能解释变化。"
+      ]
+    },
+    "news": {
+      "source": "mock",
+      "headline_groups": [],
+      "possible_topics": [],
+      "watch_points": [
+        "新闻源暂时不足，先不要做强判断。"
+      ]
+    },
+    "themes": {
+      "source": "mock",
+      "rising": [],
+      "falling": [],
+      "opportunity_watch": [
+        "主题价格暂无明显变化，先观察能源、金属、半导体和航运是否出现连续趋势。",
+        "这些只是机会线索，后续需要结合公司公告、库存、供需和政策验证。"
+      ]
+    },
+    "companies": {
+      "source": "mock",
+      "price_movers": [],
+      "article_events": [],
+      "watch_points": [
+        "公司观察池暂无明显价格或公告线索，先保持跟踪。",
+        "公司层面必须回到交易所公告、公司 IR 或财报原文核验。"
+      ]
+    },
+    "priorities": [
+      "今天先处理 09:30 的「检查今日日程和项目优先级」。",
+      "早报产品下一步要提升解读质量：少列标题，多讲为什么值得关注。",
+      "财经数据先当作线索，继续把价格变化连接到行业、公司和公告。"
+    ],
+    "disclaimer": "以下为早报线索和辅助判断，不构成投资建议；新闻标题需要进一步核验来源和原文。"
+  },
+  "finance_reasoning": {
+    "version": "finance-reasoning-v1",
+    "summary": "今天财经数据先保持观察：暂时没有足够强的价格或新闻线索，需要继续收集证据。",
+    "rules": [
+      "先说事实，再说可能原因，不把价格变化直接当成结论。",
+      "每条线索都要说明可能影响谁，以及下一步该核验什么。",
+      "投资相关内容只做信息整理和研究线索，不给买卖建议。"
+    ],
+    "market": [],
+    "themes": [],
+    "companies": [],
+    "source": {
+      "market": "mock",
+      "themes": "mock",
+      "companies": "mock"
+    }
+  },
+  "brief_analysis": {
+    "version": "brief-analysis-v1",
+    "today_overview": "今天的早报重点是：今天先处理：检查今日日程和项目优先级；同时关注待办事项已整理。我会把未核验内容标成线索，避免把标题直接当结论。",
+    "top_stories": [
+      {
+        "id": "schedule",
+        "title": "今天先处理：检查今日日程和项目优先级",
+        "why_it_matters": "项目推进要有一个清楚的当日抓手，避免早报只是看信息而不形成行动。",
+        "evidence": [
+          "09:30｜检查今日日程和项目优先级｜优先级：高"
+        ],
+        "impact": [
+          "松果项目",
+          "今日待办"
+        ],
+        "confidence": "高",
+        "source": "local",
+        "follow_up": [
+          "先完成最小可交付物，再扩展新能力。"
+        ]
+      }
+    ],
+    "quality_rules": [
+      "先讲结论，再讲证据。",
+      "区分事实、线索和需要核验的推断。",
+      "财经内容只做信息整理，不给买卖建议。"
+    ]
+  },
+  "reminder_plan": {
+    "version": "reminder-plan-v2",
+    "rules_version": "reminder-rules-v1",
+    "source": "local + reminders.json",
+    "summary": "今天我会安排 9 条提醒，其中 3 条是高优先级。",
+    "medicine_configured": false,
+    "items": [
+      {
+        "time": "08:30",
+        "type": "life",
+        "priority": "normal",
+        "title": "出门前检查",
+        "message": "出门前看一眼钥匙、手机和水杯。今天先让自己轻一点。",
+        "trigger": {
+          "kind": "fixed_time"
+        },
+        "voice": {
+          "style": "gentle",
+          "pause_after_ms": 600
+        },
+        "avatar": {
+          "expression": "gentle",
+          "gesture": "present_left"
+        },
+        "id": "reminder-01"
+      },
+      {
+        "time": "08:35",
+        "type": "weather",
+        "priority": "high",
+        "title": "雨具提醒",
+        "message": "今天可能有雨，出门前把伞带上，鞋子也尽量选不怕湿的。",
+        "trigger": {
+          "kind": "weather_rule",
+          "condition": "rain"
+        },
+        "voice": {
+          "style": "careful",
+          "pause_after_ms": 700
+        },
+        "avatar": {
+          "expression": "focused",
+          "gesture": "point_screen"
+        },
+        "id": "reminder-02"
+      },
+      {
+        "time": "09:20",
+        "type": "schedule",
+        "priority": "high",
+        "title": "检查今日日程和项目优先级 即将开始",
+        "message": "小主人，10 分钟后是「检查今日日程和项目优先级」。准备：打开松果项目目录，确认今天要完成的最小交付物。",
+        "trigger": {
+          "kind": "relative",
+          "minutes_before": 10,
+          "event_time": "09:30"
+        },
+        "voice": {
+          "style": "encouraging",
+          "pause_after_ms": 650
+        },
+        "avatar": {
+          "expression": "encouraging",
+          "gesture": "checklist"
+        },
+        "id": "reminder-03"
+      },
+      {
+        "time": "11:00",
+        "type": "health",
+        "priority": "normal",
+        "title": "补水和伸展",
+        "message": "喝几口水，站起来活动 3 分钟。肩颈会感谢你的。",
+        "trigger": {
+          "kind": "fixed_time"
+        },
+        "voice": {
+          "style": "warm",
+          "pause_after_ms": 600
+        },
+        "avatar": {
+          "expression": "smile",
+          "gesture": "small_nod"
+        },
+        "id": "reminder-04"
+      },
+      {
+        "time": "13:50",
+        "type": "schedule",
+        "priority": "normal",
+        "title": "整理松果早报固定栏目 即将开始",
+        "message": "小主人，10 分钟后是「整理松果早报固定栏目」。准备：看一遍昨天保存的早报，标记哪些栏目需要真实数据。",
+        "trigger": {
+          "kind": "relative",
+          "minutes_before": 10,
+          "event_time": "14:00"
+        },
+        "voice": {
+          "style": "gentle",
+          "pause_after_ms": 650
+        },
+        "avatar": {
+          "expression": "encouraging",
+          "gesture": "checklist"
+        },
+        "id": "reminder-05"
+      },
+      {
+        "time": "15:30",
+        "type": "health",
+        "priority": "normal",
+        "title": "下午活动一下",
+        "message": "离开椅子走两分钟，顺手喝点水。下午的脑子会清亮一点。",
+        "trigger": {
+          "kind": "fixed_time"
+        },
+        "voice": {
+          "style": "gentle",
+          "pause_after_ms": 600
+        },
+        "avatar": {
+          "expression": "smile",
+          "gesture": "small_nod"
+        },
+        "id": "reminder-06"
+      },
+      {
+        "time": "15:50",
+        "type": "schedule",
+        "priority": "high",
+        "title": "整理松果下一步任务 即将开始",
+        "message": "小主人，10 分钟后是「整理松果下一步任务」。准备：把今天遇到的问题写成 3 条。",
+        "trigger": {
+          "kind": "relative",
+          "minutes_before": 10,
+          "event_time": "16:00"
+        },
+        "voice": {
+          "style": "encouraging",
+          "pause_after_ms": 650
+        },
+        "avatar": {
+          "expression": "encouraging",
+          "gesture": "checklist"
+        },
+        "id": "reminder-07"
+      },
+      {
+        "time": "20:20",
+        "type": "schedule",
+        "priority": "normal",
+        "title": "复盘学习和项目进度 即将开始",
+        "message": "小主人，10 分钟后是「复盘学习和项目进度」。准备：记录今天学到了什么、代码跑通了什么、明天接什么能力。",
+        "trigger": {
+          "kind": "relative",
+          "minutes_before": 10,
+          "event_time": "20:30"
+        },
+        "voice": {
+          "style": "gentle",
+          "pause_after_ms": 650
+        },
+        "avatar": {
+          "expression": "encouraging",
+          "gesture": "checklist"
+        },
+        "id": "reminder-08"
+      },
+      {
+        "time": "21:30",
+        "type": "life",
+        "priority": "normal",
+        "title": "晚间收尾",
+        "message": "睡前简单整理桌面，给明天留一个轻松的开始。",
+        "trigger": {
+          "kind": "fixed_time"
+        },
+        "voice": {
+          "style": "warm",
+          "pause_after_ms": 600
+        },
+        "avatar": {
+          "expression": "warm",
+          "gesture": "small_nod"
+        },
+        "id": "reminder-09"
+      }
+    ]
+  },
+  "butler_brief": {
+    "version": "butler-persona-v2",
+    "name": "松果",
+    "owner": "小主人",
+    "style": "温柔、阳光、聪明、可靠",
+    "opening": "早安，小主人。我是松果。北京-朝阳今天多云转晴，气温22-31°C。天气看起来还不错，适合把节奏打开一点。我先用最省心的方式，把天气、待办和几条重要线索讲给你听。",
+    "care_note": "今天外面不太省心，出门前把伞、钥匙和手机都看一眼。穿衣上，建议穿轻薄短袖或衬衫，早晚如果外出久一些，可以带一件薄外套。 另外，记得刷牙、喝水，出门前看一下钥匙和手机。；如果今天久坐，上午和下午各做一次 3 分钟拉伸。。",
+    "agenda_note": "今天先抓住 09:30 的「检查今日日程和项目优先级」。后面我会再提醒你：14:00 整理松果早报固定栏目；16:00 整理松果下一步任务。",
+    "finance_note": "财经部分我会谨慎一点。今天先看两个重点：今天先处理：检查今日日程和项目优先级；以及后续核验点。这些先当线索，我会把核验入口放在旁边。",
+    "closing": "小主人，今天不用一下子把所有事做完。我们先把最重要的一步推进好：提升早报质量、追问能力、本地记忆、语音和数字人输出。我会在旁边帮你看着节奏，慢慢来。",
+    "speech_script": [
+      {
+        "id": "butler-01",
+        "section": "opening",
+        "text": "早安，小主人。我是松果。北京-朝阳今天多云转晴，气温22-31°C。天气看起来还不错，适合把节奏打开一点。我先用最省心的方式，把天气、待办和几条重要线索讲给你听。",
+        "voice": {
+          "style": "warm",
+          "speed": "normal",
+          "pause_after_ms": 750
+        }
+      },
+      {
+        "id": "butler-02",
+        "section": "care",
+        "text": "今天外面不太省心，出门前把伞、钥匙和手机都看一眼。穿衣上，建议穿轻薄短袖或衬衫，早晚如果外出久一些，可以带一件薄外套。 另外，记得刷牙、喝水，出门前看一下钥匙和手机。；如果今天久坐，上午和下午各做一次 3 分钟拉伸。。",
+        "voice": {
+          "style": "gentle",
+          "speed": "normal",
+          "pause_after_ms": 700
+        }
+      },
+      {
+        "id": "butler-03",
+        "section": "agenda",
+        "text": "今天先抓住 09:30 的「检查今日日程和项目优先级」。后面我会再提醒你：14:00 整理松果早报固定栏目；16:00 整理松果下一步任务。",
+        "voice": {
+          "style": "encouraging",
+          "speed": "normal",
+          "pause_after_ms": 650
+        }
+      },
+      {
+        "id": "butler-04",
+        "section": "finance",
+        "text": "财经部分我会谨慎一点。今天先看两个重点：今天先处理：检查今日日程和项目优先级；以及后续核验点。这些先当线索，我会把核验入口放在旁边。",
+        "voice": {
+          "style": "careful",
+          "speed": "normal",
+          "pause_after_ms": 800
+        }
+      },
+      {
+        "id": "butler-05",
+        "section": "closing",
+        "text": "小主人，今天不用一下子把所有事做完。我们先把最重要的一步推进好：提升早报质量、追问能力、本地记忆、语音和数字人输出。我会在旁边帮你看着节奏，慢慢来。",
+        "voice": {
+          "style": "warm",
+          "speed": "normal",
+          "pause_after_ms": 950
+        }
+      }
+    ]
+  }
+}

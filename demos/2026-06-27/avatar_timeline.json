@@ -1,0 +1,42 @@
+[
+  {
+    "id": "hello",
+    "section": "opening",
+    "expression": "smile",
+    "gesture": "wave",
+    "camera": "medium",
+    "caption": "早安，今天是 2026-06-27"
+  },
+  {
+    "id": "weather",
+    "section": "weather",
+    "expression": "bright",
+    "gesture": "present_left",
+    "camera": "medium",
+    "caption": "北京-朝阳 中等毛毛雨"
+  },
+  {
+    "id": "market",
+    "section": "market",
+    "expression": "focused",
+    "gesture": "point_screen",
+    "camera": "medium_close",
+    "caption": "偏谨慎，多个主要指数出现明显下跌"
+  },
+  {
+    "id": "schedule",
+    "section": "schedule",
+    "expression": "encouraging",
+    "gesture": "checklist",
+    "camera": "medium",
+    "caption": "我把今天的待办也整理好了。"
+  },
+  {
+    "id": "closing",
+    "section": "closing",
+    "expression": "warm",
+    "gesture": "small_nod",
+    "camera": "medium_close",
+    "caption": "今天我们稳稳推进。"
+  }
+]

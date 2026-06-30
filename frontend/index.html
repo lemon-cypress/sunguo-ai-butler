@@ -1,0 +1,196 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>松果早报</title>
+    <link rel="stylesheet" href="./styles.css?v=motion-tuner-20260630" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../node_modules/three/build/three.module.js",
+          "three/addons/": "../node_modules/three/examples/jsm/",
+          "three/examples/jsm/": "../node_modules/three/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <main class="shell">
+      <section class="topbar" aria-label="松果早报控制台">
+        <div>
+          <p class="eyebrow">Sunguo Morning Console</p>
+          <h1>松果早报</h1>
+        </div>
+        <div class="status-strip">
+          <span id="dateLabel">加载中</span>
+          <span id="cityLabel">北京-朝阳</span>
+          <span id="sourceLabel">output-v1</span>
+        </div>
+      </section>
+
+      <section class="avatar-band" aria-label="数字人状态">
+        <div class="avatar-stage">
+          <div class="avatar-portrait" aria-hidden="true">
+            <div class="portrait-aura"></div>
+            <div class="portrait-hair-back"></div>
+            <div class="portrait-neck"></div>
+            <div class="portrait-shoulders"></div>
+            <div class="portrait-head"></div>
+            <div class="portrait-bangs"></div>
+            <div class="portrait-eyes"></div>
+            <div class="portrait-mouth"></div>
+            <div class="portrait-body"></div>
+            <div class="portrait-blouse"></div>
+            <div class="portrait-brooch"></div>
+          </div>
+          <div class="avatar-copy">
+            <p class="eyebrow">Avatar Timeline</p>
+            <h2 id="avatarCaption">Sunguo is ready.</h2>
+            <p id="avatarMeta">expression: warm | gesture: small_nod | camera: medium</p>
+            <p id="avatarState">mouth: closed | lip-sync: rest | section: opening</p>
+          </div>
+        </div>
+        <div class="quick-actions" aria-label="操作">
+          <button id="readBtn" type="button" title="播放或暂停语音台词">
+            <span class="button-icon">▶</span>
+            <span>朗读</span>
+          </button>
+          <button id="nextAvatarBtn" type="button" title="切换数字人动作">
+            <span class="button-icon">↻</span>
+            <span>动作</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="avatar-3d-panel" aria-label="3D数字人规划">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Avatar 3D</p>
+            <h2>3D 全身数字人</h2>
+          </div>
+          <span id="avatar3dStatus">规划中</span>
+        </div>
+        <div class="avatar-3d-layout">
+          <div class="avatar-3d-stage">
+            <div class="avatar-3d-canvas-wrap">
+              <canvas id="avatar3dCanvas" aria-label="?? 3D ????"></canvas>
+            </div>
+            <div class="avatar-3d-copy">
+              <h3 id="avatar3dName">松果</h3>
+              <p id="avatar3dMeta">全身版数字人准备中</p>
+              <p id="avatar3dRouteHint">接下来会把这份数据接到建模、绑定和虚拟空间动作里。</p>
+            </div>
+          </div>
+          <div class="avatar-3d-cards">
+            <article class="avatar-3d-card">
+              <h3>空间行动路线</h3>
+              <ol id="avatar3dRoute"></ol>
+            </article>
+            <article class="avatar-3d-card">
+              <h3>建模与绑定要求</h3>
+              <ul id="avatar3dAssets"></ul>
+            </article>
+          </div>
+        </div>
+              <section class="motion-tuner" aria-label="动作调参">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Motion Tuner</p>
+              <h2>动作调参</h2>
+            </div>
+            <span id="motionTunerStatus">即时预览</span>
+          </div>
+          <div class="motion-tuner-grid">
+            <label>
+              <span>走路速度</span>
+              <input type="range" min="5" max="13" step="0.1" value="8.4" data-motion-path="defaults.walkCycleSpeed" />
+              <output>8.4</output>
+            </label>
+            <label>
+              <span>摆臂幅度</span>
+              <input type="range" min="0" max="0.3" step="0.01" value="0.12" data-motion-path="walk.armSwing" />
+              <output>0.12</output>
+            </label>
+            <label>
+              <span>抬腿幅度</span>
+              <input type="range" min="0.1" max="0.5" step="0.01" value="0.28" data-motion-path="walk.legSwing" />
+              <output>0.28</output>
+            </label>
+            <label>
+              <span>膝盖弯曲</span>
+              <input type="range" min="0.1" max="0.6" step="0.01" value="0.34" data-motion-path="walk.kneeLift" />
+              <output>0.34</output>
+            </label>
+            <label>
+              <span>身体起伏</span>
+              <input type="range" min="0" max="0.08" step="0.005" value="0.035" data-motion-path="walk.bounce" />
+              <output>0.035</output>
+            </label>
+            <label>
+              <span>挥手幅度</span>
+              <input type="range" min="0.05" max="0.55" step="0.01" value="0.28" data-motion-path="clips.wave.waveAmplitude" />
+              <output>0.28</output>
+            </label>
+          </div>
+          <div class="motion-tuner-actions"><button id="saveMotionConfigBtn" type="button">保存动作参数</button></div>
+          <p class="motion-tuner-note">调满意后保存，参数会写入 avatar_motion_clips.json，下次打开仍然生效。</p>
+        </section>      </section>
+
+      <section class="layout">
+        <aside class="side-panel" aria-label="信息源">
+          <h2>信息源</h2>
+          <dl id="sourceList"></dl>
+          <p id="reliabilityNote"></p>
+        </aside>
+
+        <section class="card-grid" id="cardGrid" aria-label="早报卡片"></section>
+      </section>
+
+      <section class="speech-panel" aria-label="语音台词">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Speech Script</p>
+            <h2>语音分段</h2>
+          </div>
+          <span id="speechCount">0 段</span>
+        </div>
+        <ol id="speechList"></ol>
+      </section>
+
+      <section class="ask-panel" aria-label="追问松果">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Ask Sunguo</p>
+            <h2>追问松果</h2>
+          </div>
+          <span>基于今日早报</span>
+        </div>
+        <form id="askForm" class="ask-form">
+          <input id="askInput" type="text" placeholder="例如：第一件事为什么重要？下一步看什么？数据可靠吗？" />
+          <button type="submit">提问</button>
+        </form>
+        <div class="ask-suggestions">
+          <button type="button" data-question="今天最重要的三件事是什么？">三件重要事</button>
+          <button type="button" data-question="今天会提醒我什么？">今天提醒</button>
+          <button type="button" data-question="第一件事为什么重要？">为什么重要</button>
+          <button type="button" data-question="有哪些证据？">证据</button>
+          <button type="button" data-question="下一步需要核验什么？">核验点</button>
+          <button type="button" data-question="公司核验入口在哪里？">公司核验入口</button>
+          <button type="button" data-question="微软最近披露是什么？">最近披露</button>
+          <button type="button" data-question="今天松果项目该做什么？">松果项目</button>
+        </div>
+        <div id="askAnswer" class="ask-answer"></div>
+      </section>
+    </main>
+
+    <script src="./app.js?v=motion-tuner-20260630"></script>
+    <script type="module" src="./avatar3d_scene.js?v=motion-tuner-20260630"></script>
+    <script src="./reminder_admin.js"></script>
+    <script src="./memory_admin.js"></script>
+  </body>
+</html>
+
+
+
+

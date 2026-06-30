@@ -1,0 +1,231 @@
+[
+  {
+    "id": "butler-voice",
+    "type": "butler",
+    "title": "松果管家语气",
+    "priority": "high",
+    "summary": "早安，小主人。我是松果。北京-朝阳今天雷雨，气温24-34°C。外面可能会有点湿乱，今天我会多提醒你几句。我先用最省心的方式，把天气、待办和几条重要线索讲给你听。",
+    "details": [
+      "今天外面不太省心，出门前把伞、钥匙和手机都看一眼。穿衣上，建议穿轻薄透气的短袖、衬衫或薄款长裤，早晚温差比较明显，可以多带一件薄外套，包里放一把伞更稳妥。 另外，记得刷牙、喝水，出门前看一下钥匙和手机。；如果今天久坐，上午和下午各做一次 3 分钟拉伸。。",
+      "今天先抓住 09:30 的「检查今日日程和项目优先级」。后面我会再提醒你：14:00 整理松果早报固定栏目；16:00 整理松果下一步任务。",
+      "小主人，今天不用一下子把所有事做完。我们先把最重要的一步推进好：提升早报质量、追问能力、本地记忆、语音和数字人输出。我会在旁边帮你看着节奏，慢慢来。"
+    ],
+    "source": "butler-persona-v2"
+  },
+  {
+    "id": "reminder-plan",
+    "type": "reminders",
+    "title": "主动提醒",
+    "priority": "high",
+    "summary": "今天我会安排 9 条提醒，其中 3 条是高优先级。",
+    "details": [
+      "08:30｜出门前检查｜出门前看一眼钥匙、手机和水杯。今天先让自己轻一点。",
+      "08:35｜雨具提醒｜今天可能有雨，出门前把伞带上，鞋子也尽量选不怕湿的。",
+      "09:20｜检查今日日程和项目优先级 即将开始｜小主人，10 分钟后是「检查今日日程和项目优先级」。准备：打开松果项目目录，确认今天要完成的最小交付物。",
+      "11:00｜补水和伸展｜喝几口水，站起来活动 3 分钟。肩颈会感谢你的。",
+      "13:50｜整理松果早报固定栏目 即将开始｜小主人，10 分钟后是「整理松果早报固定栏目」。准备：看一遍昨天保存的早报，标记哪些栏目需要真实数据。",
+      "15:30｜下午活动一下｜离开椅子走两分钟，顺手喝点水。下午的脑子会清亮一点。",
+      "15:50｜整理松果下一步任务 即将开始｜小主人，10 分钟后是「整理松果下一步任务」。准备：把今天遇到的问题写成 3 条。",
+      "20:20｜复盘学习和项目进度 即将开始｜小主人，10 分钟后是「复盘学习和项目进度」。准备：记录今天学到了什么、代码跑通了什么、明天接什么能力。"
+    ],
+    "source": "reminder-plan-v2"
+  },
+  {
+    "id": "quality-overview",
+    "type": "analysis",
+    "title": "松果解读",
+    "priority": "high",
+    "summary": "今天的早报重点是：市场情绪：偏谨慎，多个主要指数出现明显下跌；同时关注半导体ETF下跌，关注产业传导。我会把未核验内容标成线索，避免把标题直接当结论。",
+    "details": [
+      "先讲结论，再讲证据。",
+      "区分事实、线索和需要核验的推断。",
+      "财经内容只做信息整理，不给买卖建议。"
+    ],
+    "source": "brief-analysis-v1"
+  },
+  {
+    "id": "top-story-1",
+    "type": "top-story",
+    "title": "1. 市场情绪：偏谨慎，多个主要指数出现明显下跌",
+    "priority": "high",
+    "summary": "主要指数的同步变化会影响今天对风险偏好、行业强弱和公司新闻的解读顺序。",
+    "details": [
+      "为什么重要：主要指数的同步变化会影响今天对风险偏好、行业强弱和公司新闻的解读顺序。",
+      "影响对象：全球市场、科技/半导体、汇率和利率预期",
+      "证据：韩国韩国KOSPI变动约 -5.81%。；美国平均变化约 -0.13%",
+      "后续核验：关注韩国的韩国KOSPI下跌是否由科技、汇率、利率或地缘因素驱动。；后续需要把指数变化和行业/公司公告对应起来，避免只看价格不看原因。",
+      "可信度：中"
+    ],
+    "source": "Yahoo Finance chart"
+  },
+  {
+    "id": "top-story-2",
+    "type": "top-story",
+    "title": "2. 半导体ETF下跌，关注产业传导",
+    "priority": "high",
+    "summary": "商品和主题价格变化会传导到成本、利润率、通胀预期和相关行业情绪。",
+    "details": [
+      "为什么重要：商品和主题价格变化会传导到成本、利润率、通胀预期和相关行业情绪。",
+      "影响对象：芯片、AI算力、消费电子、设备材料",
+      "证据：半导体ETF下跌约 5.64%。",
+      "后续核验：黄金上涨约 1.2%，关注对贵金属、黄金矿企、美元利率、避险资产的传导。；铜上涨约 1.13%，关注对电力设备、新能源、地产链、制造业的传导。",
+      "可信度：中"
+    ],
+    "source": "Yahoo Finance chart"
+  },
+  {
+    "id": "top-story-3",
+    "type": "top-story",
+    "title": "3. 微软上涨，需要核验原因",
+    "priority": "high",
+    "summary": "公司层面的价格和新闻线索能帮助判断行业变化是否已经传导到具体企业。",
+    "details": [
+      "为什么重要：公司层面的价格和新闻线索能帮助判断行业变化是否已经传导到具体企业。",
+      "影响对象：云/AI应用",
+      "证据：微软上涨约 5.71%。",
+      "后续核验：微软股价上涨约 5.71%，需要核对是否与财报、指引或行业新闻有关。；ASML股价下跌约 2.53%，需要核对是否与财报、指引或行业新闻有关。",
+      "可信度：线索"
+    ],
+    "source": "Yahoo Finance chart + Google News RSS"
+  },
+  {
+    "id": "memory",
+    "type": "memory",
+    "title": "松果记住了",
+    "priority": "normal",
+    "summary": "我会按 小主人 的关注偏好整理早报。",
+    "details": [
+      "关注国家/地区：中国、日本、韩国、美国、欧洲",
+      "关注行业：AI算力、半导体、机器人、创新药、新能源、消费电子、能源、航运",
+      "关注公司：英伟达、AMD、台积电、ASML、微软",
+      "当前项目重点：提升早报质量、追问能力、本地记忆、语音和数字人输出"
+    ],
+    "source": "user_profile"
+  },
+  {
+    "id": "finance-reasoning",
+    "type": "finance-reasoning",
+    "title": "财经解读框架",
+    "priority": "high",
+    "summary": "今天财经部分先抓15条高优先级线索，尤其留意AI算力、半导体、机器人；每条都按事实、可能原因、影响对象和后续核验来整理。",
+    "details": [
+      "韩国韩国KOSPI下跌｜事实：韩国KOSPI较前收盘约-5.81%，属于需要关注的指数波动。｜可能原因：可能与韩国风险偏好下降、利率/汇率变化、科技股回调或政策预期变化有关，需要继续核验。｜后续：核对同一区域其他主要指数是否同向变化。；查看利率、汇率、政策预期、科技股和大宗商品是否有共同解释。",
+      "日本日经225下跌｜事实：日经225较前收盘约-4.15%，属于需要关注的指数波动。｜可能原因：可能与日本风险偏好下降、利率/汇率变化、科技股回调或政策预期变化有关，需要继续核验。｜后续：核对同一区域其他主要指数是否同向变化。；查看利率、汇率、政策预期、科技股和大宗商品是否有共同解释。",
+      "半导体ETF下跌｜事实：半导体里的半导体ETF较前收盘约-5.64%。｜可能原因：可能与半导体需求预期走弱、库存变化、美元/利率变化或风险偏好回落有关。｜后续：核对现货、期货、库存、供需和政策消息是否同步支持。；再看相关公司公告、财报和行业新闻，避免只根据价格波动下判断。",
+      "布伦特原油下跌｜事实：能源价格里的布伦特原油较前收盘约-3.84%。｜可能原因：可能与能源价格需求预期走弱、库存变化、美元/利率变化或风险偏好回落有关。｜后续：核对现货、期货、库存、供需和政策消息是否同步支持。；再看相关公司公告、财报和行业新闻，避免只根据价格波动下判断。",
+      "微软需要核验原因｜事实：股价较前收盘约5.71%；出现财报/业绩、AI线索：AMZN, META, GOOGL, MSFT Earnings This Week: One AI Bubble Signal Will Keep Investors On Edge - Stocktwits｜可能原因：价格波动较明显，可能与财报、指引、订单、行业景气或资金交易有关；新闻标题指向财报/业绩、AI事件；还要放回云/AI应用产业链里比较。｜后续：优先核对公司财报、电话会纪要和交易所披露。；最近官方披露：8-K，提交日 2026-06-05，用于：重大事项公告，适合核对临时事件、业绩发布和管理层变化。 摘要：Item 5.02 Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers; Compensatory Arrange 链接：https://www.sec.gov/Archives/edgar/data/789019/000119312526258667/d26760d8k.htm",
+      "ASML需要核验原因｜事实：股价较前收盘约-2.53%；出现芯片线索：How the ASML China EUV saga points to tougher reality for country’s chip sector - South China Morning Post｜可能原因：价格波动较明显，可能与财报、指引、订单、行业景气或资金交易有关；新闻标题指向芯片事件；还要放回半导体设备产业链里比较。｜后续：核对产业链位置、出货、库存和价格。；最近官方披露：6-K，提交日 2026-04-23，用于：境外发行人临时披露，适合核对新闻稿、财报和重大事件。 标题：Document 链接：https://www.sec.gov/Archives/edgar/data/937966/000162828026026703/form6-kagmdisclosureofagmr.htm"
+    ],
+    "source": "financial_reasoning"
+  },
+  {
+    "id": "filing-evidence",
+    "type": "filing-evidence",
+    "title": "官方披露证据",
+    "priority": "high",
+    "summary": "最近 SEC/监管披露入口，用来回到原文核验公司线索。",
+    "details": [
+      "微软需要核验原因｜8-K｜提交日 2026-06-05｜Item 5.02 Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers; Compensatory Arrange｜https://www.sec.gov/Archives/edgar/data/789019/000119312526258667/d26760d8k.htm",
+      "ASML需要核验原因｜6-K｜提交日 2026-04-23｜Document｜https://www.sec.gov/Archives/edgar/data/937966/000162828026026703/form6-kagmdisclosureofagmr.htm",
+      "AMD需要核验原因｜8-K｜提交日 2026-05-15｜Item 1.01 Entry into a Material Definitive Agreement. On May 14, 2026 (the “Closing Date”), Advanced Micro Devices, Inc. (the “Com；Item 1.02 Termination of a Material Definitive Agreement. In connection with the entry into the Credit Agreement, the Company term；Item 2.03 Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant. On Ma｜https://www.sec.gov/Archives/edgar/data/2488/000119312526226746/d118163d8k.htm",
+      "英伟达需要核验原因｜8-K｜提交日 2026-06-18｜Item 8.01 Other Events. On June 18, 2026, NVIDIA Corporation (the “Company”) completed an offering of $3,500,000,000 aggregate pri；Item 9.01 Financial Statements and Exhibits. (d) Exhibits Exhibit Number Description 1.1 Underwriting Agreement, dated as of June｜https://www.sec.gov/Archives/edgar/data/1045810/000119312526275783/d48176d8k.htm",
+      "台积电需要核验原因｜6-K｜提交日 2026-06-25｜Document｜https://www.sec.gov/Archives/edgar/data/1046179/000104617926000377/tsm-monthend6kx20260625.htm"
+    ],
+    "source": "SEC submissions"
+  },
+  {
+    "id": "weather",
+    "type": "weather",
+    "title": "天气和穿衣",
+    "priority": "high",
+    "summary": "北京-朝阳 雷雨，气温 24-34°C",
+    "details": [
+      "有一定降雨概率，约 69%",
+      "建议穿轻薄透气的短袖、衬衫或薄款长裤，早晚温差比较明显，可以多带一件薄外套，包里放一把伞更稳妥。"
+    ],
+    "source": "Open-Meteo"
+  },
+  {
+    "id": "top-priorities",
+    "type": "priorities",
+    "title": "今天先关注",
+    "priority": "high",
+    "summary": "松果为你挑出的 3 个优先事项",
+    "details": [
+      "今天先处理 09:30 的「检查今日日程和项目优先级」。",
+      "早报产品下一步要提升解读质量：少列标题，多讲为什么值得关注。",
+      "财经数据先当作线索，继续把价格变化连接到行业、公司和公告。"
+    ],
+    "source": "insight_builder"
+  },
+  {
+    "id": "market",
+    "type": "market",
+    "title": "市场和宏观",
+    "priority": "high",
+    "summary": "偏谨慎，多个主要指数出现明显下跌",
+    "details": [
+      "关注韩国的韩国KOSPI下跌是否由科技、汇率、利率或地缘因素驱动。",
+      "后续需要把指数变化和行业/公司公告对应起来，避免只看价格不看原因。"
+    ],
+    "source": "Yahoo Finance chart"
+  },
+  {
+    "id": "themes",
+    "type": "themes",
+    "title": "价格和行业线索",
+    "priority": "normal",
+    "summary": "能源、金属、半导体和航运等主题变化",
+    "details": [
+      "黄金上涨约 1.2%，关注对贵金属、黄金矿企、美元利率、避险资产的传导。",
+      "铜上涨约 1.13%，关注对电力设备、新能源、地产链、制造业的传导。",
+      "半导体ETF下跌约 5.64%，关注芯片、AI算力、消费电子、设备材料是否受益或承压。",
+      "布伦特原油下跌约 3.84%，关注油气、化工、交通运输、通胀是否受益或承压。",
+      "这些只是机会线索，后续需要结合公司公告、库存、供需和政策验证。"
+    ],
+    "source": "Yahoo Finance chart"
+  },
+  {
+    "id": "companies",
+    "type": "companies",
+    "title": "公司观察池",
+    "priority": "normal",
+    "summary": "重点公司价格变化和新闻线索",
+    "details": [
+      "微软股价上涨约 5.71%，需要核对是否与财报、指引或行业新闻有关。",
+      "ASML股价下跌约 2.53%，需要核对是否与财报、指引或行业新闻有关。",
+      "AMD股价下跌约 2.06%，需要核对是否与财报、指引或行业新闻有关。",
+      "英伟达出现AI线索：3 Great Stocks to Buy to Benefit From the Next Generation of AI Data Centers Led by Nvidia - Yahoo Finance",
+      "英伟达出现AI线索：NVIDIA (NVDA) On Cooling Momentum And An AI Narrative That Still Looks Undervalued - simplywall.st",
+      "AMD出现AI线索：AMD's Supercomputing Gains Fuel AI Data Center Growth: What's Ahead? - Yahoo Finance"
+    ],
+    "source": "Yahoo Finance chart + Google News RSS"
+  },
+  {
+    "id": "schedule",
+    "type": "schedule",
+    "title": "今天待办",
+    "priority": "high",
+    "summary": "当前使用本地日程文件，不依赖公司 Outlook 授权。",
+    "details": [
+      "09:30-10:00 检查今日日程和项目优先级。准备：打开松果项目目录，确认今天要完成的最小交付物。",
+      "14:00-15:00 整理松果早报固定栏目。准备：看一遍昨天保存的早报，标记哪些栏目需要真实数据。",
+      "16:00-16:30 整理松果下一步任务。准备：把今天遇到的问题写成 3 条。",
+      "20:30-20:50 复盘学习和项目进度。准备：记录今天学到了什么、代码跑通了什么、明天接什么能力。"
+    ],
+    "source": "local"
+  },
+  {
+    "id": "life",
+    "type": "life",
+    "title": "生活提醒",
+    "priority": "normal",
+    "summary": "照顾好今天的精力和节奏",
+    "details": [
+      "记得刷牙、喝水，出门前看一下钥匙和手机。",
+      "如果今天久坐，上午和下午各做一次 3 分钟拉伸。",
+      "晚上可以简单整理桌面，让明天早上开始得更轻松。"
+    ],
+    "source": "local_rules"
+  }
+]

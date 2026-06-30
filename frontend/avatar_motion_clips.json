@@ -1,0 +1,219 @@
+{
+  "version": "sunguo-motion-clips-v1",
+  "defaults": {
+    "smoothing": 0.13,
+    "walkSpeedThreshold": 0.018,
+    "walkCycleSpeed": 8.4,
+    "breathSpeed": 1.55,
+    "blinkCycleSeconds": 5.8
+  },
+  "clips": {
+    "idle": {
+      "description": "Warm standing posture with soft breathing.",
+      "chest": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "leftUpperArm": [
+        0.08,
+        0.02,
+        -0.72
+      ],
+      "rightUpperArm": [
+        0.08,
+        -0.02,
+        0.72
+      ],
+      "leftLowerArm": [
+        0.04,
+        0.0,
+        -0.12
+      ],
+      "rightLowerArm": [
+        0.04,
+        0.0,
+        0.12
+      ],
+      "leftHand": [
+        0.0,
+        0.0,
+        -0.04
+      ],
+      "rightHand": [
+        0.0,
+        0.0,
+        0.04
+      ]
+    },
+    "small_nod": {
+      "description": "Gentle acknowledgement while listening or closing.",
+      "headNod": 0.035,
+      "leftUpperArm": [
+        0.08,
+        0.02,
+        -0.72
+      ],
+      "rightUpperArm": [
+        0.08,
+        -0.02,
+        0.72
+      ]
+    },
+    "wave": {
+      "description": "Warm greeting wave at the beginning of the briefing.",
+      "chest": [
+        0.03,
+        -0.05,
+        0.0
+      ],
+      "head": [
+        0.02,
+        -0.04,
+        0.0
+      ],
+      "leftUpperArm": [
+        0.08,
+        0.02,
+        -0.68
+      ],
+      "rightUpperArm": [
+        -0.1,
+        -0.18,
+        -0.92
+      ],
+      "leftLowerArm": [
+        0.04,
+        0.0,
+        -0.1
+      ],
+      "rightLowerArm": [
+        -0.12,
+        0.08,
+        -0.48
+      ],
+      "rightHand": [
+        0.0,
+        0.0,
+        0.16
+      ],
+      "waveAmplitude": 0.28
+    },
+    "present_left": {
+      "description": "Open-palm presentation gesture for weather and outfit advice.",
+      "chest": [
+        0.02,
+        0.08,
+        0.0
+      ],
+      "head": [
+        0.02,
+        0.05,
+        0.0
+      ],
+      "leftUpperArm": [
+        0.04,
+        0.16,
+        -0.98
+      ],
+      "leftLowerArm": [
+        0.02,
+        -0.08,
+        -0.34
+      ],
+      "leftHand": [
+        0.0,
+        0.1,
+        -0.16
+      ],
+      "rightUpperArm": [
+        0.08,
+        -0.02,
+        0.64
+      ],
+      "rightLowerArm": [
+        0.04,
+        0.0,
+        0.12
+      ]
+    },
+    "point_screen": {
+      "description": "Point toward the briefing board for market and source checking.",
+      "chest": [
+        0.02,
+        -0.08,
+        0.0
+      ],
+      "head": [
+        0.02,
+        -0.05,
+        0.0
+      ],
+      "leftUpperArm": [
+        0.08,
+        0.02,
+        -0.7
+      ],
+      "rightUpperArm": [
+        0.0,
+        -0.22,
+        -0.42
+      ],
+      "rightLowerArm": [
+        -0.02,
+        0.05,
+        -0.48
+      ],
+      "rightHand": [
+        0.0,
+        -0.1,
+        -0.06
+      ]
+    },
+    "checklist": {
+      "description": "Compact checklist-reading posture for tasks and reminders.",
+      "chest": [
+        0.035,
+        0.02,
+        0.0
+      ],
+      "headNod": 0.025,
+      "leftUpperArm": [
+        0.12,
+        0.08,
+        -0.58
+      ],
+      "rightUpperArm": [
+        0.1,
+        -0.08,
+        0.36
+      ],
+      "leftLowerArm": [
+        0.08,
+        0.02,
+        -0.28
+      ],
+      "rightLowerArm": [
+        0.08,
+        -0.02,
+        -0.12
+      ],
+      "rightHand": [
+        0.02,
+        0.0,
+        0.08
+      ]
+    }
+  },
+  "walk": {
+    "description": "Procedural walk overlay used while moving between virtual-space hotspots.",
+    "spineBase": 0.04,
+    "chestBase": 0.03,
+    "bodySwing": 0.018,
+    "armSwing": 0.12,
+    "legSwing": 0.28,
+    "kneeLift": 0.34,
+    "footLift": 0.18,
+    "bounce": 0.035
+  }
+}

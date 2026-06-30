@@ -1,0 +1,50 @@
+[
+  {
+    "id": "hello",
+    "section": "opening",
+    "expression": "smile",
+    "gesture": "wave",
+    "camera": "medium",
+    "caption": "早安，小主人。我是松果。北京-朝阳今天雷雨，气温22-29°C。外面可能会有点湿乱，今天我会多提醒你几句。我先用最省心的方式，把天气、待办和几条重要线索讲给你听。"
+  },
+  {
+    "id": "care",
+    "section": "care",
+    "expression": "gentle",
+    "gesture": "present_left",
+    "camera": "medium",
+    "caption": "今天外面不太省心，出门前把伞、钥匙和手机都看一眼。穿衣上，建议穿短袖、薄衬衫或轻便长裤，包里放一把伞更稳妥。 另外，记得刷牙、喝水，出门前看一下钥匙和手机。；如果今天久坐，上午和下午各做一次 3 分钟拉伸。。"
+  },
+  {
+    "id": "agenda",
+    "section": "agenda",
+    "expression": "encouraging",
+    "gesture": "checklist",
+    "camera": "medium",
+    "caption": "今天先抓住 09:30 的「检查今日日程和项目优先级」。后面我会再提醒你：14:00 整理松果早报固定栏目；16:00 整理松果下一步任务。"
+  },
+  {
+    "id": "reminders",
+    "section": "reminders",
+    "expression": "encouraging",
+    "gesture": "checklist",
+    "camera": "medium",
+    "caption": "今天我会安排 9 条提醒，其中 3 条是高优先级。"
+  },
+  {
+    "id": "finance",
+    "section": "finance",
+    "expression": "focused",
+    "gesture": "point_screen",
+    "camera": "medium_close",
+    "caption": "财经部分我会谨慎一点。今天先看两个重点：市场情绪：偏谨慎，多个主要指数出现明显下跌；以及半导体ETF下跌，关注产业传导。这些先当线索，我会把核验入口放在旁边。"
+  },
+  {
+    "id": "closing",
+    "section": "closing",
+    "expression": "warm",
+    "gesture": "small_nod",
+    "camera": "medium_close",
+    "caption": "小主人，今天不用一下子把所有事做完。我们先把最重要的一步推进好：提升早报质量、追问能力、本地记忆、语音和数字人输出。我会在旁边帮你看着节奏，慢慢来。"
+  }
+]

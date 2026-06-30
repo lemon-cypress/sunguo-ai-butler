@@ -1,0 +1,12 @@
+[
+  {
+    "category": "world",
+    "label": "国际新闻",
+    "url": "https://feeds.bbci.co.uk/news/world/rss.xml"
+  },
+  {
+    "category": "business",
+    "label": "商业财经",
+    "url": "https://feeds.bbci.co.uk/news/business/rss.xml"
+  }
+]

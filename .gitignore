@@ -1,0 +1,16 @@
+﻿.env
+backend/data/ms_graph_token.json
+backend/data/*.token.json
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+node_modules/
+dist/
+build/
+tmp/
+demos/latest.json
+demos/*/speech_audio.wav
+demos/*/speech_audio.mp3
+demos/mock/*/speech_audio.wav
+demos/mock/*/speech_audio.mp3

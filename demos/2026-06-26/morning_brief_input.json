@@ -1,0 +1,860 @@
+{
+  "date": "2026-06-26",
+  "city": "北京-朝阳",
+  "weather": {
+    "source": "Open-Meteo",
+    "city": "北京-朝阳",
+    "condition": "阴",
+    "temperature": "21-34°C",
+    "current_temperature_c": 26.8,
+    "min_temperature_c": 21.1,
+    "max_temperature_c": 33.7,
+    "rain": "降雨概率较低，约 0%",
+    "precipitation_probability_max": 0,
+    "wind_speed_10m_kmh": 11.1,
+    "outfit": "建议穿轻薄透气的短袖、衬衫或薄款长裤，早晚温差比较明显，可以多带一件薄外套。"
+  },
+  "markets": [
+    {
+      "region": "中国",
+      "summary": "主要指数小幅震荡，市场继续关注政策预期和成交量变化。",
+      "possible_driver": "宏观政策、人民币汇率、地产和消费数据。"
+    },
+    {
+      "region": "美国",
+      "summary": "科技股仍是市场关注焦点，投资者关注通胀、利率和大型公司财报。",
+      "possible_driver": "美联储利率路径、AI 资本开支、企业盈利。"
+    },
+    {
+      "region": "日本/韩国",
+      "summary": "出口、半导体和汇率仍然影响市场情绪。",
+      "possible_driver": "日元走势、芯片产业链、全球需求。"
+    },
+    {
+      "region": "欧洲",
+      "summary": "市场关注通胀回落、央行政策和能源价格。",
+      "possible_driver": "欧洲央行政策、能源供给、制造业数据。"
+    }
+  ],
+  "market_data": {
+    "source": "Yahoo Finance chart",
+    "indices": [
+      {
+        "symbol": "^GSPC",
+        "name": "标普500",
+        "region": "美国",
+        "currency": "USD",
+        "exchange": "SNP",
+        "regular_market_price": 7373.55,
+        "previous_close": 7357.49,
+        "change_percent_from_previous_close": 0.22,
+        "market_time": 1782488034
+      },
+      {
+        "symbol": "^IXIC",
+        "name": "纳斯达克综合",
+        "region": "美国",
+        "currency": "USD",
+        "exchange": "Nasdaq GIDS",
+        "regular_market_price": 25401.668,
+        "previous_close": 25358.604,
+        "change_percent_from_previous_close": 0.17,
+        "market_time": 1782488033
+      },
+      {
+        "symbol": "^DJI",
+        "name": "道琼斯工业",
+        "region": "美国",
+        "currency": "USD",
+        "exchange": "DJI",
+        "regular_market_price": 52059.87,
+        "previous_close": 51920.62,
+        "change_percent_from_previous_close": 0.27,
+        "market_time": 1782488035
+      },
+      {
+        "symbol": "000001.SS",
+        "name": "上证指数",
+        "region": "中国",
+        "currency": "CNY",
+        "exchange": "Shanghai",
+        "regular_market_price": 4027.265,
+        "previous_close": 4110.81,
+        "change_percent_from_previous_close": -2.03,
+        "market_time": 1782457224
+      },
+      {
+        "symbol": "399001.SZ",
+        "name": "深证成指",
+        "region": "中国",
+        "currency": "CNY",
+        "exchange": "Shenzhen",
+        "regular_market_price": 15782.223,
+        "previous_close": 16051.3,
+        "change_percent_from_previous_close": -1.68,
+        "market_time": 1782462598
+      },
+      {
+        "symbol": "^N225",
+        "name": "日经225",
+        "region": "日本",
+        "currency": "JPY",
+        "exchange": "Osaka",
+        "regular_market_price": 69360.88,
+        "previous_close": 72366.34,
+        "change_percent_from_previous_close": -4.15,
+        "market_time": 1782456303
+      },
+      {
+        "symbol": "^KS11",
+        "name": "韩国KOSPI",
+        "region": "韩国",
+        "currency": "KRW",
+        "exchange": "KSE",
+        "regular_market_price": 8411.21,
+        "previous_close": 8930.3,
+        "change_percent_from_previous_close": -5.81,
+        "market_time": 1782464740
+      },
+      {
+        "symbol": "^GDAXI",
+        "name": "德国DAX",
+        "region": "欧洲",
+        "currency": "EUR",
+        "exchange": "XETRA",
+        "regular_market_price": 24598.97,
+        "previous_close": 24994.83,
+        "change_percent_from_previous_close": -1.58,
+        "market_time": 1782487136
+      }
+    ],
+    "errors": [],
+    "note": "公开 chart 接口用于早报线索；后续可替换为更权威的行情 API。"
+  },
+  "industry": [
+    "AI 算力、半导体、机器人、创新药、新能源和消费电子是第一批需要持续跟踪的方向。",
+    "后续真实版本会抓取公司公告、财报和行业新闻，并区分事实、推测和投资线索。"
+  ],
+  "news_data": {
+    "source": "RSS",
+    "categories": [
+      {
+        "category": "world",
+        "label": "国际新闻",
+        "url": "https://feeds.bbci.co.uk/news/world/rss.xml",
+        "articles": [
+          {
+            "title": "Earthquake is devastating blow to Venezuela at time of uncertainty",
+            "url": "https://www.bbc.co.uk/news/articles/c3vynpw7rk4o?at_medium=RSS&at_campaign=rss",
+            "published": "Fri, 26 Jun 2026 02:12:07 GMT",
+            "description": "The twin quakes come less than six months after Venezuela's then-leader Nicolás Maduro was seized by US forces."
+          },
+          {
+            "title": "Aerial footage reveals destruction in coastal Venezuela",
+            "url": "https://www.bbc.co.uk/news/videos/c75y1kd16qdo?at_medium=RSS&at_campaign=rss",
+            "published": "Fri, 26 Jun 2026 05:13:22 GMT",
+            "description": "Multi-storey buildings have collapsed in La Guaira following two major earthquakes on Wednesday."
+          },
+          {
+            "title": "UN pauses Strait of Hormuz evacuation plan after cargo ship attacked",
+            "url": "https://www.bbc.co.uk/news/articles/cjwg9np904qo?at_medium=RSS&at_campaign=rss",
+            "published": "Fri, 26 Jun 2026 11:27:59 GMT",
+            "description": "The ship was reportedly struck by an \"unknown projectile\" near Oman but no casualties were reported."
+          },
+          {
+            "title": "Christmas market attacker jailed for life for murdering six in Germany",
+            "url": "https://www.bbc.co.uk/news/articles/cy06y63y6lno?at_medium=RSS&at_campaign=rss",
+            "published": "Fri, 26 Jun 2026 10:49:11 GMT",
+            "description": "A nine-year-old and five women were killed when Taleb Al-Abdulmohsen drove into the market in 2024."
+          },
+          {
+            "title": "Senior Ukrainian intelligence official jailed for life for spying for Russia",
+            "url": "https://www.bbc.co.uk/news/articles/cg4w3wyxzzno?at_medium=RSS&at_campaign=rss",
+            "published": "Fri, 26 Jun 2026 10:38:37 GMT",
+            "description": "Col Dmytro Kozyura agreed to share state secrets and systematically disclosed classified information, prosecutors say."
+          }
+        ]
+      },
+      {
+        "category": "business",
+        "label": "商业财经",
+        "url": "https://feeds.bbci.co.uk/news/business/rss.xml",
+        "articles": [
+          {
+            "title": "I'm back at home again after uni - here's how I'm making it work",
+            "url": "https://www.bbc.co.uk/news/articles/cg53q6dl0plo?at_medium=RSS&at_campaign=rss",
+            "published": "Thu, 25 Jun 2026 23:03:48 GMT",
+            "description": "Rising costs are forcing more young adults to live with their parents, here's how not to come to blows."
+          },
+          {
+            "title": "Power banks and vapes now biggest fire risk on planes",
+            "url": "https://www.bbc.co.uk/news/articles/cly716qd146o?at_medium=RSS&at_campaign=rss",
+            "published": "Thu, 25 Jun 2026 23:28:13 GMT",
+            "description": "Lithium battery fires are the number one safety risk to aircraft, yet the number of devices found in hold bags has nearly doubled in a year."
+          },
+          {
+            "title": "Asia stock markets slide as tech shares slump",
+            "url": "https://www.bbc.co.uk/news/articles/ce8jz40k00ro?at_medium=RSS&at_campaign=rss",
+            "published": "Fri, 26 Jun 2026 07:33:10 GMT",
+            "description": "Trading on South Korea's Kospi index was halted for the third time this week to prevent panic selling."
+          },
+          {
+            "title": "What's happening to petrol prices now oil is back to pre-Iran war levels?",
+            "url": "https://www.bbc.co.uk/news/articles/c20zgjzz0e4o?at_medium=RSS&at_campaign=rss",
+            "published": "Fri, 26 Jun 2026 13:51:15 GMT",
+            "description": "When the conflict began on 28 February, fuel costs jumped as the war disrupted the production and transportation of energy across the Middle East."
+          },
+          {
+            "title": "Who could be the UK's next chancellor?",
+            "url": "https://www.bbc.co.uk/news/articles/c36yj4pn7jdo?at_medium=RSS&at_campaign=rss",
+            "published": "Fri, 26 Jun 2026 10:37:12 GMT",
+            "description": "The prime minister's resignation has fired the starting gun on the race to be in charge of the UK's finances."
+          }
+        ]
+      }
+    ],
+    "errors": [],
+    "note": "RSS 标题用于早报线索；松果会把它作为待核验新闻材料，而非最终事实结论。"
+  },
+  "theme_data": {
+    "source": "Yahoo Finance chart",
+    "items": [
+      {
+        "symbol": "CL=F",
+        "name": "WTI原油",
+        "region": "",
+        "currency": "USD",
+        "exchange": "NY Mercantile",
+        "regular_market_price": 68.6,
+        "previous_close": 71.92,
+        "change_percent_from_previous_close": -4.62,
+        "market_time": 1782487449,
+        "theme": "能源价格",
+        "affected_industries": [
+          "油气",
+          "化工",
+          "航运",
+          "航空",
+          "通胀"
+        ]
+      },
+      {
+        "symbol": "BZ=F",
+        "name": "布伦特原油",
+        "region": "",
+        "currency": "USD",
+        "exchange": "NY Mercantile",
+        "regular_market_price": 72.0,
+        "previous_close": 75.5,
+        "change_percent_from_previous_close": -4.64,
+        "market_time": 1782487442,
+        "theme": "能源价格",
+        "affected_industries": [
+          "油气",
+          "化工",
+          "交通运输",
+          "通胀"
+        ]
+      },
+      {
+        "symbol": "NG=F",
+        "name": "天然气",
+        "region": "",
+        "currency": "USD",
+        "exchange": "NY Mercantile",
+        "regular_market_price": 3.333,
+        "previous_close": 3.295,
+        "change_percent_from_previous_close": 1.15,
+        "market_time": 1782487448,
+        "theme": "能源价格",
+        "affected_industries": [
+          "公用事业",
+          "化工",
+          "取暖需求",
+          "欧洲能源"
+        ]
+      },
+      {
+        "symbol": "GC=F",
+        "name": "黄金",
+        "region": "",
+        "currency": "USD",
+        "exchange": "COMEX",
+        "regular_market_price": 4096.7,
+        "previous_close": 4047.6,
+        "change_percent_from_previous_close": 1.21,
+        "market_time": 1782487449,
+        "theme": "避险与实际利率",
+        "affected_industries": [
+          "贵金属",
+          "黄金矿企",
+          "美元利率",
+          "避险资产"
+        ]
+      },
+      {
+        "symbol": "HG=F",
+        "name": "铜",
+        "region": "",
+        "currency": "USD",
+        "exchange": "COMEX",
+        "regular_market_price": 6.1965,
+        "previous_close": 6.1375,
+        "change_percent_from_previous_close": 0.96,
+        "market_time": 1782487448,
+        "theme": "工业金属",
+        "affected_industries": [
+          "电力设备",
+          "新能源",
+          "地产链",
+          "制造业"
+        ]
+      },
+      {
+        "symbol": "SOXX",
+        "name": "半导体ETF",
+        "region": "",
+        "currency": "USD",
+        "exchange": "NasdaqGM",
+        "regular_market_price": 596.56,
+        "previous_close": 625.2,
+        "change_percent_from_previous_close": -4.58,
+        "market_time": 1782488046,
+        "theme": "半导体",
+        "affected_industries": [
+          "芯片",
+          "AI算力",
+          "消费电子",
+          "设备材料"
+        ]
+      },
+      {
+        "symbol": "XLE",
+        "name": "美国能源ETF",
+        "region": "",
+        "currency": "USD",
+        "exchange": "NYSEArca",
+        "regular_market_price": 53.94,
+        "previous_close": 54.09,
+        "change_percent_from_previous_close": -0.28,
+        "market_time": 1782488049,
+        "theme": "能源股",
+        "affected_industries": [
+          "油气开采",
+          "油服",
+          "炼化",
+          "能源现金流"
+        ]
+      },
+      {
+        "symbol": "SEA",
+        "name": "全球航运ETF",
+        "region": "",
+        "currency": "USD",
+        "exchange": "NYSEArca",
+        "regular_market_price": 16.61,
+        "previous_close": 16.6671,
+        "change_percent_from_previous_close": -0.34,
+        "market_time": 1782487180,
+        "theme": "航运",
+        "affected_industries": [
+          "集运",
+          "干散货",
+          "港口",
+          "全球贸易"
+        ]
+      }
+    ],
+    "errors": [],
+    "note": "主题和商品价格使用公开行情代理，适合作为早报线索，不构成投资建议。"
+  },
+  "company_data": {
+    "source": "Yahoo Finance chart + Google News RSS",
+    "items": [
+      {
+        "symbol": "NVDA",
+        "name": "英伟达",
+        "sector": "AI算力/半导体",
+        "quote": {
+          "symbol": "NVDA",
+          "name": "英伟达",
+          "region": "",
+          "currency": "USD",
+          "exchange": "NasdaqGS",
+          "regular_market_price": 193.83,
+          "previous_close": 195.74,
+          "change_percent_from_previous_close": -0.98,
+          "market_time": 1782488054
+        },
+        "articles": [
+          {
+            "title": "AMD Is Trading at 97 Times Forward Earnings While Nvidia Trades at 21 Times -- Someone's Valuation Model Is Wrong. Here's Who I Think It Is. - The Motley Fool",
+            "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxOR0NCaTF3aktObkYyNDd0RXJRTXlkVGJLX0pEbnh2U0JaRkFPVkl2eU5nZUpfX2hfWjVoRHpxeFo1bV93dURnLVFRTUhSbWh3b2NqMjN4d2FEUlJkemRhZTJJbUtTakY5c3N3Ul92UE81UkdHSXZZeWFPbFVuQmpaV2x1Y0Y2MVFJbEZfVDhpa3RIM1I1djkwQQ?oc=5",
+            "published": "Thu, 25 Jun 2026 19:45:00 GMT"
+          },
+          {
+            "title": "Qualcomm (NASDAQ: QCOM) Launches AI Data Center Chips And Systems To Challenge Nvidia (NASDAQ: NVDA) - foreignpolicyjournal.com",
+            "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxPZjJuOW9QbVN1MGRYSC1Wc2FwOUJNQWxlSUNlcFdWUXUxMWs5QzBtbzMtYS05Z0NzX3NxWlA2eXd4OVNPOXR2ZDJCNG1ieklnQVFlMi1McWhVcFBkcjVLRFplcEpRcENkN0VxRkhXUW9qdXh1LWdzZmpDeDZhOG5hMXJLZ1ZoNXExaHphS0w5OFNra3BPWjdnc0ZURTl2MEZlcGQ0S2ZLS3NqVmJCWjhtVWZLM3V6UVhObWM4YUZtNnZsdkpVWFBrTUttVE5JMWNOMGZKaHRtNUZ4X1k?oc=5",
+            "published": "Thu, 25 Jun 2026 15:25:00 GMT"
+          }
+        ]
+      },
+      {
+        "symbol": "AMD",
+        "name": "AMD",
+        "sector": "AI算力/半导体",
+        "quote": {
+          "symbol": "AMD",
+          "name": "AMD",
+          "region": "",
+          "currency": "USD",
+          "exchange": "NasdaqGS",
+          "regular_market_price": 515.025,
+          "previous_close": 532.57,
+          "change_percent_from_previous_close": -3.29,
+          "market_time": 1782488054
+        },
+        "articles": [
+          {
+            "title": "AMD (AMD) Acquires MEXT To Tackle AI Memory Bottlenecks In Data Centers - Yahoo Finance",
+            "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNc3JORVZQYWszVnZMNnFwM2NqdmlQVV9pcFBDbjFqZGZ1aUEzUnhIMVNtSUhOS01sUVdKa0IzQVJqLXdhalkxR2l1MnR3Y00ta0h2bG9lRGh4ZTdmTV9PLWdYemR4Yy1Nd2I3QWtLQmcyMzZJZ3V6QXl2QS1abnp6X2RwUm8zZWFYaFFINTJsaXc4Vi1SWjJr?oc=5",
+            "published": "Fri, 26 Jun 2026 03:17:00 GMT"
+          },
+          {
+            "title": "Is AMD a Buy? The Forecast and the 80% Bullish Analyst Wall - 24/7 Wall St.",
+            "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOQnl1U202bUpncFNyZUJFaFY3VWdtQ0NCOU9BR2dXTEkxdk1IZzVpcjhRY0VLRW1sSXg1c0t5MTNFZ2pzWjBqdlNxMjY1dkE2TmMxa2tTc19kNGdGYXhUaF9NZmhPWF9TdkFOZ3dyVEIwSV83ZU9YQmdOOE5zY0lrR1A1ZnJzcWU3RTFoOXN3U0RJQVpwVF9ZZzk0QTZCYU50c21r?oc=5",
+            "published": "Fri, 26 Jun 2026 14:00:25 GMT"
+          }
+        ]
+      },
+      {
+        "symbol": "TSM",
+        "name": "台积电",
+        "sector": "半导体制造",
+        "quote": {
+          "symbol": "TSM",
+          "name": "台积电",
+          "region": "",
+          "currency": "USD",
+          "exchange": "NYSE",
+          "regular_market_price": 426.68,
+          "previous_close": 434.99,
+          "change_percent_from_previous_close": -1.91,
+          "market_time": 1782488055
+        },
+        "articles": [
+          {
+            "title": "Intel vs TSM: Which Chip Giant is the Better Investment? - 24/7 Wall St.",
+            "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPTXk5b196aEREdnN4SVFUQW9TVUczSkdTU2s3RmtJYXBhV3ZEcXNfMjFGejdNeFpkTTBlZ3dTTG9fTkZDMlNraFB2bTgxOFFsaUp6c2RKRHpiNTY4OWJ4RjVabzcyUVVhWXIwV1k1RTZOMTZndkVUV3pXRE1mdlFIaW9OVTFWdXJKVXdSYnI5d2dnZnYtdDM4YVNCMnptNFk?oc=5",
+            "published": "Thu, 25 Jun 2026 16:23:23 GMT"
+          },
+          {
+            "title": "Why TSMC’s CoWoS Role Keeps Taiwan Semiconductor (TSM) Central to the HBM-Driven AI Chip Boom - Yahoo Finance",
+            "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxObkJTSE1abHpyNU9ic25LdXVnS2lWWHk3ZEwwS25mMGp0TlNHWXdhTHoySnpNUk5VbEo3ZEpDelpOVExsMW5POFc4Zm1LRGdLcDlnSG5MQ0hsNndLeVl4WlVPOW5kM0VGZmR6c0JkLWlFNTVnT3d3a21vUGY5amtFcTdvRmZNT01RblRCbTNrcFpiY2c?oc=5",
+            "published": "Tue, 23 Jun 2026 16:10:05 GMT"
+          }
+        ]
+      },
+      {
+        "symbol": "ASML",
+        "name": "ASML",
+        "sector": "半导体设备",
+        "quote": {
+          "symbol": "ASML",
+          "name": "ASML",
+          "region": "",
+          "currency": "USD",
+          "exchange": "NasdaqGS",
+          "regular_market_price": 1793.94,
+          "previous_close": 1841.18,
+          "change_percent_from_previous_close": -2.57,
+          "market_time": 1782488052
+        },
+        "articles": [
+          {
+            "title": "How the ASML China EUV saga points to tougher reality for country’s chip sector - South China Morning Post",
+            "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxPdDBlcExLOGhWZ1cxOFBrNXVVZ3VJbnBJdnY4UGRyZ01DLTB4ZjFtd0dWNFdFdl9CQVFCOHdSMGlLeERJeGtTc3RWUk1tOFg0UENUQ19pZlk4UlJydU9FQXZSNUY4aWFjZDRLZXNQZ014Vzc5anBvMWVUZkVVbzlpTEpFak9XTmVwUENsS3Axd3QzV0FaR2ZMckdHd3pKN0t0T1FCVVNZdXhId3M2bnBVX3YwWXIwalHSAbcBQVVfeXFMTkhRdDU1QlYyZHpZREZCM2F5Tmo1bWV1SE8zbmVNMl84VmtNcmJ4NEJKcURPTTRVZnYwanJvMWNTN3NQRUNjcUdMVjBoZUpFVTk2d3ZzdHdDOTdXMFVnYUpTc2VWZEFMcU5YalB3Q01EY3lUdWh3Ny1LQnhaVU93WFJFRTA3bnAtamFobnRZbFowX0xaNXk0SlRvWXh5UzBJOXR0UzVkWnh3MVNVSnBEbXdBWk9DZy04?oc=5",
+            "published": "Wed, 24 Jun 2026 03:00:10 GMT"
+          },
+          {
+            "title": "ASML denies selling EUV chipmaking tool to China after report of US concern - Reuters",
+            "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNQllteEt4Z3JReDBDS3Y0M1JlWVM1TGE0ZTRzNnNzdXdmaFZkYk44NVNTU2paWC1ULU9oNERFUC12cE9rYk00STF5eFV6cDFSbW5FdVcxc0F0TElTZ2pmVkU1WERPM1c4RlBteGxFTDRkM3d2X05JOHYxWHVDdFJTT1lkV1V3bHlqWlozRFFEZktOcm9PRmVIWVVBbXZ2QUNYc1VsN0ZSUldFQ2JvRVZaVHlVWW9rY3JKMjhlaHFB?oc=5",
+            "published": "Fri, 19 Jun 2026 10:21:11 GMT"
+          }
+        ]
+      },
+      {
+        "symbol": "MSFT",
+        "name": "微软",
+        "sector": "云/AI应用",
+        "quote": {
+          "symbol": "MSFT",
+          "name": "微软",
+          "region": "",
+          "currency": "USD",
+          "exchange": "NasdaqGS",
+          "regular_market_price": 370.955,
+          "previous_close": 352.83,
+          "change_percent_from_previous_close": 5.14,
+          "market_time": 1782488054
+        },
+        "articles": [
+          {
+            "title": "Wall Street Analysts Think Microsoft (MSFT) Is a Good Investment: Is It? - Yahoo! Finance Canada",
+            "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPeHZkSlRSTTlqc2I3V3ZiZzhYMFpOYWZWYWIwajR0RWE0RjdtbG45eVpzMGo0N0lDbnhaZjZ5emx6OVVkS21vWDJUMEl1WC1pMnBDTDNJeWI4NjVWV1ItRkxrcTl2eG1FRmo2VW1ZMXlMaUx1WDBiemNEZ01HaVltVUt1S3hpY2ZMUno3ald3?oc=5",
+            "published": "Fri, 26 Jun 2026 13:30:04 GMT"
+          },
+          {
+            "title": "WinWire Secures Microsoft (NASDAQ: MSFT) Frontier Partner Badge In Enterprise AI Push - foreignpolicyjournal.com",
+            "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxPdXZxdmNDSGQzWGRpRjNJdHE3NnFqVW5xN0F5RlFPNW5oWHZnZDZHYkNuMVBheUZxc0xtWGx3SXV6X0h3WVIzSnplRDhtVkZxVWttOGhYR3g3OEJUVlUxeXVTcE92R2tjQjFwU0Q5V3AybDFGNjRodk1Ga21EYVVpRDFrZkJaTWllZjh2SFpnRFlhTzRqTWV5ZFFxdlFVWE1ja3R2Wlc3YlZndXFnZzZmck00YkxyR01KT1FoOWV0T3FFNDU0bDRDSkd1cw?oc=5",
+            "published": "Fri, 26 Jun 2026 11:26:00 GMT"
+          }
+        ]
+      }
+    ],
+    "errors": [],
+    "coverage": {
+      "requested_companies": 9,
+      "fetched_companies": 5,
+      "max_companies": 5
+    },
+    "note": "公司数据为观察池线索，新闻标题不等于已核验公告；正式投研需进一步核对交易所公告和公司 IR。"
+  },
+  "politics_and_society": [
+    "政治和军事板块会关注地缘冲突、选举、制裁、外交和军费变化。",
+    "社会新闻会筛选公共安全、科技应用、教育、医疗和城市治理相关事件。"
+  ],
+  "sunguo_project": [
+    "今天的松果项目任务是把日程能力从 Outlook 迁移到本地日程文件。",
+    "保留 Outlook 模块作为以后公司授权后的可选能力。",
+    "下一步优先推进财经/新闻真实数据源。"
+  ],
+  "schedule": {
+    "source": "local",
+    "date": "2026-06-26",
+    "events": [
+      {
+        "start": "09:30",
+        "end": "10:00",
+        "title": "检查今日日程和项目优先级",
+        "location": "本地",
+        "importance": "high",
+        "preparation": "打开松果项目目录，确认今天要完成的最小交付物。"
+      },
+      {
+        "start": "14:00",
+        "end": "15:00",
+        "title": "整理松果早报固定栏目",
+        "location": "本地",
+        "importance": "normal",
+        "preparation": "看一遍昨天保存的早报，标记哪些栏目需要真实数据。"
+      },
+      {
+        "start": "16:00",
+        "end": "16:30",
+        "title": "整理松果下一步任务",
+        "location": "本地",
+        "importance": "high",
+        "preparation": "把今天遇到的问题写成 3 条"
+      },
+      {
+        "start": "20:30",
+        "end": "20:50",
+        "title": "复盘学习和项目进度",
+        "location": "本地",
+        "importance": "normal",
+        "preparation": "记录今天学到了什么、代码跑通了什么、明天接什么能力。"
+      }
+    ],
+    "write_proposals": [],
+    "safety_note": "当前使用本地日程文件，不依赖公司 Outlook 授权。"
+  },
+  "outlook_tasks": [
+    {
+      "time": "09:30",
+      "title": "检查今日日程和项目优先级",
+      "priority": "高"
+    },
+    {
+      "time": "14:00",
+      "title": "整理松果早报固定栏目",
+      "priority": "中"
+    },
+    {
+      "time": "16:00",
+      "title": "整理松果下一步任务",
+      "priority": "高"
+    },
+    {
+      "time": "20:30",
+      "title": "复盘学习和项目进度",
+      "priority": "中"
+    }
+  ],
+  "life_reminders": [
+    "记得刷牙、喝水，出门前看一下钥匙和手机。",
+    "如果今天久坐，上午和下午各做一次 3 分钟拉伸。",
+    "晚上可以简单整理桌面，让明天早上开始得更轻松。"
+  ],
+  "history_story": "今天的小故事：乔布斯早年非常重视产品演示。他明白用户往往不是先理解技术细节，而是先被一个清楚、有画面感的体验打动。松果也一样，第一版先把每天早上的核心体验做顺。",
+  "joke": "今天的小笑话：程序员说自己很会做饭，因为他每次都严格按照菜谱执行，直到发现盐也有版本兼容问题。",
+  "insights": {
+    "market": {
+      "source": "Yahoo Finance chart",
+      "tone": "偏谨慎，多个主要指数出现明显下跌",
+      "notable_movers": [
+        {
+          "name": "韩国KOSPI",
+          "region": "韩国",
+          "change_percent": -5.81
+        },
+        {
+          "name": "日经225",
+          "region": "日本",
+          "change_percent": -4.15
+        },
+        {
+          "name": "上证指数",
+          "region": "中国",
+          "change_percent": -2.03
+        },
+        {
+          "name": "深证成指",
+          "region": "中国",
+          "change_percent": -1.68
+        },
+        {
+          "name": "德国DAX",
+          "region": "欧洲",
+          "change_percent": -1.58
+        }
+      ],
+      "region_summary": [
+        "美国平均变化约 0.22%",
+        "中国平均变化约 -1.85%",
+        "日本平均变化约 -4.15%",
+        "韩国平均变化约 -5.81%",
+        "欧洲平均变化约 -1.58%"
+      ],
+      "watch_points": [
+        "关注韩国的韩国KOSPI下跌是否由科技、汇率、利率或地缘因素驱动。",
+        "后续需要把指数变化和行业/公司公告对应起来，避免只看价格不看原因。"
+      ]
+    },
+    "news": {
+      "source": "RSS",
+      "headline_groups": [
+        {
+          "label": "国际新闻",
+          "top_titles": [
+            "Earthquake is devastating blow to Venezuela at time of uncertainty",
+            "Aerial footage reveals destruction in coastal Venezuela",
+            "UN pauses Strait of Hormuz evacuation plan after cargo ship attacked"
+          ]
+        },
+        {
+          "label": "商业财经",
+          "top_titles": [
+            "I'm back at home again after uni - here's how I'm making it work",
+            "Power banks and vapes now biggest fire risk on planes",
+            "Asia stock markets slide as tech shares slump"
+          ]
+        }
+      ],
+      "possible_topics": [
+        "自然灾害",
+        "公共安全",
+        "股市",
+        "市场",
+        "科技"
+      ],
+      "watch_points": [
+        "把市场类新闻与主要指数涨跌放在一起看，寻找是否有共同解释。",
+        "社会事件更适合提示风险和影响范围，不宜直接推导投资结论。"
+      ]
+    },
+    "themes": {
+      "source": "Yahoo Finance chart",
+      "rising": [
+        {
+          "name": "黄金",
+          "theme": "避险与实际利率",
+          "change_percent": 1.21,
+          "affected_industries": [
+            "贵金属",
+            "黄金矿企",
+            "美元利率",
+            "避险资产"
+          ]
+        },
+        {
+          "name": "天然气",
+          "theme": "能源价格",
+          "change_percent": 1.15,
+          "affected_industries": [
+            "公用事业",
+            "化工",
+            "取暖需求",
+            "欧洲能源"
+          ]
+        }
+      ],
+      "falling": [
+        {
+          "name": "布伦特原油",
+          "theme": "能源价格",
+          "change_percent": -4.64,
+          "affected_industries": [
+            "油气",
+            "化工",
+            "交通运输",
+            "通胀"
+          ]
+        },
+        {
+          "name": "WTI原油",
+          "theme": "能源价格",
+          "change_percent": -4.62,
+          "affected_industries": [
+            "油气",
+            "化工",
+            "航运",
+            "航空",
+            "通胀"
+          ]
+        },
+        {
+          "name": "半导体ETF",
+          "theme": "半导体",
+          "change_percent": -4.58,
+          "affected_industries": [
+            "芯片",
+            "AI算力",
+            "消费电子",
+            "设备材料"
+          ]
+        }
+      ],
+      "opportunity_watch": [
+        "黄金上涨约 1.21%，关注对贵金属、黄金矿企、美元利率、避险资产的传导。",
+        "天然气上涨约 1.15%，关注对公用事业、化工、取暖需求、欧洲能源的传导。",
+        "布伦特原油下跌约 4.64%，关注油气、化工、交通运输、通胀是否受益或承压。",
+        "WTI原油下跌约 4.62%，关注油气、化工、航运、航空是否受益或承压。",
+        "这些只是机会线索，后续需要结合公司公告、库存、供需和政策验证。"
+      ]
+    },
+    "companies": {
+      "source": "Yahoo Finance chart + Google News RSS",
+      "price_movers": [
+        {
+          "name": "微软",
+          "symbol": "MSFT",
+          "sector": "云/AI应用",
+          "change_percent": 5.14
+        },
+        {
+          "name": "AMD",
+          "symbol": "AMD",
+          "sector": "AI算力/半导体",
+          "change_percent": -3.29
+        },
+        {
+          "name": "ASML",
+          "symbol": "ASML",
+          "sector": "半导体设备",
+          "change_percent": -2.57
+        }
+      ],
+      "article_events": [
+        {
+          "company": "英伟达",
+          "symbol": "NVDA",
+          "sector": "AI算力/半导体",
+          "title": "AMD Is Trading at 97 Times Forward Earnings While Nvidia Trades at 21 Times -- Someone's Valuation Model Is Wrong. Here's Who I Think It Is. - The Motley Fool",
+          "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxOR0NCaTF3aktObkYyNDd0RXJRTXlkVGJLX0pEbnh2U0JaRkFPVkl2eU5nZUpfX2hfWjVoRHpxeFo1bV93dURnLVFRTUhSbWh3b2NqMjN4d2FEUlJkemRhZTJJbUtTakY5c3N3Ul92UE81UkdHSXZZeWFPbFVuQmpaV2x1Y0Y2MVFJbEZfVDhpa3RIM1I1djkwQQ?oc=5",
+          "labels": [
+            "财报"
+          ]
+        },
+        {
+          "company": "英伟达",
+          "symbol": "NVDA",
+          "sector": "AI算力/半导体",
+          "title": "Qualcomm (NASDAQ: QCOM) Launches AI Data Center Chips And Systems To Challenge Nvidia (NASDAQ: NVDA) - foreignpolicyjournal.com",
+          "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxPZjJuOW9QbVN1MGRYSC1Wc2FwOUJNQWxlSUNlcFdWUXUxMWs5QzBtbzMtYS05Z0NzX3NxWlA2eXd4OVNPOXR2ZDJCNG1ieklnQVFlMi1McWhVcFBkcjVLRFplcEpRcENkN0VxRkhXUW9qdXh1LWdzZmpDeDZhOG5hMXJLZ1ZoNXExaHphS0w5OFNra3BPWjdnc0ZURTl2MEZlcGQ0S2ZLS3NqVmJCWjhtVWZLM3V6UVhObWM4YUZtNnZsdkpVWFBrTUttVE5JMWNOMGZKaHRtNUZ4X1k?oc=5",
+          "labels": [
+            "AI",
+            "芯片"
+          ]
+        },
+        {
+          "company": "AMD",
+          "symbol": "AMD",
+          "sector": "AI算力/半导体",
+          "title": "AMD (AMD) Acquires MEXT To Tackle AI Memory Bottlenecks In Data Centers - Yahoo Finance",
+          "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNc3JORVZQYWszVnZMNnFwM2NqdmlQVV9pcFBDbjFqZGZ1aUEzUnhIMVNtSUhOS01sUVdKa0IzQVJqLXdhalkxR2l1MnR3Y00ta0h2bG9lRGh4ZTdmTV9PLWdYemR4Yy1Nd2I3QWtLQmcyMzZJZ3V6QXl2QS1abnp6X2RwUm8zZWFYaFFINTJsaXc4Vi1SWjJr?oc=5",
+          "labels": [
+            "AI"
+          ]
+        },
+        {
+          "company": "AMD",
+          "symbol": "AMD",
+          "sector": "AI算力/半导体",
+          "title": "Is AMD a Buy? The Forecast and the 80% Bullish Analyst Wall - 24/7 Wall St.",
+          "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOQnl1U202bUpncFNyZUJFaFY3VWdtQ0NCOU9BR2dXTEkxdk1IZzVpcjhRY0VLRW1sSXg1c0t5MTNFZ2pzWjBqdlNxMjY1dkE2TmMxa2tTc19kNGdGYXhUaF9NZmhPWF9TdkFOZ3dyVEIwSV83ZU9YQmdOOE5zY0lrR1A1ZnJzcWU3RTFoOXN3U0RJQVpwVF9ZZzk0QTZCYU50c21r?oc=5",
+          "labels": []
+        },
+        {
+          "company": "台积电",
+          "symbol": "TSM",
+          "sector": "半导体制造",
+          "title": "Intel vs TSM: Which Chip Giant is the Better Investment? - 24/7 Wall St.",
+          "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPTXk5b196aEREdnN4SVFUQW9TVUczSkdTU2s3RmtJYXBhV3ZEcXNfMjFGejdNeFpkTTBlZ3dTTG9fTkZDMlNraFB2bTgxOFFsaUp6c2RKRHpiNTY4OWJ4RjVabzcyUVVhWXIwV1k1RTZOMTZndkVUV3pXRE1mdlFIaW9OVTFWdXJKVXdSYnI5d2dnZnYtdDM4YVNCMnptNFk?oc=5",
+          "labels": []
+        },
+        {
+          "company": "台积电",
+          "symbol": "TSM",
+          "sector": "半导体制造",
+          "title": "Why TSMC’s CoWoS Role Keeps Taiwan Semiconductor (TSM) Central to the HBM-Driven AI Chip Boom - Yahoo Finance",
+          "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxObkJTSE1abHpyNU9ic25LdXVnS2lWWHk3ZEwwS25mMGp0TlNHWXdhTHoySnpNUk5VbEo3ZEpDelpOVExsMW5POFc4Zm1LRGdLcDlnSG5MQ0hsNndLeVl4WlVPOW5kM0VGZmR6c0JkLWlFNTVnT3d3a21vUGY5amtFcTdvRmZNT01RblRCbTNrcFpiY2c?oc=5",
+          "labels": [
+            "AI"
+          ]
+        },
+        {
+          "company": "ASML",
+          "symbol": "ASML",
+          "sector": "半导体设备",
+          "title": "How the ASML China EUV saga points to tougher reality for country’s chip sector - South China Morning Post",
+          "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxPdDBlcExLOGhWZ1cxOFBrNXVVZ3VJbnBJdnY4UGRyZ01DLTB4ZjFtd0dWNFdFdl9CQVFCOHdSMGlLeERJeGtTc3RWUk1tOFg0UENUQ19pZlk4UlJydU9FQXZSNUY4aWFjZDRLZXNQZ014Vzc5anBvMWVUZkVVbzlpTEpFak9XTmVwUENsS3Axd3QzV0FaR2ZMckdHd3pKN0t0T1FCVVNZdXhId3M2bnBVX3YwWXIwalHSAbcBQVVfeXFMTkhRdDU1QlYyZHpZREZCM2F5Tmo1bWV1SE8zbmVNMl84VmtNcmJ4NEJKcURPTTRVZnYwanJvMWNTN3NQRUNjcUdMVjBoZUpFVTk2d3ZzdHdDOTdXMFVnYUpTc2VWZEFMcU5YalB3Q01EY3lUdWh3Ny1LQnhaVU93WFJFRTA3bnAtamFobnRZbFowX0xaNXk0SlRvWXh5UzBJOXR0UzVkWnh3MVNVSnBEbXdBWk9DZy04?oc=5",
+          "labels": []
+        },
+        {
+          "company": "ASML",
+          "symbol": "ASML",
+          "sector": "半导体设备",
+          "title": "ASML denies selling EUV chipmaking tool to China after report of US concern - Reuters",
+          "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNQllteEt4Z3JReDBDS3Y0M1JlWVM1TGE0ZTRzNnNzdXdmaFZkYk44NVNTU2paWC1ULU9oNERFUC12cE9rYk00STF5eFV6cDFSbW5FdVcxc0F0TElTZ2pmVkU1WERPM1c4RlBteGxFTDRkM3d2X05JOHYxWHVDdFJTT1lkV1V3bHlqWlozRFFEZktOcm9PRmVIWVVBbXZ2QUNYc1VsN0ZSUldFQ2JvRVZaVHlVWW9rY3JKMjhlaHFB?oc=5",
+          "labels": []
+        }
+      ],
+      "watch_points": [
+        "微软股价上涨约 5.14%，需要核对是否与财报、指引或行业新闻有关。",
+        "AMD股价下跌约 3.29%，需要核对是否与财报、指引或行业新闻有关。",
+        "ASML股价下跌约 2.57%，需要核对是否与财报、指引或行业新闻有关。",
+        "英伟达出现财报线索：AMD Is Trading at 97 Times Forward Earnings While Nvidia Trades at 21 Times -- Someone's Valuation Model Is Wrong. Here's Who I Think It Is. - The Motley Fool",
+        "英伟达出现AI、芯片线索：Qualcomm (NASDAQ: QCOM) Launches AI Data Center Chips And Systems To Challenge Nvidia (NASDAQ: NVDA) - foreignpolicyjournal.com",
+        "AMD出现AI线索：AMD (AMD) Acquires MEXT To Tackle AI Memory Bottlenecks In Data Centers - Yahoo Finance",
+        "公司层面必须回到交易所公告、公司 IR 或财报原文核验。"
+      ]
+    },
+    "priorities": [
+      "今天先处理 09:30 的「检查今日日程和项目优先级」。",
+      "早报产品下一步要提升解读质量：少列标题，多讲为什么值得关注。",
+      "财经数据先当作线索，继续把价格变化连接到行业、公司和公告。"
+    ],
+    "disclaimer": "以下为早报线索和辅助判断，不构成投资建议；新闻标题需要进一步核验来源和原文。"
+  }
+}

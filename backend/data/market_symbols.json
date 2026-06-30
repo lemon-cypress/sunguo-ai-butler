@@ -1,0 +1,42 @@
+[
+  {
+    "symbol": "^GSPC",
+    "name": "标普500",
+    "region": "美国"
+  },
+  {
+    "symbol": "^IXIC",
+    "name": "纳斯达克综合",
+    "region": "美国"
+  },
+  {
+    "symbol": "^DJI",
+    "name": "道琼斯工业",
+    "region": "美国"
+  },
+  {
+    "symbol": "000001.SS",
+    "name": "上证指数",
+    "region": "中国"
+  },
+  {
+    "symbol": "399001.SZ",
+    "name": "深证成指",
+    "region": "中国"
+  },
+  {
+    "symbol": "^N225",
+    "name": "日经225",
+    "region": "日本"
+  },
+  {
+    "symbol": "^KS11",
+    "name": "韩国KOSPI",
+    "region": "韩国"
+  },
+  {
+    "symbol": "^GDAXI",
+    "name": "德国DAX",
+    "region": "欧洲"
+  }
+]

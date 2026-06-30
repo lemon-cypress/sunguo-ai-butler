@@ -1,0 +1,57 @@
+[
+  {
+    "symbol": "NVDA",
+    "name": "英伟达",
+    "sector": "AI算力/半导体",
+    "keywords": ["earnings", "guidance", "AI chips", "data center"]
+  },
+  {
+    "symbol": "AMD",
+    "name": "AMD",
+    "sector": "AI算力/半导体",
+    "keywords": ["earnings", "AI chips", "data center", "guidance"]
+  },
+  {
+    "symbol": "TSM",
+    "name": "台积电",
+    "sector": "半导体制造",
+    "keywords": ["earnings", "revenue", "capex", "advanced chips"]
+  },
+  {
+    "symbol": "ASML",
+    "name": "ASML",
+    "sector": "半导体设备",
+    "keywords": ["earnings", "orders", "EUV", "guidance"]
+  },
+  {
+    "symbol": "MSFT",
+    "name": "微软",
+    "sector": "云/AI应用",
+    "keywords": ["earnings", "Azure", "AI", "guidance"]
+  },
+  {
+    "symbol": "GOOGL",
+    "name": "Alphabet",
+    "sector": "云/AI应用",
+    "keywords": ["earnings", "cloud", "AI", "advertising"]
+  },
+  {
+    "symbol": "XOM",
+    "name": "埃克森美孚",
+    "sector": "能源",
+    "keywords": ["earnings", "oil prices", "production", "cash flow"]
+  },
+  {
+    "symbol": "SHEL",
+    "name": "壳牌",
+    "sector": "能源",
+    "keywords": ["earnings", "LNG", "oil prices", "cash flow"]
+  },
+  {
+    "symbol": "ZIM",
+    "name": "ZIM航运",
+    "sector": "航运",
+    "keywords": ["earnings", "freight rates", "shipping", "guidance"]
+  }
+]
+

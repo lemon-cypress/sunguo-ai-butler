@@ -1,0 +1,298 @@
+{
+  "date": "2026-06-27",
+  "city": "北京-朝阳",
+  "weather": {
+    "source": "mock",
+    "condition": "多云转晴",
+    "temperature": "22-31°C",
+    "rain": "降雨概率较低",
+    "outfit": "建议穿轻薄短袖或衬衫，早晚如果外出久一些，可以带一件薄外套。"
+  },
+  "markets": [
+    {
+      "region": "中国",
+      "summary": "主要指数小幅震荡，市场继续关注政策预期和成交量变化。",
+      "possible_driver": "宏观政策、人民币汇率、地产和消费数据。"
+    },
+    {
+      "region": "美国",
+      "summary": "科技股仍是市场关注焦点，投资者关注通胀、利率和大型公司财报。",
+      "possible_driver": "美联储利率路径、AI 资本开支、企业盈利。"
+    },
+    {
+      "region": "日本/韩国",
+      "summary": "出口、半导体和汇率仍然影响市场情绪。",
+      "possible_driver": "日元走势、芯片产业链、全球需求。"
+    },
+    {
+      "region": "欧洲",
+      "summary": "市场关注通胀回落、央行政策和能源价格。",
+      "possible_driver": "欧洲央行政策、能源供给、制造业数据。"
+    }
+  ],
+  "market_data": {
+    "source": "mock",
+    "indices": [
+      {
+        "name": "上证指数",
+        "region": "中国",
+        "regular_market_price": null,
+        "change_percent_from_previous_close": null
+      },
+      {
+        "name": "纳斯达克综合",
+        "region": "美国",
+        "regular_market_price": null,
+        "change_percent_from_previous_close": null
+      },
+      {
+        "name": "日经225",
+        "region": "日本",
+        "regular_market_price": null,
+        "change_percent_from_previous_close": null
+      },
+      {
+        "name": "德国DAX",
+        "region": "欧洲",
+        "regular_market_price": null,
+        "change_percent_from_previous_close": null
+      }
+    ],
+    "note": "市场数据暂时使用占位符，真实接口失败时回退。"
+  },
+  "industry": [
+    "AI 算力、半导体、机器人、创新药、新能源和消费电子是第一批需要持续跟踪的方向。",
+    "后续真实版本会抓取公司公告、财报和行业新闻，并区分事实、推测和投资线索。"
+  ],
+  "news_data": {
+    "source": "mock",
+    "categories": [
+      {
+        "category": "world",
+        "label": "国际新闻",
+        "articles": []
+      },
+      {
+        "category": "business",
+        "label": "商业财经",
+        "articles": []
+      }
+    ],
+    "note": "新闻数据暂时使用占位符，真实接口失败时回退。"
+  },
+  "theme_data": {
+    "source": "mock",
+    "items": [
+      {
+        "name": "WTI原油",
+        "theme": "能源价格",
+        "regular_market_price": null,
+        "change_percent_from_previous_close": null,
+        "affected_industries": [
+          "油气",
+          "化工",
+          "航运",
+          "航空"
+        ]
+      },
+      {
+        "name": "铜",
+        "theme": "工业金属",
+        "regular_market_price": null,
+        "change_percent_from_previous_close": null,
+        "affected_industries": [
+          "电力设备",
+          "新能源",
+          "制造业"
+        ]
+      },
+      {
+        "name": "半导体ETF",
+        "theme": "半导体",
+        "regular_market_price": null,
+        "change_percent_from_previous_close": null,
+        "affected_industries": [
+          "芯片",
+          "AI算力",
+          "消费电子"
+        ]
+      }
+    ],
+    "note": "主题价格暂时使用占位符，真实接口失败时回退。"
+  },
+  "company_data": {
+    "source": "mock",
+    "items": [
+      {
+        "symbol": "NVDA",
+        "name": "英伟达",
+        "sector": "AI算力/半导体",
+        "quote": {
+          "regular_market_price": null,
+          "change_percent_from_previous_close": null
+        },
+        "articles": []
+      },
+      {
+        "symbol": "TSM",
+        "name": "台积电",
+        "sector": "半导体制造",
+        "quote": {
+          "regular_market_price": null,
+          "change_percent_from_previous_close": null
+        },
+        "articles": []
+      }
+    ],
+    "note": "公司观察池暂时使用占位符，真实接口失败时回退。"
+  },
+  "politics_and_society": [
+    "政治和军事板块会关注地缘冲突、选举、制裁、外交和军费变化。",
+    "社会新闻会筛选公共安全、科技应用、教育、医疗和城市治理相关事件。"
+  ],
+  "sunguo_project": [
+    "今天的松果项目任务是把日程能力从 Outlook 迁移到本地日程文件。",
+    "保留 Outlook 模块作为以后公司授权后的可选能力。",
+    "下一步优先推进财经/新闻真实数据源。"
+  ],
+  "schedule": {
+    "source": "local",
+    "date": "2026-06-27",
+    "events": [
+      {
+        "start": "09:30",
+        "end": "10:00",
+        "title": "检查今日日程和项目优先级",
+        "location": "本地",
+        "importance": "high",
+        "preparation": "打开松果项目目录，确认今天要完成的最小交付物。"
+      },
+      {
+        "start": "14:00",
+        "end": "15:00",
+        "title": "整理松果早报固定栏目",
+        "location": "本地",
+        "importance": "normal",
+        "preparation": "看一遍昨天保存的早报，标记哪些栏目需要真实数据。"
+      },
+      {
+        "start": "16:00",
+        "end": "16:30",
+        "title": "整理松果下一步任务",
+        "location": "本地",
+        "importance": "high",
+        "preparation": "把今天遇到的问题写成 3 条"
+      },
+      {
+        "start": "20:30",
+        "end": "20:50",
+        "title": "复盘学习和项目进度",
+        "location": "本地",
+        "importance": "normal",
+        "preparation": "记录今天学到了什么、代码跑通了什么、明天接什么能力。"
+      }
+    ],
+    "write_proposals": [],
+    "safety_note": "当前使用本地日程文件，不依赖公司 Outlook 授权。"
+  },
+  "outlook_tasks": [
+    {
+      "time": "09:30",
+      "title": "检查今日日程和项目优先级",
+      "priority": "高"
+    },
+    {
+      "time": "14:00",
+      "title": "整理松果早报固定栏目",
+      "priority": "中"
+    },
+    {
+      "time": "16:00",
+      "title": "整理松果下一步任务",
+      "priority": "高"
+    },
+    {
+      "time": "20:30",
+      "title": "复盘学习和项目进度",
+      "priority": "中"
+    }
+  ],
+  "life_reminders": [
+    "记得刷牙、喝水，出门前看一下钥匙和手机。",
+    "如果今天久坐，上午和下午各做一次 3 分钟拉伸。",
+    "晚上可以简单整理桌面，让明天早上开始得更轻松。"
+  ],
+  "history_story": "今天的小故事：乔布斯早年非常重视产品演示。他明白用户往往不是先理解技术细节，而是先被一个清楚、有画面感的体验打动。松果也一样，第一版先把每天早上的核心体验做顺。",
+  "joke": "今天的小笑话：程序员说自己很会做饭，因为他每次都严格按照菜谱执行，直到发现盐也有版本兼容问题。",
+  "insights": {
+    "market": {
+      "source": "mock",
+      "tone": "数据不足，暂不判断市场情绪",
+      "notable_movers": [],
+      "region_summary": [],
+      "watch_points": [
+        "先确认主要指数是否有一致方向，再看行业和公司新闻是否能解释变化。"
+      ]
+    },
+    "news": {
+      "source": "mock",
+      "headline_groups": [],
+      "possible_topics": [],
+      "watch_points": [
+        "新闻源暂时不足，先不要做强判断。"
+      ]
+    },
+    "themes": {
+      "source": "mock",
+      "rising": [],
+      "falling": [],
+      "opportunity_watch": [
+        "主题价格暂无明显变化，先观察能源、金属、半导体和航运是否出现连续趋势。",
+        "这些只是机会线索，后续需要结合公司公告、库存、供需和政策验证。"
+      ]
+    },
+    "companies": {
+      "source": "mock",
+      "price_movers": [],
+      "article_events": [],
+      "watch_points": [
+        "公司观察池暂无明显价格或公告线索，先保持跟踪。",
+        "公司层面必须回到交易所公告、公司 IR 或财报原文核验。"
+      ]
+    },
+    "priorities": [
+      "今天先处理 09:30 的「检查今日日程和项目优先级」。",
+      "早报产品下一步要提升解读质量：少列标题，多讲为什么值得关注。",
+      "财经数据先当作线索，继续把价格变化连接到行业、公司和公告。"
+    ],
+    "disclaimer": "以下为早报线索和辅助判断，不构成投资建议；新闻标题需要进一步核验来源和原文。"
+  },
+  "brief_analysis": {
+    "version": "brief-analysis-v1",
+    "today_overview": "今天的早报重点是：今天先处理：检查今日日程和项目优先级；同时关注待办事项已整理。我会把未核验内容标成线索，避免把标题直接当结论。",
+    "top_stories": [
+      {
+        "id": "schedule",
+        "title": "今天先处理：检查今日日程和项目优先级",
+        "why_it_matters": "项目推进要有一个清楚的当日抓手，避免早报只是看信息而不形成行动。",
+        "evidence": [
+          "09:30｜检查今日日程和项目优先级｜优先级：高"
+        ],
+        "impact": [
+          "松果项目",
+          "今日待办"
+        ],
+        "confidence": "高",
+        "source": "local",
+        "follow_up": [
+          "先完成最小可交付物，再扩展新能力。"
+        ]
+      }
+    ],
+    "quality_rules": [
+      "先讲结论，再讲证据。",
+      "区分事实、线索和需要核验的推断。",
+      "财经内容只做信息整理，不给买卖建议。"
+    ]
+  }
+}

@@ -1,0 +1,1049 @@
+{
+  "version": "output-v1",
+  "project": "松果",
+  "date": "2026-06-29",
+  "city": "北京-朝阳",
+  "brief_text": "早安，小主人。我是松果。\n\n北京朝阳这会儿外面已经能听到远处的闷雷了，今天雷雨，气温在 22 到 29 度之间。我们先喝口水，慢慢把今天最重要的几件事理出来，不用急着一下子把所有东西都看完。\n\n### 🌟 今天最重要的三件事\n\n1.  **注意出门节奏，雷雨会跟一整天**\n    今天降雨概率很高，大约 88%，路面湿滑，视野也会受影响。衣服可以继续穿短袖或薄衬衫，但包里一定放一把伞，鞋子也选不怕湿的更稳妥。\n    出门前多花 10 秒，钥匙、手机、伞，三样东西都确认一遍再走。\n\n2.  **今天先抓住 09:30 的「检查今日日程和项目优先级」**\n    这是我们今天的锚点。接下来的日程里，14:00 要整理早报固定栏目，16:00 整理松果下一步任务，节奏不算紧。但上午先把最小交付物确认好，后面两件事会顺很多。\n    中间我会准时提醒你，你专心做手头的事就好。\n\n3.  **海外市场整体偏谨慎，半导体板块波动比较明显**\n    这条主要是做信息整理，帮你留个印象，不着急立刻做判断。\n    昨晚到今早，多个主要指数小幅下跌：欧洲的德国 DAX 变动约 -1.29%，中国的深证成指约 -1.21%。在同一段时间里，半导体 ETF 下跌了大约 5.64%，幅度明显比指数要大。\n    同时还有一些公司层面的事件：AMD 出现两个和 AI相关的线索（一条是关于 Gartner AI Vendor Race，另一条是收购 MEXT 来解决 AI内存瓶颈）；台积电也出现 AI 与芯片相关的线索（7nm 芯片可能提价，以及一季度业绩受益于 AI 芯片需求）；ASML 则出现关于 EUV 与中国芯片的线索。\n    这些目前都还是**线索**。价格变化不等于原因，新闻标题也不等于已经确认的公告。我把它们放在这里，是让你知道今天市场情绪偏弱，尤其半导体方向需要关注。后续如果要深入看其中哪一家，我们再一起去核对公司 IR 和 SEC 的公告原文。\n\n---\n\n### 🌧️ 天气与穿衣\n\n今天北京朝阳是**雷雨**，气温 22-29°C，现在的温度大约是 27.2°C。风不大，但湿度高，体感会有点闷。\n\n**穿衣方面**：短袖、薄衬衫、轻便长裤都合适。鞋子和包建议选耐湿的，包里放一把伞，路上尽量避开低洼路段。\n\n---\n\n### 📋 今天你要做什么（日程来自本地文件）\n\n今天有四件事，上午一场，下午两场，晚上一场，强度不大，但每件事都有明确的交付物。\n\n*   **09:30 – 10:00 | 检查今日日程和项目优先级**\n    *   **准备**：打开松果项目目录，确认今天要完成的最小交付物。\n*   **14:00 – 15:00 | 整理松果早报固定栏目**\n    *   **准备**：看一遍昨天保存的早报，标记哪些栏目需要真实数据。\n*   **16:00 – 16:30 | 整理松果下一步任务**\n    *   **准备**：把今天遇到的问题写成 3 条。\n*   **20:30 – 20:50 | 复盘学习和项目进度**\n    *   **准备**：记录今天学到了什么、代码跑通了什么、明天接什么能力。\n\n另外多提醒一句：上午 11:00 和下午 15:30，我会再小声提醒你喝口水、站起来活动两三分钟。久坐之后肩颈会最先抗议，简单的拉伸就是最好的维护。\n\n---\n\n### 💡 今天的小故事和小笑话\n\n乔布斯早年非常重视产品演示。他很早就明白，用户往往不是先理解技术细节，而是先被一个清楚、有画面感的体验打动。我们今天把早报核心体验做顺，和这个道理是相通的。\n\n还有一个小笑话，希望让你今天心情轻松一点：\n程序员说自己很会做饭，因为他每次都严格按照菜谱执行，直到他发现盐也有版本兼容问题。\n\n---\n\n### 🚀 对松果来说，今天的下一步\n\n我们现在正处在早报原型这段。今天最重要的下一步是：**把财经和新闻的真实数据源这一步推进下去**。\n目前早报里展示的公司新闻、行情还是以线索和图表为主。今天我会优先把观察池里有标题线索的部分，试着接到 IR 和 SEC 公告原文上，让早报不只是“有什么标题”，而是能开始说清楚“这件事为什么值得往下看”。\n\n节奏不用赶，我们先把这一步做扎实。我就在旁边，需要我查什么、理什么，你随时叫我。",
+  "brief_analysis": {
+    "version": "brief-analysis-v1",
+    "today_overview": "今天的早报重点是：市场情绪：偏谨慎，多个主要指数出现明显下跌；同时关注半导体ETF下跌，关注产业传导。我会把未核验内容标成线索，避免把标题直接当结论。",
+    "top_stories": [
+      {
+        "id": "market",
+        "title": "市场情绪：偏谨慎，多个主要指数出现明显下跌",
+        "why_it_matters": "主要指数的同步变化会影响今天对风险偏好、行业强弱和公司新闻的解读顺序。",
+        "evidence": [
+          "欧洲德国DAX变动约 -1.29%。",
+          "美国平均变化约 -0.13%",
+          "中国平均变化约 -0.52%"
+        ],
+        "impact": [
+          "全球市场",
+          "科技/半导体",
+          "汇率和利率预期"
+        ],
+        "confidence": "中",
+        "source": "Yahoo Finance chart",
+        "follow_up": [
+          "关注欧洲的德国DAX下跌是否由科技、汇率、利率或地缘因素驱动。",
+          "后续需要把指数变化和行业/公司公告对应起来，避免只看价格不看原因。"
+        ]
+      },
+      {
+        "id": "themes",
+        "title": "半导体ETF下跌，关注产业传导",
+        "why_it_matters": "商品和主题价格变化会传导到成本、利润率、通胀预期和相关行业情绪。",
+        "evidence": [
+          "半导体ETF下跌约 5.64%。"
+        ],
+        "impact": [
+          "芯片",
+          "AI算力",
+          "消费电子",
+          "设备材料"
+        ],
+        "confidence": "中",
+        "source": "Yahoo Finance chart",
+        "follow_up": [
+          "WTI原油上涨约 1.21%，关注对油气、化工、航运、航空的传导。",
+          "半导体ETF下跌约 5.64%，关注芯片、AI算力、消费电子、设备材料是否受益或承压。"
+        ]
+      },
+      {
+        "id": "companies",
+        "title": "ASML下跌，需要核验原因",
+        "why_it_matters": "公司层面的价格和新闻线索能帮助判断行业变化是否已经传导到具体企业。",
+        "evidence": [
+          "ASML下跌约 2.53%。"
+        ],
+        "impact": [
+          "半导体设备"
+        ],
+        "confidence": "线索",
+        "source": "Yahoo Finance chart + Google News RSS",
+        "follow_up": [
+          "ASML股价下跌约 2.53%，需要核对是否与财报、指引或行业新闻有关。",
+          "AMD股价下跌约 2.06%，需要核对是否与财报、指引或行业新闻有关。"
+        ]
+      }
+    ],
+    "quality_rules": [
+      "先讲结论，再讲证据。",
+      "区分事实、线索和需要核验的推断。",
+      "财经内容只做信息整理，不给买卖建议。"
+    ]
+  },
+  "memory_summary": {
+    "owner_name": "小主人",
+    "city": "北京-朝阳",
+    "project_name": "松果",
+    "regions": [
+      "中国",
+      "日本",
+      "韩国",
+      "美国",
+      "欧洲"
+    ],
+    "industries": [
+      "AI算力",
+      "半导体",
+      "机器人",
+      "创新药",
+      "新能源",
+      "消费电子",
+      "能源",
+      "航运"
+    ],
+    "companies": [
+      "英伟达",
+      "AMD",
+      "台积电",
+      "ASML",
+      "微软"
+    ],
+    "life_reminders": [
+      "刷牙",
+      "喝水",
+      "出门前检查钥匙和手机",
+      "久坐时拉伸",
+      "晚上简单整理桌面"
+    ],
+    "current_priority": "提升早报质量、追问能力、本地记忆、语音和数字人输出",
+    "tone": "先讲结论，再讲证据，语气温柔自然"
+  },
+  "finance_reasoning": {
+    "version": "finance-reasoning-v1",
+    "summary": "今天财经部分先抓8条高优先级线索，尤其留意AI算力、半导体、机器人；每条都按事实、可能原因、影响对象和后续核验来整理。",
+    "rules": [
+      "先说事实，再说可能原因，不把价格变化直接当成结论。",
+      "每条线索都要说明可能影响谁，以及下一步该核验什么。",
+      "投资相关内容只做信息整理和研究线索，不给买卖建议。"
+    ],
+    "market": [
+      {
+        "title": "欧洲德国DAX下跌",
+        "fact": "德国DAX较前收盘约-1.29%，属于需要关注的指数波动。",
+        "possible_reason": "可能与欧洲风险偏好下降、利率/汇率变化、科技股回调或政策预期变化有关，需要继续核验。",
+        "impact": "可能影响：欧洲市场风险偏好、跨市场资金流向和今天的行业强弱判断。",
+        "follow_up": [
+          "核对同一区域其他主要指数是否同向变化。",
+          "查看利率、汇率、政策预期、科技股和大宗商品是否有共同解释。"
+        ],
+        "confidence": "中",
+        "source": "Yahoo Finance chart",
+        "verification_sources": [],
+        "official_filings": [],
+        "abs_change": 1.29
+      },
+      {
+        "title": "中国深证成指下跌",
+        "fact": "深证成指较前收盘约-1.21%，属于需要关注的指数波动。",
+        "possible_reason": "可能与中国风险偏好下降、利率/汇率变化、科技股回调或政策预期变化有关，需要继续核验。",
+        "impact": "可能影响：中国市场风险偏好、跨市场资金流向和今天的行业强弱判断。",
+        "follow_up": [
+          "核对同一区域其他主要指数是否同向变化。",
+          "查看利率、汇率、政策预期、科技股和大宗商品是否有共同解释。"
+        ],
+        "confidence": "中",
+        "source": "Yahoo Finance chart",
+        "verification_sources": [],
+        "official_filings": [],
+        "abs_change": 1.21
+      }
+    ],
+    "themes": [
+      {
+        "title": "半导体ETF下跌",
+        "fact": "半导体里的半导体ETF较前收盘约-5.64%。",
+        "possible_reason": "可能与半导体需求预期走弱、库存变化、美元/利率变化或风险偏好回落有关。",
+        "impact": "可能影响：芯片、AI算力、消费电子、设备材料。",
+        "follow_up": [
+          "核对现货、期货、库存、供需和政策消息是否同步支持。",
+          "再看相关公司公告、财报和行业新闻，避免只根据价格波动下判断。"
+        ],
+        "confidence": "中",
+        "source": "Yahoo Finance chart",
+        "verification_sources": [],
+        "official_filings": [],
+        "abs_change": 5.64
+      },
+      {
+        "title": "全球航运ETF下跌",
+        "fact": "航运里的全球航运ETF较前收盘约-1.42%。",
+        "possible_reason": "可能与航运需求预期走弱、库存变化、美元/利率变化或风险偏好回落有关。",
+        "impact": "可能影响：集运、干散货、港口、全球贸易。",
+        "follow_up": [
+          "核对现货、期货、库存、供需和政策消息是否同步支持。",
+          "再看相关公司公告、财报和行业新闻，避免只根据价格波动下判断。"
+        ],
+        "confidence": "中",
+        "source": "Yahoo Finance chart",
+        "verification_sources": [],
+        "official_filings": [],
+        "abs_change": 1.42
+      },
+      {
+        "title": "WTI原油上涨",
+        "fact": "能源价格里的WTI原油较前收盘约1.21%。",
+        "possible_reason": "可能与能源价格供需、库存、避险情绪、政策预期或资金交易有关。",
+        "impact": "可能影响：油气、化工、航运、航空。",
+        "follow_up": [
+          "核对现货、期货、库存、供需和政策消息是否同步支持。",
+          "再看相关公司公告、财报和行业新闻，避免只根据价格波动下判断。"
+        ],
+        "confidence": "中",
+        "source": "Yahoo Finance chart",
+        "verification_sources": [],
+        "official_filings": [],
+        "abs_change": 1.21
+      }
+    ],
+    "companies": [
+      {
+        "title": "ASML需要核验原因",
+        "fact": "股价较前收盘约-2.53%；出现芯片线索：ASML Holding N.V. (ASML) Denies Selling EUV Chipmaking Tool to China Following Report of US Concern - Yahoo Finance",
+        "possible_reason": "价格波动较明显，可能与财报、指引、订单、行业景气或资金交易有关；新闻标题指向芯片事件；还要放回半导体设备产业链里比较。",
+        "impact": "可能影响：半导体设备，以及同一产业链里的可比公司。",
+        "follow_up": [
+          "核对产业链位置、出货、库存和价格。",
+          "最近官方披露：6-K，提交日 2026-04-23，用于：境外发行人临时披露，适合核对新闻稿、财报和重大事件。 标题：Document 链接：https://www.sec.gov/Archives/edgar/data/937966/000162828026026703/form6-kagmdisclosureofagmr.htm",
+          "官方核验入口：ASML Investor Relations：https://www.asml.com/en/investors；ASML SEC filings：https://www.sec.gov/edgar/browse/?CIK=937966",
+          "把新闻标题当作线索，不直接当作已经确认的事实。"
+        ],
+        "confidence": "线索",
+        "source": "Yahoo Finance chart + Google News RSS",
+        "verification_sources": [
+          {
+            "label": "ASML Investor Relations",
+            "type": "company_ir",
+            "priority": "high",
+            "url": "https://www.asml.com/en/investors",
+            "use_for": "核对财报、电话会材料、新闻稿和投资者演示。"
+          },
+          {
+            "label": "ASML SEC filings",
+            "type": "regulatory_filing",
+            "priority": "high",
+            "url": "https://www.sec.gov/edgar/browse/?CIK=937966",
+            "use_for": "核对10-K、10-Q、8-K、20-F等监管披露。"
+          },
+          {
+            "label": "ASML Yahoo Finance",
+            "type": "market_quote",
+            "priority": "medium",
+            "url": "https://finance.yahoo.com/quote/ASML",
+            "use_for": "核对价格、成交和市场摘要，不能替代公告原文。"
+          }
+        ],
+        "official_filings": [
+          {
+            "form": "6-K",
+            "filing_date": "2026-04-23",
+            "report_date": "2026-04-23",
+            "accession_number": "0001628280-26-026703",
+            "document": "form6-kagmdisclosureofagmr.htm",
+            "url": "https://www.sec.gov/Archives/edgar/data/937966/000162828026026703/form6-kagmdisclosureofagmr.htm",
+            "use_for": "境外发行人临时披露，适合核对新闻稿、财报和重大事件。",
+            "document_summary": {
+              "title": "Document",
+              "items": []
+            }
+          },
+          {
+            "form": "6-K",
+            "filing_date": "2026-04-15",
+            "report_date": "2026-03-29",
+            "accession_number": "0001628280-26-025147",
+            "document": "form6-kquarterlyfilings.htm",
+            "url": "https://www.sec.gov/Archives/edgar/data/937966/000162828026025147/form6-kquarterlyfilings.htm",
+            "use_for": "境外发行人临时披露，适合核对新闻稿、财报和重大事件。"
+          },
+          {
+            "form": "6-K",
+            "filing_date": "2026-03-11",
+            "report_date": "2026-03-09",
+            "accession_number": "0001628280-26-016671",
+            "document": "form6-kagm.htm",
+            "url": "https://www.sec.gov/Archives/edgar/data/937966/000162828026016671/form6-kagm.htm",
+            "use_for": "境外发行人临时披露，适合核对新闻稿、财报和重大事件。"
+          },
+          {
+            "form": "20-F",
+            "filing_date": "2026-02-25",
+            "report_date": "2025-12-31",
+            "accession_number": "0001628280-26-011378",
+            "document": "asml-20251231.htm",
+            "url": "https://www.sec.gov/Archives/edgar/data/937966/000162828026011378/asml-20251231.htm",
+            "use_for": "境外发行人年度报告，适合核对全年业务和财务数据。"
+          }
+        ],
+        "abs_change": 2.53
+      },
+      {
+        "title": "AMD需要核验原因",
+        "fact": "股价较前收盘约-2.06%；出现AI线索：AMD Named Current Company to Beat in Gartner® AI Vendor Race - AMD",
+        "possible_reason": "价格波动较明显，可能与财报、指引、订单、行业景气或资金交易有关；新闻标题指向AI事件；还要放回AI算力/半导体产业链里比较。",
+        "impact": "可能影响：AI算力/半导体，以及同一产业链里的可比公司。",
+        "follow_up": [
+          "核对具体产品、订单、客户和资本开支证据。",
+          "最近官方披露：8-K，提交日 2026-05-15，用于：重大事项公告，适合核对临时事件、业绩发布和管理层变化。 摘要：Item 1.01 Entry into a Material Definitive Agreement. On May 14, 2026 (the “Closing Date”), Advanced Micro Devices, Inc. (the “Com；Item 1.02 Termination of a Material Definitive Agreement. In connection with the entry into the Credit Agreement, the Company term；Item 2.03 Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant. On Ma 链接：https://www.sec.gov/Archives/edgar/data/2488/000119312526226746/d118163d8k.htm",
+          "官方核验入口：AMD Investor Relations：https://ir.amd.com/；AMD SEC filings：https://www.sec.gov/edgar/browse/?CIK=2488",
+          "把新闻标题当作线索，不直接当作已经确认的事实。"
+        ],
+        "confidence": "线索",
+        "source": "Yahoo Finance chart + Google News RSS",
+        "verification_sources": [
+          {
+            "label": "AMD Investor Relations",
+            "type": "company_ir",
+            "priority": "high",
+            "url": "https://ir.amd.com/",
+            "use_for": "核对财报、电话会材料、新闻稿和投资者演示。"
+          },
+          {
+            "label": "AMD SEC filings",
+            "type": "regulatory_filing",
+            "priority": "high",
+            "url": "https://www.sec.gov/edgar/browse/?CIK=2488",
+            "use_for": "核对10-K、10-Q、8-K、20-F等监管披露。"
+          },
+          {
+            "label": "AMD Yahoo Finance",
+            "type": "market_quote",
+            "priority": "medium",
+            "url": "https://finance.yahoo.com/quote/AMD",
+            "use_for": "核对价格、成交和市场摘要，不能替代公告原文。"
+          }
+        ],
+        "official_filings": [
+          {
+            "form": "8-K",
+            "filing_date": "2026-05-15",
+            "report_date": "2026-05-13",
+            "accession_number": "0001193125-26-226746",
+            "document": "d118163d8k.htm",
+            "url": "https://www.sec.gov/Archives/edgar/data/2488/000119312526226746/d118163d8k.htm",
+            "use_for": "重大事项公告，适合核对临时事件、业绩发布和管理层变化。",
+            "document_summary": {
+              "title": "8-K",
+              "items": [
+                "Item 1.01 Entry into a Material Definitive Agreement. On May 14, 2026 (the “Closing Date”), Advanced Micro Devices, Inc. (the “Com",
+                "Item 1.02 Termination of a Material Definitive Agreement. In connection with the entry into the Credit Agreement, the Company term",
+                "Item 2.03 Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant. On Ma",
+                "Item 1.01 “Entry into a Material Definitive Agreement” is incorporated into this Item 2.03 by reference. Item 5.02 Departure of Di",
+                "Item 5.07 of this Current Report on Form 8-K, at the Annual Meeting, the Company’s stockholders approved the amendment and restate",
+                "Item 5.07 Submission of Matters to a Vote of Security Holders. The Company held its Annual Meeting on May 13, 2026. At the Annual"
+              ]
+            }
+          },
+          {
+            "form": "10-Q",
+            "filing_date": "2026-05-06",
+            "report_date": "2026-03-28",
+            "accession_number": "0000002488-26-000076",
+            "document": "amd-20260328.htm",
+            "url": "https://www.sec.gov/Archives/edgar/data/2488/000000248826000076/amd-20260328.htm",
+            "use_for": "季度报告，适合核对季度收入、利润、现金流和风险变化。"
+          },
+          {
+            "form": "8-K",
+            "filing_date": "2026-05-05",
+            "report_date": "2026-05-05",
+            "accession_number": "0000002488-26-000072",
+            "document": "amd-20260505.htm",
+            "url": "https://www.sec.gov/Archives/edgar/data/2488/000000248826000072/amd-20260505.htm",
+            "use_for": "重大事项公告，适合核对临时事件、业绩发布和管理层变化。"
+          },
+          {
+            "form": "8-K",
+            "filing_date": "2026-02-24",
+            "report_date": "2026-02-23",
+            "accession_number": "0000002488-26-000045",
+            "document": "amd-20260223.htm",
+            "url": "https://www.sec.gov/Archives/edgar/data/2488/000000248826000045/amd-20260223.htm",
+            "use_for": "重大事项公告，适合核对临时事件、业绩发布和管理层变化。"
+          }
+        ],
+        "abs_change": 2.06
+      },
+      {
+        "title": "台积电需要核验原因",
+        "fact": "股价较前收盘约-0.61%；出现AI、芯片线索：TSMC (NYSE:TSM) Is Raising 7nm Chip Prices Up To 10% As Expansion Builds - simplywall.st",
+        "possible_reason": "新闻标题指向AI、芯片事件；还要放回半导体制造产业链里比较。",
+        "impact": "可能影响：半导体制造，以及同一产业链里的可比公司。",
+        "follow_up": [
+          "核对具体产品、订单、客户和资本开支证据。",
+          "最近官方披露：6-K，提交日 2026-06-25，用于：境外发行人临时披露，适合核对新闻稿、财报和重大事件。 标题：Document 链接：https://www.sec.gov/Archives/edgar/data/1046179/000104617926000377/tsm-monthend6kx20260625.htm",
+          "官方核验入口：台积电 Investor Relations：https://investor.tsmc.com/english；TSM SEC filings：https://www.sec.gov/edgar/browse/?CIK=1046179",
+          "把新闻标题当作线索，不直接当作已经确认的事实。"
+        ],
+        "confidence": "线索",
+        "source": "Yahoo Finance chart + Google News RSS",
+        "verification_sources": [
+          {
+            "label": "台积电 Investor Relations",
+            "type": "company_ir",
+            "priority": "high",
+            "url": "https://investor.tsmc.com/english",
+            "use_for": "核对财报、电话会材料、新闻稿和投资者演示。"
+          },
+          {
+            "label": "TSM SEC filings",
+            "type": "regulatory_filing",
+            "priority": "high",
+            "url": "https://www.sec.gov/edgar/browse/?CIK=1046179",
+            "use_for": "核对10-K、10-Q、8-K、20-F等监管披露。"
+          },
+          {
+            "label": "TSM Yahoo Finance",
+            "type": "market_quote",
+            "priority": "medium",
+            "url": "https://finance.yahoo.com/quote/TSM",
+            "use_for": "核对价格、成交和市场摘要，不能替代公告原文。"
+          }
+        ],
+        "official_filings": [
+          {
+            "form": "6-K",
+            "filing_date": "2026-06-25",
+            "report_date": "2026-05-31",
+            "accession_number": "0001046179-26-000377",
+            "document": "tsm-monthend6kx20260625.htm",
+            "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000377/tsm-monthend6kx20260625.htm",
+            "use_for": "境外发行人临时披露，适合核对新闻稿、财报和重大事件。",
+            "document_summary": {
+              "title": "Document",
+              "items": []
+            }
+          },
+          {
+            "form": "6-K",
+            "filing_date": "2026-06-10",
+            "report_date": "2026-05-31",
+            "accession_number": "0001046179-26-000367",
+            "document": "tsm-revenue20260610.htm",
+            "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000367/tsm-revenue20260610.htm",
+            "use_for": "境外发行人临时披露，适合核对新闻稿、财报和重大事件。"
+          },
+          {
+            "form": "6-K",
+            "filing_date": "2026-06-04",
+            "report_date": "2026-06-04",
+            "accession_number": "0001046179-26-000302",
+            "document": "tsm-agmx20260604x6k.htm",
+            "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000302/tsm-agmx20260604x6k.htm",
+            "use_for": "境外发行人临时披露，适合核对新闻稿、财报和重大事件。"
+          },
+          {
+            "form": "6-K",
+            "filing_date": "2026-05-27",
+            "report_date": "2026-05-27",
+            "accession_number": "0001046179-26-000294",
+            "document": "tsm-dividendadjustmentx202.htm",
+            "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000294/tsm-dividendadjustmentx202.htm",
+            "use_for": "境外发行人临时披露，适合核对新闻稿、财报和重大事件。"
+          }
+        ],
+        "abs_change": 0.61
+      }
+    ],
+    "source": {
+      "market": "Yahoo Finance chart",
+      "themes": "Yahoo Finance chart",
+      "companies": "Yahoo Finance chart + Google News RSS"
+    }
+  },
+  "reminder_plan": {
+    "version": "reminder-plan-v2",
+    "rules_version": "reminder-rules-v1",
+    "source": "local + reminders.json",
+    "summary": "今天我会安排 9 条提醒，其中 3 条是高优先级。",
+    "medicine_configured": false,
+    "items": [
+      {
+        "time": "08:30",
+        "type": "life",
+        "priority": "normal",
+        "title": "出门前检查",
+        "message": "出门前看一眼钥匙、手机和水杯。今天先让自己轻一点。",
+        "trigger": {
+          "kind": "fixed_time"
+        },
+        "voice": {
+          "style": "gentle",
+          "pause_after_ms": 600
+        },
+        "avatar": {
+          "expression": "gentle",
+          "gesture": "present_left"
+        },
+        "id": "reminder-01"
+      },
+      {
+        "time": "08:35",
+        "type": "weather",
+        "priority": "high",
+        "title": "雨具提醒",
+        "message": "今天可能有雨，出门前把伞带上，鞋子也尽量选不怕湿的。",
+        "trigger": {
+          "kind": "weather_rule",
+          "condition": "rain"
+        },
+        "voice": {
+          "style": "careful",
+          "pause_after_ms": 700
+        },
+        "avatar": {
+          "expression": "focused",
+          "gesture": "point_screen"
+        },
+        "id": "reminder-02"
+      },
+      {
+        "time": "09:20",
+        "type": "schedule",
+        "priority": "high",
+        "title": "检查今日日程和项目优先级 即将开始",
+        "message": "小主人，10 分钟后是「检查今日日程和项目优先级」。准备：打开松果项目目录，确认今天要完成的最小交付物。",
+        "trigger": {
+          "kind": "relative",
+          "minutes_before": 10,
+          "event_time": "09:30"
+        },
+        "voice": {
+          "style": "encouraging",
+          "pause_after_ms": 650
+        },
+        "avatar": {
+          "expression": "encouraging",
+          "gesture": "checklist"
+        },
+        "id": "reminder-03"
+      },
+      {
+        "time": "11:00",
+        "type": "health",
+        "priority": "normal",
+        "title": "补水和伸展",
+        "message": "喝几口水，站起来活动 3 分钟。肩颈会感谢你的。",
+        "trigger": {
+          "kind": "fixed_time"
+        },
+        "voice": {
+          "style": "warm",
+          "pause_after_ms": 600
+        },
+        "avatar": {
+          "expression": "smile",
+          "gesture": "small_nod"
+        },
+        "id": "reminder-04"
+      },
+      {
+        "time": "13:50",
+        "type": "schedule",
+        "priority": "normal",
+        "title": "整理松果早报固定栏目 即将开始",
+        "message": "小主人，10 分钟后是「整理松果早报固定栏目」。准备：看一遍昨天保存的早报，标记哪些栏目需要真实数据。",
+        "trigger": {
+          "kind": "relative",
+          "minutes_before": 10,
+          "event_time": "14:00"
+        },
+        "voice": {
+          "style": "gentle",
+          "pause_after_ms": 650
+        },
+        "avatar": {
+          "expression": "encouraging",
+          "gesture": "checklist"
+        },
+        "id": "reminder-05"
+      },
+      {
+        "time": "15:30",
+        "type": "health",
+        "priority": "normal",
+        "title": "下午活动一下",
+        "message": "离开椅子走两分钟，顺手喝点水。下午的脑子会清亮一点。",
+        "trigger": {
+          "kind": "fixed_time"
+        },
+        "voice": {
+          "style": "gentle",
+          "pause_after_ms": 600
+        },
+        "avatar": {
+          "expression": "smile",
+          "gesture": "small_nod"
+        },
+        "id": "reminder-06"
+      },
+      {
+        "time": "15:50",
+        "type": "schedule",
+        "priority": "high",
+        "title": "整理松果下一步任务 即将开始",
+        "message": "小主人，10 分钟后是「整理松果下一步任务」。准备：把今天遇到的问题写成 3 条。",
+        "trigger": {
+          "kind": "relative",
+          "minutes_before": 10,
+          "event_time": "16:00"
+        },
+        "voice": {
+          "style": "encouraging",
+          "pause_after_ms": 650
+        },
+        "avatar": {
+          "expression": "encouraging",
+          "gesture": "checklist"
+        },
+        "id": "reminder-07"
+      },
+      {
+        "time": "20:20",
+        "type": "schedule",
+        "priority": "normal",
+        "title": "复盘学习和项目进度 即将开始",
+        "message": "小主人，10 分钟后是「复盘学习和项目进度」。准备：记录今天学到了什么、代码跑通了什么、明天接什么能力。",
+        "trigger": {
+          "kind": "relative",
+          "minutes_before": 10,
+          "event_time": "20:30"
+        },
+        "voice": {
+          "style": "gentle",
+          "pause_after_ms": 650
+        },
+        "avatar": {
+          "expression": "encouraging",
+          "gesture": "checklist"
+        },
+        "id": "reminder-08"
+      },
+      {
+        "time": "21:30",
+        "type": "life",
+        "priority": "normal",
+        "title": "晚间收尾",
+        "message": "睡前简单整理桌面，给明天留一个轻松的开始。",
+        "trigger": {
+          "kind": "fixed_time"
+        },
+        "voice": {
+          "style": "warm",
+          "pause_after_ms": 600
+        },
+        "avatar": {
+          "expression": "warm",
+          "gesture": "small_nod"
+        },
+        "id": "reminder-09"
+      }
+    ]
+  },
+  "butler_brief": {
+    "version": "butler-persona-v2",
+    "name": "松果",
+    "owner": "小主人",
+    "style": "温柔、阳光、聪明、可靠",
+    "opening": "早安，小主人。我是松果。北京-朝阳今天雷雨，气温22-29°C。外面可能会有点湿乱，今天我会多提醒你几句。我先用最省心的方式，把天气、待办和几条重要线索讲给你听。",
+    "care_note": "今天外面不太省心，出门前把伞、钥匙和手机都看一眼。穿衣上，建议穿短袖、薄衬衫或轻便长裤，包里放一把伞更稳妥。 另外，记得刷牙、喝水，出门前看一下钥匙和手机。；如果今天久坐，上午和下午各做一次 3 分钟拉伸。。",
+    "agenda_note": "今天先抓住 09:30 的「检查今日日程和项目优先级」。后面我会再提醒你：14:00 整理松果早报固定栏目；16:00 整理松果下一步任务。",
+    "finance_note": "财经部分我会谨慎一点。今天先看两个重点：市场情绪：偏谨慎，多个主要指数出现明显下跌；以及半导体ETF下跌，关注产业传导。这些先当线索，我会把核验入口放在旁边。",
+    "closing": "小主人，今天不用一下子把所有事做完。我们先把最重要的一步推进好：提升早报质量、追问能力、本地记忆、语音和数字人输出。我会在旁边帮你看着节奏，慢慢来。",
+    "speech_script": [
+      {
+        "id": "butler-01",
+        "section": "opening",
+        "text": "早安，小主人。我是松果。北京-朝阳今天雷雨，气温22-29°C。外面可能会有点湿乱，今天我会多提醒你几句。我先用最省心的方式，把天气、待办和几条重要线索讲给你听。",
+        "voice": {
+          "style": "warm",
+          "speed": "normal",
+          "pause_after_ms": 750
+        }
+      },
+      {
+        "id": "butler-02",
+        "section": "care",
+        "text": "今天外面不太省心，出门前把伞、钥匙和手机都看一眼。穿衣上，建议穿短袖、薄衬衫或轻便长裤，包里放一把伞更稳妥。 另外，记得刷牙、喝水，出门前看一下钥匙和手机。；如果今天久坐，上午和下午各做一次 3 分钟拉伸。。",
+        "voice": {
+          "style": "gentle",
+          "speed": "normal",
+          "pause_after_ms": 700
+        }
+      },
+      {
+        "id": "butler-03",
+        "section": "agenda",
+        "text": "今天先抓住 09:30 的「检查今日日程和项目优先级」。后面我会再提醒你：14:00 整理松果早报固定栏目；16:00 整理松果下一步任务。",
+        "voice": {
+          "style": "encouraging",
+          "speed": "normal",
+          "pause_after_ms": 650
+        }
+      },
+      {
+        "id": "butler-04",
+        "section": "finance",
+        "text": "财经部分我会谨慎一点。今天先看两个重点：市场情绪：偏谨慎，多个主要指数出现明显下跌；以及半导体ETF下跌，关注产业传导。这些先当线索，我会把核验入口放在旁边。",
+        "voice": {
+          "style": "careful",
+          "speed": "normal",
+          "pause_after_ms": 800
+        }
+      },
+      {
+        "id": "butler-05",
+        "section": "closing",
+        "text": "小主人，今天不用一下子把所有事做完。我们先把最重要的一步推进好：提升早报质量、追问能力、本地记忆、语音和数字人输出。我会在旁边帮你看着节奏，慢慢来。",
+        "voice": {
+          "style": "warm",
+          "speed": "normal",
+          "pause_after_ms": 950
+        }
+      }
+    ]
+  },
+  "screen_cards": [
+    {
+      "id": "butler-voice",
+      "type": "butler",
+      "title": "松果管家语气",
+      "priority": "high",
+      "summary": "早安，小主人。我是松果。北京-朝阳今天雷雨，气温22-29°C。外面可能会有点湿乱，今天我会多提醒你几句。我先用最省心的方式，把天气、待办和几条重要线索讲给你听。",
+      "details": [
+        "今天外面不太省心，出门前把伞、钥匙和手机都看一眼。穿衣上，建议穿短袖、薄衬衫或轻便长裤，包里放一把伞更稳妥。 另外，记得刷牙、喝水，出门前看一下钥匙和手机。；如果今天久坐，上午和下午各做一次 3 分钟拉伸。。",
+        "今天先抓住 09:30 的「检查今日日程和项目优先级」。后面我会再提醒你：14:00 整理松果早报固定栏目；16:00 整理松果下一步任务。",
+        "小主人，今天不用一下子把所有事做完。我们先把最重要的一步推进好：提升早报质量、追问能力、本地记忆、语音和数字人输出。我会在旁边帮你看着节奏，慢慢来。"
+      ],
+      "source": "butler-persona-v2"
+    },
+    {
+      "id": "reminder-plan",
+      "type": "reminders",
+      "title": "主动提醒",
+      "priority": "high",
+      "summary": "今天我会安排 9 条提醒，其中 3 条是高优先级。",
+      "details": [
+        "08:30｜出门前检查｜出门前看一眼钥匙、手机和水杯。今天先让自己轻一点。",
+        "08:35｜雨具提醒｜今天可能有雨，出门前把伞带上，鞋子也尽量选不怕湿的。",
+        "09:20｜检查今日日程和项目优先级 即将开始｜小主人，10 分钟后是「检查今日日程和项目优先级」。准备：打开松果项目目录，确认今天要完成的最小交付物。",
+        "11:00｜补水和伸展｜喝几口水，站起来活动 3 分钟。肩颈会感谢你的。",
+        "13:50｜整理松果早报固定栏目 即将开始｜小主人，10 分钟后是「整理松果早报固定栏目」。准备：看一遍昨天保存的早报，标记哪些栏目需要真实数据。",
+        "15:30｜下午活动一下｜离开椅子走两分钟，顺手喝点水。下午的脑子会清亮一点。",
+        "15:50｜整理松果下一步任务 即将开始｜小主人，10 分钟后是「整理松果下一步任务」。准备：把今天遇到的问题写成 3 条。",
+        "20:20｜复盘学习和项目进度 即将开始｜小主人，10 分钟后是「复盘学习和项目进度」。准备：记录今天学到了什么、代码跑通了什么、明天接什么能力。"
+      ],
+      "source": "reminder-plan-v2"
+    },
+    {
+      "id": "quality-overview",
+      "type": "analysis",
+      "title": "松果解读",
+      "priority": "high",
+      "summary": "今天的早报重点是：市场情绪：偏谨慎，多个主要指数出现明显下跌；同时关注半导体ETF下跌，关注产业传导。我会把未核验内容标成线索，避免把标题直接当结论。",
+      "details": [
+        "先讲结论，再讲证据。",
+        "区分事实、线索和需要核验的推断。",
+        "财经内容只做信息整理，不给买卖建议。"
+      ],
+      "source": "brief-analysis-v1"
+    },
+    {
+      "id": "top-story-1",
+      "type": "top-story",
+      "title": "1. 市场情绪：偏谨慎，多个主要指数出现明显下跌",
+      "priority": "high",
+      "summary": "主要指数的同步变化会影响今天对风险偏好、行业强弱和公司新闻的解读顺序。",
+      "details": [
+        "为什么重要：主要指数的同步变化会影响今天对风险偏好、行业强弱和公司新闻的解读顺序。",
+        "影响对象：全球市场、科技/半导体、汇率和利率预期",
+        "证据：欧洲德国DAX变动约 -1.29%。；美国平均变化约 -0.13%",
+        "后续核验：关注欧洲的德国DAX下跌是否由科技、汇率、利率或地缘因素驱动。；后续需要把指数变化和行业/公司公告对应起来，避免只看价格不看原因。",
+        "可信度：中"
+      ],
+      "source": "Yahoo Finance chart"
+    },
+    {
+      "id": "top-story-2",
+      "type": "top-story",
+      "title": "2. 半导体ETF下跌，关注产业传导",
+      "priority": "high",
+      "summary": "商品和主题价格变化会传导到成本、利润率、通胀预期和相关行业情绪。",
+      "details": [
+        "为什么重要：商品和主题价格变化会传导到成本、利润率、通胀预期和相关行业情绪。",
+        "影响对象：芯片、AI算力、消费电子、设备材料",
+        "证据：半导体ETF下跌约 5.64%。",
+        "后续核验：WTI原油上涨约 1.21%，关注对油气、化工、航运、航空的传导。；半导体ETF下跌约 5.64%，关注芯片、AI算力、消费电子、设备材料是否受益或承压。",
+        "可信度：中"
+      ],
+      "source": "Yahoo Finance chart"
+    },
+    {
+      "id": "top-story-3",
+      "type": "top-story",
+      "title": "3. ASML下跌，需要核验原因",
+      "priority": "high",
+      "summary": "公司层面的价格和新闻线索能帮助判断行业变化是否已经传导到具体企业。",
+      "details": [
+        "为什么重要：公司层面的价格和新闻线索能帮助判断行业变化是否已经传导到具体企业。",
+        "影响对象：半导体设备",
+        "证据：ASML下跌约 2.53%。",
+        "后续核验：ASML股价下跌约 2.53%，需要核对是否与财报、指引或行业新闻有关。；AMD股价下跌约 2.06%，需要核对是否与财报、指引或行业新闻有关。",
+        "可信度：线索"
+      ],
+      "source": "Yahoo Finance chart + Google News RSS"
+    },
+    {
+      "id": "memory",
+      "type": "memory",
+      "title": "松果记住了",
+      "priority": "normal",
+      "summary": "我会按 小主人 的关注偏好整理早报。",
+      "details": [
+        "关注国家/地区：中国、日本、韩国、美国、欧洲",
+        "关注行业：AI算力、半导体、机器人、创新药、新能源、消费电子、能源、航运",
+        "关注公司：英伟达、AMD、台积电、ASML、微软",
+        "当前项目重点：提升早报质量、追问能力、本地记忆、语音和数字人输出"
+      ],
+      "source": "user_profile"
+    },
+    {
+      "id": "finance-reasoning",
+      "type": "finance-reasoning",
+      "title": "财经解读框架",
+      "priority": "high",
+      "summary": "今天财经部分先抓8条高优先级线索，尤其留意AI算力、半导体、机器人；每条都按事实、可能原因、影响对象和后续核验来整理。",
+      "details": [
+        "欧洲德国DAX下跌｜事实：德国DAX较前收盘约-1.29%，属于需要关注的指数波动。｜可能原因：可能与欧洲风险偏好下降、利率/汇率变化、科技股回调或政策预期变化有关，需要继续核验。｜后续：核对同一区域其他主要指数是否同向变化。；查看利率、汇率、政策预期、科技股和大宗商品是否有共同解释。",
+        "中国深证成指下跌｜事实：深证成指较前收盘约-1.21%，属于需要关注的指数波动。｜可能原因：可能与中国风险偏好下降、利率/汇率变化、科技股回调或政策预期变化有关，需要继续核验。｜后续：核对同一区域其他主要指数是否同向变化。；查看利率、汇率、政策预期、科技股和大宗商品是否有共同解释。",
+        "半导体ETF下跌｜事实：半导体里的半导体ETF较前收盘约-5.64%。｜可能原因：可能与半导体需求预期走弱、库存变化、美元/利率变化或风险偏好回落有关。｜后续：核对现货、期货、库存、供需和政策消息是否同步支持。；再看相关公司公告、财报和行业新闻，避免只根据价格波动下判断。",
+        "全球航运ETF下跌｜事实：航运里的全球航运ETF较前收盘约-1.42%。｜可能原因：可能与航运需求预期走弱、库存变化、美元/利率变化或风险偏好回落有关。｜后续：核对现货、期货、库存、供需和政策消息是否同步支持。；再看相关公司公告、财报和行业新闻，避免只根据价格波动下判断。",
+        "ASML需要核验原因｜事实：股价较前收盘约-2.53%；出现芯片线索：ASML Holding N.V. (ASML) Denies Selling EUV Chipmaking Tool to China Following Report of US Concern - Yahoo Finance｜可能原因：价格波动较明显，可能与财报、指引、订单、行业景气或资金交易有关；新闻标题指向芯片事件；还要放回半导体设备产业链里比较。｜后续：核对产业链位置、出货、库存和价格。；最近官方披露：6-K，提交日 2026-04-23，用于：境外发行人临时披露，适合核对新闻稿、财报和重大事件。 标题：Document 链接：https://www.sec.gov/Archives/edgar/data/937966/000162828026026703/form6-kagmdisclosureofagmr.htm",
+        "AMD需要核验原因｜事实：股价较前收盘约-2.06%；出现AI线索：AMD Named Current Company to Beat in Gartner® AI Vendor Race - AMD｜可能原因：价格波动较明显，可能与财报、指引、订单、行业景气或资金交易有关；新闻标题指向AI事件；还要放回AI算力/半导体产业链里比较。｜后续：核对具体产品、订单、客户和资本开支证据。；最近官方披露：8-K，提交日 2026-05-15，用于：重大事项公告，适合核对临时事件、业绩发布和管理层变化。 摘要：Item 1.01 Entry into a Material Definitive Agreement. On May 14, 2026 (the “Closing Date”), Advanced Micro Devices, Inc. (the “Com；Item 1.02 Termination of a Material Definitive Agreement. In connection with the entry into the Credit Agreement, the Company term；Item 2.03 Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant. On Ma 链接：https://www.sec.gov/Archives/edgar/data/2488/000119312526226746/d118163d8k.htm"
+      ],
+      "source": "financial_reasoning"
+    },
+    {
+      "id": "filing-evidence",
+      "type": "filing-evidence",
+      "title": "官方披露证据",
+      "priority": "high",
+      "summary": "最近 SEC/监管披露入口，用来回到原文核验公司线索。",
+      "details": [
+        "ASML需要核验原因｜6-K｜提交日 2026-04-23｜Document｜https://www.sec.gov/Archives/edgar/data/937966/000162828026026703/form6-kagmdisclosureofagmr.htm",
+        "AMD需要核验原因｜8-K｜提交日 2026-05-15｜Item 1.01 Entry into a Material Definitive Agreement. On May 14, 2026 (the “Closing Date”), Advanced Micro Devices, Inc. (the “Com；Item 1.02 Termination of a Material Definitive Agreement. In connection with the entry into the Credit Agreement, the Company term；Item 2.03 Creation of a Direct Financial Obligation or an Obligation under an Off-Balance Sheet Arrangement of a Registrant. On Ma｜https://www.sec.gov/Archives/edgar/data/2488/000119312526226746/d118163d8k.htm",
+        "台积电需要核验原因｜6-K｜提交日 2026-06-25｜Document｜https://www.sec.gov/Archives/edgar/data/1046179/000104617926000377/tsm-monthend6kx20260625.htm"
+      ],
+      "source": "SEC submissions"
+    },
+    {
+      "id": "weather",
+      "type": "weather",
+      "title": "天气和穿衣",
+      "priority": "high",
+      "summary": "北京-朝阳 雷雨，气温 22-29°C",
+      "details": [
+        "降雨概率较高，约 88%",
+        "建议穿短袖、薄衬衫或轻便长裤，包里放一把伞更稳妥。"
+      ],
+      "source": "Open-Meteo"
+    },
+    {
+      "id": "top-priorities",
+      "type": "priorities",
+      "title": "今天先关注",
+      "priority": "high",
+      "summary": "松果为你挑出的 3 个优先事项",
+      "details": [
+        "今天先处理 09:30 的「检查今日日程和项目优先级」。",
+        "早报产品下一步要提升解读质量：少列标题，多讲为什么值得关注。",
+        "财经数据先当作线索，继续把价格变化连接到行业、公司和公告。"
+      ],
+      "source": "insight_builder"
+    },
+    {
+      "id": "market",
+      "type": "market",
+      "title": "市场和宏观",
+      "priority": "high",
+      "summary": "偏谨慎，多个主要指数出现明显下跌",
+      "details": [
+        "关注欧洲的德国DAX下跌是否由科技、汇率、利率或地缘因素驱动。",
+        "后续需要把指数变化和行业/公司公告对应起来，避免只看价格不看原因。"
+      ],
+      "source": "Yahoo Finance chart"
+    },
+    {
+      "id": "themes",
+      "type": "themes",
+      "title": "价格和行业线索",
+      "priority": "normal",
+      "summary": "能源、金属、半导体和航运等主题变化",
+      "details": [
+        "WTI原油上涨约 1.21%，关注对油气、化工、航运、航空的传导。",
+        "半导体ETF下跌约 5.64%，关注芯片、AI算力、消费电子、设备材料是否受益或承压。",
+        "全球航运ETF下跌约 1.42%，关注集运、干散货、港口、全球贸易是否受益或承压。",
+        "这些只是机会线索，后续需要结合公司公告、库存、供需和政策验证。"
+      ],
+      "source": "Yahoo Finance chart"
+    },
+    {
+      "id": "companies",
+      "type": "companies",
+      "title": "公司观察池",
+      "priority": "normal",
+      "summary": "重点公司价格变化和新闻线索",
+      "details": [
+        "ASML股价下跌约 2.53%，需要核对是否与财报、指引或行业新闻有关。",
+        "AMD股价下跌约 2.06%，需要核对是否与财报、指引或行业新闻有关。",
+        "AMD出现AI线索：AMD Named Current Company to Beat in Gartner® AI Vendor Race - AMD",
+        "AMD出现AI线索：AMD (AMD) Acquires MEXT To Tackle AI Memory Bottlenecks In Data Centers - Yahoo Finance",
+        "台积电出现AI线索：TSMC (NYSE:TSM) Is Raising 7nm Chip Prices Up To 10% As Expansion Builds - simplywall.st",
+        "公司层面必须回到交易所公告、公司 IR 或财报原文核验。"
+      ],
+      "source": "Yahoo Finance chart + Google News RSS"
+    },
+    {
+      "id": "schedule",
+      "type": "schedule",
+      "title": "今天待办",
+      "priority": "high",
+      "summary": "当前使用本地日程文件，不依赖公司 Outlook 授权。",
+      "details": [
+        "09:30-10:00 检查今日日程和项目优先级。准备：打开松果项目目录，确认今天要完成的最小交付物。",
+        "14:00-15:00 整理松果早报固定栏目。准备：看一遍昨天保存的早报，标记哪些栏目需要真实数据。",
+        "16:00-16:30 整理松果下一步任务。准备：把今天遇到的问题写成 3 条。",
+        "20:30-20:50 复盘学习和项目进度。准备：记录今天学到了什么、代码跑通了什么、明天接什么能力。"
+      ],
+      "source": "local"
+    },
+    {
+      "id": "life",
+      "type": "life",
+      "title": "生活提醒",
+      "priority": "normal",
+      "summary": "照顾好今天的精力和节奏",
+      "details": [
+        "记得刷牙、喝水，出门前看一下钥匙和手机。",
+        "如果今天久坐，上午和下午各做一次 3 分钟拉伸。",
+        "晚上可以简单整理桌面，让明天早上开始得更轻松。"
+      ],
+      "source": "local_rules"
+    }
+  ],
+  "speech_script": [
+    {
+      "id": "butler-01",
+      "section": "opening",
+      "text": "早安，小主人。我是松果。北京-朝阳今天雷雨，气温22-29°C。外面可能会有点湿乱，今天我会多提醒你几句。我先用最省心的方式，把天气、待办和几条重要线索讲给你听。",
+      "voice": {
+        "style": "warm",
+        "speed": "normal",
+        "pause_after_ms": 750
+      }
+    },
+    {
+      "id": "butler-02",
+      "section": "care",
+      "text": "今天外面不太省心，出门前把伞、钥匙和手机都看一眼。穿衣上，建议穿短袖、薄衬衫或轻便长裤，包里放一把伞更稳妥。 另外，记得刷牙、喝水，出门前看一下钥匙和手机。；如果今天久坐，上午和下午各做一次 3 分钟拉伸。。",
+      "voice": {
+        "style": "gentle",
+        "speed": "normal",
+        "pause_after_ms": 700
+      }
+    },
+    {
+      "id": "butler-03",
+      "section": "agenda",
+      "text": "今天先抓住 09:30 的「检查今日日程和项目优先级」。后面我会再提醒你：14:00 整理松果早报固定栏目；16:00 整理松果下一步任务。",
+      "voice": {
+        "style": "encouraging",
+        "speed": "normal",
+        "pause_after_ms": 650
+      }
+    },
+    {
+      "id": "butler-04",
+      "section": "finance",
+      "text": "财经部分我会谨慎一点。今天先看两个重点：市场情绪：偏谨慎，多个主要指数出现明显下跌；以及半导体ETF下跌，关注产业传导。这些先当线索，我会把核验入口放在旁边。",
+      "voice": {
+        "style": "careful",
+        "speed": "normal",
+        "pause_after_ms": 800
+      }
+    },
+    {
+      "id": "butler-05",
+      "section": "closing",
+      "text": "小主人，今天不用一下子把所有事做完。我们先把最重要的一步推进好：提升早报质量、追问能力、本地记忆、语音和数字人输出。我会在旁边帮你看着节奏，慢慢来。",
+      "voice": {
+        "style": "warm",
+        "speed": "normal",
+        "pause_after_ms": 950
+      }
+    }
+  ],
+  "avatar_timeline": [
+    {
+      "id": "hello",
+      "section": "opening",
+      "expression": "smile",
+      "gesture": "wave",
+      "camera": "medium",
+      "caption": "早安，小主人。我是松果。北京-朝阳今天雷雨，气温22-29°C。外面可能会有点湿乱，今天我会多提醒你几句。我先用最省心的方式，把天气、待办和几条重要线索讲给你听。"
+    },
+    {
+      "id": "care",
+      "section": "care",
+      "expression": "gentle",
+      "gesture": "present_left",
+      "camera": "medium",
+      "caption": "今天外面不太省心，出门前把伞、钥匙和手机都看一眼。穿衣上，建议穿短袖、薄衬衫或轻便长裤，包里放一把伞更稳妥。 另外，记得刷牙、喝水，出门前看一下钥匙和手机。；如果今天久坐，上午和下午各做一次 3 分钟拉伸。。"
+    },
+    {
+      "id": "agenda",
+      "section": "agenda",
+      "expression": "encouraging",
+      "gesture": "checklist",
+      "camera": "medium",
+      "caption": "今天先抓住 09:30 的「检查今日日程和项目优先级」。后面我会再提醒你：14:00 整理松果早报固定栏目；16:00 整理松果下一步任务。"
+    },
+    {
+      "id": "reminders",
+      "section": "reminders",
+      "expression": "encouraging",
+      "gesture": "checklist",
+      "camera": "medium",
+      "caption": "今天我会安排 9 条提醒，其中 3 条是高优先级。"
+    },
+    {
+      "id": "finance",
+      "section": "finance",
+      "expression": "focused",
+      "gesture": "point_screen",
+      "camera": "medium_close",
+      "caption": "财经部分我会谨慎一点。今天先看两个重点：市场情绪：偏谨慎，多个主要指数出现明显下跌；以及半导体ETF下跌，关注产业传导。这些先当线索，我会把核验入口放在旁边。"
+    },
+    {
+      "id": "closing",
+      "section": "closing",
+      "expression": "warm",
+      "gesture": "small_nod",
+      "camera": "medium_close",
+      "caption": "小主人，今天不用一下子把所有事做完。我们先把最重要的一步推进好：提升早报质量、追问能力、本地记忆、语音和数字人输出。我会在旁边帮你看着节奏，慢慢来。"
+    }
+  ],
+  "source_summary": {
+    "weather": "Open-Meteo",
+    "market": "Yahoo Finance chart",
+    "news": "RSS",
+    "themes": "Yahoo Finance chart",
+    "companies": "Yahoo Finance chart + Google News RSS",
+    "schedule": "local",
+    "memory": "user_profile",
+    "reliability_note": "财经、新闻和公司观察池先作为线索输出，重要结论需要回到原始来源核验。"
+  },
+  "speech_audio_path": "2026-06-29/speech_audio.wav"
+}

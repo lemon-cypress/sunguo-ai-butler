@@ -1,0 +1,424 @@
+{
+  "version": "avatar-3d-package-v1",
+  "avatar_profile": {
+    "version": "avatar-3d-profile-v1",
+    "name": "松果",
+    "archetype": "sunny_gentle_butler",
+    "age_look": "18",
+    "body": {
+      "height_cm": 166,
+      "build": "slim_balanced",
+      "proportion": "stylized_realistic"
+    },
+    "face": {
+      "shape": "soft_oval",
+      "eyes": "bright_almond",
+      "nose": "small_straight",
+      "lips": "soft_natural",
+      "skin_tone": "light_warm"
+    },
+    "hair": {
+      "color": "dark_brown",
+      "style": "long_soft_layers",
+      "bangs": "light_air_bangs"
+    },
+    "outfit": {
+      "default": "mint_housekeeper_dress",
+      "variants": [
+        "mint_housekeeper_dress",
+        "cream_home_cardigan",
+        "navy_briefing_uniform"
+      ]
+    },
+    "voice_style": {
+      "tone": "warm_reliable",
+      "pace": "medium_soft",
+      "emotion_range": [
+        "smile",
+        "warm",
+        "gentle",
+        "focused",
+        "encouraging"
+      ]
+    },
+    "rig_requirements": {
+      "full_body": true,
+      "finger_rig": true,
+      "facial_blendshape_target": "arkit_52_or_equivalent",
+      "physics": [
+        "hair_secondary_motion",
+        "skirt_secondary_motion"
+      ]
+    },
+    "model_assets": {
+      "primary_vrm": "frontend/assets/avatar/sunguo.vrm",
+      "fallback": "low_poly_placeholder",
+      "supported_formats": [
+        "vrm",
+        "glb",
+        "gltf"
+      ]
+    },
+    "authoring_tools": {
+      "prototype": "VRoid Studio",
+      "cleanup": "Blender",
+      "runtime_preview": "Three.js"
+    }
+  },
+  "virtual_space": {
+    "version": "virtual-space-v1",
+    "space_id": "sunguo_home_console",
+    "theme": "quiet_modern_home",
+    "scale": "interior_small_room",
+    "spawn_point": "briefing_spot",
+    "hotspots": [
+      {
+        "id": "briefing_spot",
+        "label": "Briefing Spot",
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "use_case": "morning_brief"
+      },
+      {
+        "id": "desk_side",
+        "label": "Desk Side",
+        "location": [
+          1.4,
+          0.0,
+          -0.6
+        ],
+        "use_case": "project_focus"
+      },
+      {
+        "id": "window_side",
+        "label": "Window Side",
+        "location": [
+          -1.2,
+          0.0,
+          0.8
+        ],
+        "use_case": "weather_commentary"
+      },
+      {
+        "id": "owner_side",
+        "label": "Owner Side",
+        "location": [
+          0.6,
+          0.0,
+          1.1
+        ],
+        "use_case": "active_reminder"
+      }
+    ],
+    "camera_presets": [
+      {
+        "id": "medium",
+        "position": [
+          0.0,
+          1.45,
+          2.5
+        ],
+        "look_at": [
+          0.0,
+          1.35,
+          0.0
+        ]
+      },
+      {
+        "id": "medium_close",
+        "position": [
+          0.0,
+          1.55,
+          2.0
+        ],
+        "look_at": [
+          0.0,
+          1.42,
+          0.0
+        ]
+      },
+      {
+        "id": "full_body",
+        "position": [
+          0.0,
+          1.35,
+          3.3
+        ],
+        "look_at": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      }
+    ],
+    "ambient_actions": [
+      "breathing_idle",
+      "look_to_screen",
+      "small_weight_shift",
+      "walk_between_briefing_and_desk"
+    ]
+  },
+  "runtime_state": {
+    "character_name": "松果",
+    "owner_name": "小主人",
+    "default_expression": "warm",
+    "default_pose": "idle_stand",
+    "default_location": "briefing_spot",
+    "wardrobe_slot": "daily_home_v1",
+    "voice_slot": "cn_female_sunshine_v1"
+  },
+  "animation_plan": {
+    "briefing_clips": [
+      {
+        "id": "clip_01",
+        "section": "opening",
+        "state": "smile",
+        "gesture": "wave",
+        "locomotion": "idle_in_place",
+        "look_at": "owner_camera",
+        "duration_ms": 4655
+      },
+      {
+        "id": "clip_02",
+        "section": "care",
+        "state": "gentle",
+        "gesture": "open_palm",
+        "locomotion": "idle_in_place",
+        "look_at": "owner_camera",
+        "duration_ms": 6695
+      },
+      {
+        "id": "clip_03",
+        "section": "agenda",
+        "state": "encouraging",
+        "gesture": "checklist",
+        "locomotion": "idle_in_place",
+        "look_at": "owner_camera",
+        "duration_ms": 4500
+      },
+      {
+        "id": "clip_04",
+        "section": "finance",
+        "state": "focused",
+        "gesture": "point_screen",
+        "locomotion": "idle_in_place",
+        "look_at": "owner_camera",
+        "duration_ms": 4430
+      },
+      {
+        "id": "clip_05",
+        "section": "closing",
+        "state": "warm",
+        "gesture": "small_nod",
+        "locomotion": "idle_in_place",
+        "look_at": "owner_camera",
+        "duration_ms": 5020
+      }
+    ],
+    "reminder_clips": [
+      {
+        "id": "reminder_01",
+        "trigger_time": "08:30",
+        "expression": "gentle",
+        "gesture": "present_left",
+        "locomotion": "walk_to_owner",
+        "location": "owner_side"
+      },
+      {
+        "id": "reminder_02",
+        "trigger_time": "08:35",
+        "expression": "focused",
+        "gesture": "point_screen",
+        "locomotion": "walk_to_owner",
+        "location": "owner_side"
+      },
+      {
+        "id": "reminder_03",
+        "trigger_time": "09:20",
+        "expression": "encouraging",
+        "gesture": "checklist",
+        "locomotion": "walk_to_owner",
+        "location": "owner_side"
+      },
+      {
+        "id": "reminder_04",
+        "trigger_time": "11:00",
+        "expression": "smile",
+        "gesture": "small_nod",
+        "locomotion": "walk_to_owner",
+        "location": "owner_side"
+      },
+      {
+        "id": "reminder_05",
+        "trigger_time": "13:50",
+        "expression": "encouraging",
+        "gesture": "checklist",
+        "locomotion": "walk_to_owner",
+        "location": "owner_side"
+      },
+      {
+        "id": "reminder_06",
+        "trigger_time": "15:30",
+        "expression": "smile",
+        "gesture": "small_nod",
+        "locomotion": "walk_to_owner",
+        "location": "owner_side"
+      },
+      {
+        "id": "reminder_07",
+        "trigger_time": "15:50",
+        "expression": "encouraging",
+        "gesture": "checklist",
+        "locomotion": "walk_to_owner",
+        "location": "owner_side"
+      },
+      {
+        "id": "reminder_08",
+        "trigger_time": "20:20",
+        "expression": "encouraging",
+        "gesture": "checklist",
+        "locomotion": "walk_to_owner",
+        "location": "owner_side"
+      }
+    ],
+    "idle_loop": {
+      "expression": "warm",
+      "gesture": "breathing_idle",
+      "locomotion": "ambient_shift"
+    }
+  },
+  "navigation_points": [
+    {
+      "id": "briefing_spot",
+      "label": "Briefing Spot",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "use_case": "morning_brief"
+    },
+    {
+      "id": "desk_side",
+      "label": "Desk Side",
+      "location": [
+        1.4,
+        0.0,
+        -0.6
+      ],
+      "use_case": "project_focus"
+    },
+    {
+      "id": "window_side",
+      "label": "Window Side",
+      "location": [
+        -1.2,
+        0.0,
+        0.8
+      ],
+      "use_case": "weather_commentary"
+    },
+    {
+      "id": "owner_side",
+      "label": "Owner Side",
+      "location": [
+        0.6,
+        0.0,
+        1.1
+      ],
+      "use_case": "active_reminder"
+    }
+  ],
+  "space_storyboard": [
+    {
+      "step": 1,
+      "location": "briefing_spot",
+      "camera": "full_body",
+      "action": "idle_greeting",
+      "reason": "早报开始时以全身站姿亮相，建立私人管家的存在感。",
+      "coordinates": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "step": 2,
+      "location": "window_side",
+      "camera": "medium",
+      "action": "weather_commentary",
+      "reason": "讲天气和穿衣建议时走到窗边，空间语义更自然。",
+      "coordinates": [
+        -1.2,
+        0.0,
+        0.8
+      ]
+    },
+    {
+      "step": 3,
+      "location": "desk_side",
+      "camera": "medium_close",
+      "action": "market_briefing",
+      "reason": "讲财经、项目和待办时靠近控制台或桌边。",
+      "coordinates": [
+        1.4,
+        0.0,
+        -0.6
+      ]
+    },
+    {
+      "step": 4,
+      "location": "owner_side",
+      "camera": "medium",
+      "action": "active_reminder",
+      "reason": "到点提醒时靠近主人，提高陪伴感和提醒感。",
+      "coordinates": [
+        0.6,
+        0.0,
+        1.1
+      ]
+    },
+    {
+      "step": 5,
+      "location": "briefing_spot",
+      "camera": "full_body",
+      "action": "warm_closing",
+      "reason": "结束时回到主位，方便切回待机循环。",
+      "coordinates": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "asset_requirements": [
+    {
+      "category": "body",
+      "target": "stylized_realistic_female_18yo",
+      "notes": "full body rig for Unreal/Unity"
+    },
+    {
+      "category": "face",
+      "target": "soft_oval",
+      "notes": "52 ARKit blendshapes or equivalent"
+    },
+    {
+      "category": "hair",
+      "target": "long_soft_layers",
+      "notes": "front bangs plus pony-tail or loose back layers"
+    },
+    {
+      "category": "outfit",
+      "target": "mint_housekeeper_dress",
+      "notes": "daily outfit with warm home assistant tone"
+    },
+    {
+      "category": "space",
+      "target": "home_console_room_v1",
+      "notes": "briefing point, desk point, ambient walking loop"
+    }
+  ]
+}

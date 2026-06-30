@@ -1,0 +1,56 @@
+{
+  "version": "virtual-space-v1",
+  "space_id": "sunguo_home_console",
+  "theme": "quiet_modern_home",
+  "scale": "interior_small_room",
+  "spawn_point": "briefing_spot",
+  "hotspots": [
+    {
+      "id": "briefing_spot",
+      "label": "Briefing Spot",
+      "location": [0.0, 0.0, 0.0],
+      "use_case": "morning_brief"
+    },
+    {
+      "id": "desk_side",
+      "label": "Desk Side",
+      "location": [1.4, 0.0, -0.6],
+      "use_case": "project_focus"
+    },
+    {
+      "id": "window_side",
+      "label": "Window Side",
+      "location": [-1.2, 0.0, 0.8],
+      "use_case": "weather_commentary"
+    },
+    {
+      "id": "owner_side",
+      "label": "Owner Side",
+      "location": [0.6, 0.0, 1.1],
+      "use_case": "active_reminder"
+    }
+  ],
+  "camera_presets": [
+    {
+      "id": "medium",
+      "position": [0.0, 1.45, 2.5],
+      "look_at": [0.0, 1.35, 0.0]
+    },
+    {
+      "id": "medium_close",
+      "position": [0.0, 1.55, 2.0],
+      "look_at": [0.0, 1.42, 0.0]
+    },
+    {
+      "id": "full_body",
+      "position": [0.0, 1.35, 3.3],
+      "look_at": [0.0, 1.0, 0.0]
+    }
+  ],
+  "ambient_actions": [
+    "breathing_idle",
+    "look_to_screen",
+    "small_weight_shift",
+    "walk_between_briefing_and_desk"
+  ]
+}

@@ -1,0 +1,16 @@
+[Unit]
+Description=Sunguo dashboard server
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/sunguo/ai-butler
+ExecStart=/usr/bin/python3 /opt/sunguo/ai-butler/backend/app/dashboard_server.py --host 127.0.0.1 --port 8000
+Restart=always
+RestartSec=3
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
+
