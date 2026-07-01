@@ -107,3 +107,37 @@ COMPANY_PROVIDER=watchlist
 2. 新建 `alphavantage_client.py`
 3. 在 `morning_brief_demo.py` 中把对应 provider 从占位报错改成真实 API 调用
 4. 在网页中展示 provider 名称与成功/失败状态
+
+## 当前已完成
+
+- `marketaux_client.py` 已接入
+- `NEWS_PROVIDER=marketaux` 已能在主流程里调用
+- 当前抓取接口：
+  - `GET https://api.marketaux.com/v1/news/all`
+- 当前默认拉取：
+  - 过去 24 小时
+  - 英文
+  - 中国、美国、日本、韩国、英国、德国、法国
+  - 自动去相似新闻
+
+## 立即可用的配置
+
+在 `.env` 里填写：
+
+```text
+MARKETAUX_API_KEY=你的真实key
+NEWS_PROVIDER=marketaux
+NEWS_MAX_RECORDS_PER_QUERY=10
+```
+
+然后运行：
+
+```powershell
+python .\backend\app\morning_brief_demo.py --save
+```
+
+如果暂时不用 Marketaux，改回：
+
+```text
+NEWS_PROVIDER=rss
+```

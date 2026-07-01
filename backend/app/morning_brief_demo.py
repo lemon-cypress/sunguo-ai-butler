@@ -23,6 +23,7 @@ from insight_builder import build_insights
 from local_memory import load_user_profile, summarize_profile
 from local_schedule import load_local_schedule, summarize_local_tasks
 from market_client import MarketClientError, build_mock_market_snapshot, fetch_market_snapshot, load_symbols
+from marketaux_client import MarketauxClientError, fetch_marketaux_news
 from mock_data import build_mock_brief
 from news_enrichment import enrich_company_snapshot, enrich_news_snapshot
 from news_client import NewsClientError, build_mock_news_snapshot, fetch_news_snapshot, load_news_feeds
@@ -384,7 +385,12 @@ def build_news_data(settings, use_mock_news: bool) -> dict:
             if settings.news_provider == "rss":
                 feeds = load_news_feeds(settings.news_feeds_path)
                 return fetch_news_snapshot(feeds, max_records_per_feed=settings.news_max_records_per_query)
-            if settings.news_provider in {"marketaux", "newsapi", "gdelt"}:
+            if settings.news_provider == "marketaux":
+                return fetch_marketaux_news(
+                    api_key=settings.marketaux_api_key,
+                    max_records=settings.news_max_records_per_query,
+                )
+            if settings.news_provider in {"newsapi", "gdelt"}:
                 raise NewsClientError(
                     f"{settings.news_provider} news provider is planned but not wired yet. "
                     "The provider switch is ready; next step is to add the actual API client."
@@ -392,6 +398,11 @@ def build_news_data(settings, use_mock_news: bool) -> dict:
             raise NewsClientError(
                 unsupported_provider_message("News", settings.news_provider, SUPPORTED_NEWS_PROVIDERS)
             )
+        except MarketauxClientError as error:
+            print("Marketaux 新闻获取失败，先使用内置占位新闻数据。")
+            print(f"错误信息：{error}")
+            print("你可以稍后重试，或先改回 NEWS_PROVIDER=rss。")
+            print("")
         except NewsClientError as error:
             print("真实新闻数据获取失败，先使用内置占位新闻数据。")
             print(f"错误信息：{error}")
