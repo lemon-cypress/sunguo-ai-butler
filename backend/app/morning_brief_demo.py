@@ -9,6 +9,14 @@ from butler_persona import build_butler_brief
 from avatar_3d_builder import build_avatar_3d_package
 from company_client import CompanyClientError, build_mock_company_snapshot, fetch_company_snapshot, load_company_watchlist
 from config import get_settings
+from data_source_registry import (
+    SUPPORTED_COMPANY_PROVIDERS,
+    SUPPORTED_MARKET_PROVIDERS,
+    SUPPORTED_NEWS_PROVIDERS,
+    SUPPORTED_THEME_PROVIDERS,
+    SUPPORTED_WEATHER_PROVIDERS,
+    unsupported_provider_message,
+)
 from deepseek_client import DeepSeekClientError, DeepSeekQuotaError, create_chat_completion
 from financial_reasoning import build_finance_reasoning
 from insight_builder import build_insights
@@ -282,14 +290,7 @@ def build_brief(
     weather = None
     if settings.use_real_weather and not use_mock_weather:
         try:
-            weather = fetch_weather(
-                latitude=settings.weather_latitude,
-                longitude=settings.weather_longitude,
-                timezone=settings.timezone,
-                city=settings.default_city,
-                timeout_seconds=settings.weather_timeout_seconds,
-                retries=settings.weather_retries,
-            )
+            weather = build_weather_data(settings)
         except WeatherClientError as error:
             print("真实天气获取失败，先使用内置假天气。")
             print(f"错误信息：{error}")
@@ -340,11 +341,35 @@ def build_brief(
     return brief
 
 
+def build_weather_data(settings) -> dict:
+    if settings.weather_provider == "open_meteo":
+        return fetch_weather(
+            latitude=settings.weather_latitude,
+            longitude=settings.weather_longitude,
+            timezone=settings.timezone,
+            city=settings.default_city,
+            timeout_seconds=settings.weather_timeout_seconds,
+            retries=settings.weather_retries,
+        )
+    raise WeatherClientError(
+        unsupported_provider_message("Weather", settings.weather_provider, SUPPORTED_WEATHER_PROVIDERS)
+    )
+
+
 def build_market_data(settings, use_mock_market: bool) -> dict:
     if settings.use_real_markets and not use_mock_market:
         try:
-            symbols = load_symbols(settings.market_symbols_path)
-            return fetch_market_snapshot(symbols)
+            if settings.market_provider == "yahoo":
+                symbols = load_symbols(settings.market_symbols_path)
+                return fetch_market_snapshot(symbols)
+            if settings.market_provider in {"alphavantage", "finnhub", "polygon"}:
+                raise MarketClientError(
+                    f"{settings.market_provider} market provider is planned but not wired yet. "
+                    "The provider switch is ready; next step is to add the actual API client."
+                )
+            raise MarketClientError(
+                unsupported_provider_message("Market", settings.market_provider, SUPPORTED_MARKET_PROVIDERS)
+            )
         except MarketClientError as error:
             print("真实市场数据获取失败，先使用内置占位市场数据。")
             print(f"错误信息：{error}")
@@ -356,8 +381,17 @@ def build_market_data(settings, use_mock_market: bool) -> dict:
 def build_news_data(settings, use_mock_news: bool) -> dict:
     if settings.use_real_news and not use_mock_news:
         try:
-            feeds = load_news_feeds(settings.news_feeds_path)
-            return fetch_news_snapshot(feeds, max_records_per_feed=settings.news_max_records_per_query)
+            if settings.news_provider == "rss":
+                feeds = load_news_feeds(settings.news_feeds_path)
+                return fetch_news_snapshot(feeds, max_records_per_feed=settings.news_max_records_per_query)
+            if settings.news_provider in {"marketaux", "newsapi", "gdelt"}:
+                raise NewsClientError(
+                    f"{settings.news_provider} news provider is planned but not wired yet. "
+                    "The provider switch is ready; next step is to add the actual API client."
+                )
+            raise NewsClientError(
+                unsupported_provider_message("News", settings.news_provider, SUPPORTED_NEWS_PROVIDERS)
+            )
         except NewsClientError as error:
             print("真实新闻数据获取失败，先使用内置占位新闻数据。")
             print(f"错误信息：{error}")
@@ -369,8 +403,17 @@ def build_news_data(settings, use_mock_news: bool) -> dict:
 def build_theme_data(settings, use_mock_themes: bool) -> dict:
     if settings.use_real_themes and not use_mock_themes:
         try:
-            symbols = load_theme_symbols(settings.theme_symbols_path)
-            return fetch_theme_snapshot(symbols)
+            if settings.theme_provider == "yahoo":
+                symbols = load_theme_symbols(settings.theme_symbols_path)
+                return fetch_theme_snapshot(symbols)
+            if settings.theme_provider == "alphavantage":
+                raise ThemeClientError(
+                    "alphavantage theme provider is planned but not wired yet. "
+                    "The provider switch is ready; next step is to add the actual API client."
+                )
+            raise ThemeClientError(
+                unsupported_provider_message("Theme", settings.theme_provider, SUPPORTED_THEME_PROVIDERS)
+            )
         except ThemeClientError as error:
             print("真实主题/商品数据获取失败，先使用内置占位主题数据。")
             print(f"错误信息：{error}")
@@ -382,12 +425,21 @@ def build_theme_data(settings, use_mock_themes: bool) -> dict:
 def build_company_data(settings, use_mock_companies: bool) -> dict:
     if settings.use_real_companies and not use_mock_companies:
         try:
-            companies = load_company_watchlist(settings.company_watchlist_path)
-            return fetch_company_snapshot(
-                companies,
-                timeout_seconds=settings.company_timeout_seconds,
-                max_articles_per_company=settings.company_news_max_records,
-                max_companies=settings.company_max_count,
+            if settings.company_provider == "watchlist":
+                companies = load_company_watchlist(settings.company_watchlist_path)
+                return fetch_company_snapshot(
+                    companies,
+                    timeout_seconds=settings.company_timeout_seconds,
+                    max_articles_per_company=settings.company_news_max_records,
+                    max_companies=settings.company_max_count,
+                )
+            if settings.company_provider in {"marketaux", "finnhub"}:
+                raise CompanyClientError(
+                    f"{settings.company_provider} company provider is planned but not wired yet. "
+                    "The provider switch is ready; next step is to add the actual API client."
+                )
+            raise CompanyClientError(
+                unsupported_provider_message("Company", settings.company_provider, SUPPORTED_COMPANY_PROVIDERS)
             )
         except CompanyClientError as error:
             print("真实公司观察池数据获取失败，先使用内置占位公司数据。")
