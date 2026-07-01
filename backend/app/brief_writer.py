@@ -6,6 +6,31 @@ from pathlib import Path
 from tts_service import DEFAULT_RATE, DEFAULT_VOLUME, DEFAULT_VOICE_NAME, render_speech_audio
 
 
+def write_latest_index(latest_path: Path, date_text: str, path_prefix: str = "", speech_audio_name: str | None = None) -> Path:
+    normalized_prefix = path_prefix.strip("/")
+
+    def build_path(filename: str) -> str:
+        if normalized_prefix:
+            return f"{normalized_prefix}/{date_text}/{filename}"
+        return f"{date_text}/{filename}"
+
+    latest_payload = {
+        "date": date_text,
+        "bundle_path": build_path("output_bundle.json"),
+        "screen_cards_path": build_path("screen_cards.json"),
+        "speech_script_path": build_path("speech_script.json"),
+        "avatar_timeline_path": build_path("avatar_timeline.json"),
+        "avatar_3d_path": build_path("avatar_3d.json"),
+    }
+    if speech_audio_name:
+        latest_payload["speech_audio_path"] = build_path(speech_audio_name)
+    latest_path.write_text(
+        json.dumps(latest_payload, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    return latest_path
+
+
 def save_daily_brief(output_dir: Path, brief: dict, rendered_text: str) -> tuple[Path, Path]:
     """Save structured input and rendered brief text for later review."""
     date_text = str(brief.get("date", "unknown-date"))
@@ -76,19 +101,9 @@ def save_output_bundle(output_dir: Path, output_bundle: dict, update_latest: boo
     )
     if update_latest:
         latest_path = output_dir / "latest.json"
-        latest_payload = {
-            "date": date_text,
-            "bundle_path": f"{date_text}/output_bundle.json",
-            "screen_cards_path": f"{date_text}/screen_cards.json",
-            "speech_script_path": f"{date_text}/speech_script.json",
-            "avatar_timeline_path": f"{date_text}/avatar_timeline.json",
-            "avatar_3d_path": f"{date_text}/avatar_3d.json",
-        }
-        if speech_audio_path:
-            latest_payload["speech_audio_path"] = f"{date_text}/{speech_audio_path.name}"
-        latest_path.write_text(
-            json.dumps(latest_payload, ensure_ascii=False, indent=2),
-            encoding="utf-8",
+        paths["latest"] = write_latest_index(
+            latest_path,
+            date_text,
+            speech_audio_name=speech_audio_path.name if speech_audio_path else None,
         )
-        paths["latest"] = latest_path
     return paths

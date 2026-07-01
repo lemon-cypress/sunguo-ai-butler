@@ -1,0 +1,13 @@
+﻿[Unit]
+Description=Sunguo daily brief refresh
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/sunguo/ai-butler
+ExecStart=/bin/bash /opt/sunguo/ai-butler/deploy/aliyun/refresh_sunguo_brief.sh
+User=root
+
+[Install]
+WantedBy=multi-user.target

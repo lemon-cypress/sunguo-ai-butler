@@ -4,7 +4,7 @@ import argparse
 import json
 import sys
 
-from brief_writer import save_daily_brief, save_output_bundle
+from brief_writer import save_daily_brief, save_output_bundle, write_latest_index
 from butler_persona import build_butler_brief
 from avatar_3d_builder import build_avatar_3d_package
 from company_client import CompanyClientError, build_mock_company_snapshot, fetch_company_snapshot, load_company_watchlist
@@ -442,8 +442,18 @@ def main() -> None:
         output_paths = save_output_bundle(
             output_dir,
             build_output_bundle(brief, rendered),
-            update_latest=not is_mock_output,
+            update_latest=True,
         )
+        if is_mock_output:
+            root_latest = demos_dir / "latest.json"
+            write_latest_index(
+                root_latest,
+                str(brief.get("date", "unknown-date")),
+                path_prefix="mock",
+                speech_audio_name=output_paths.get("speech_audio").name if output_paths.get("speech_audio") else None,
+            )
+            output_paths["root_latest"] = root_latest
+
         print("")
         print("已保存早报：")
         print(f"- 结构化输入：{json_path}")
@@ -453,13 +463,11 @@ def main() -> None:
         print(f"- 语音台词：{output_paths['speech_script']}")
         print(f"- 数字人动作：{output_paths['avatar_timeline']}")
         print(f"- avatar_3d: {output_paths['avatar_3d']}")
-
+        if output_paths.get("latest"):
+            print(f"- latest: {output_paths['latest']}")
+        if output_paths.get("root_latest"):
+            print(f"- root latest: {output_paths['root_latest']}")
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
 

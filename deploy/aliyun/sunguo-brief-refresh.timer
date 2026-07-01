@@ -1,0 +1,10 @@
+﻿[Unit]
+Description=Run Sunguo daily brief refresh every morning
+
+[Timer]
+OnCalendar=*-*-* 07:00:00
+Persistent=true
+Unit=sunguo-brief-refresh.service
+
+[Install]
+WantedBy=timers.target
