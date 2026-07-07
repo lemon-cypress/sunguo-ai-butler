@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import argparse
 import json
@@ -18,6 +18,7 @@ from data_source_registry import (
     unsupported_provider_message,
 )
 from deepseek_client import DeepSeekClientError, DeepSeekQuotaError, create_chat_completion
+from event_timeline_builder import build_event_timeline
 from financial_reasoning import build_finance_reasoning
 from insight_builder import build_insights
 from local_memory import load_user_profile, summarize_profile
@@ -278,6 +279,7 @@ def build_news_digest_prompt(brief: dict) -> str:
         "news_data": brief.get("news_data", {}),
         "finance_reasoning": brief.get("finance_reasoning", {}),
         "brief_analysis": brief.get("brief_analysis", {}),
+        "event_timeline": brief.get("event_timeline", {}),
         "today_tasks": brief.get("outlook_tasks", []),
         "project_priorities": (brief.get("insights") or {}).get("priorities", []),
     }
@@ -309,6 +311,7 @@ JSON 结构必须是：
 
 栏目建议：
 - 今日总览
+- 过去24小时重要事件
 - 中国市场
 - 全球市场与宏观
 - 政策、监管与地缘
@@ -320,6 +323,7 @@ JSON 结构必须是：
 写作要求：
 - 不要在正文展示信息来源。
 - 不要写“新闻1/新闻2/观点：xxx”。
+- 优先使用 event_timeline 中的高分事件，保留可靠时间。
 - 每条必须有信息增量：发生了什么、为什么重要、影响什么、下一步看什么。
 - 如果数据不足，明确写“暂不下结论”，不要编造事实。
 - 投资相关内容只做信息整理，不给买卖建议。
@@ -448,6 +452,7 @@ def build_brief(
         brief["outlook_tasks"] = summarize_local_tasks(schedule)
     brief["insights"] = build_insights(brief)
     brief["finance_reasoning"] = build_finance_reasoning(brief)
+    brief["event_timeline"] = build_event_timeline(brief)
     brief["brief_analysis"] = build_brief_analysis(brief)
     brief["news_digest"] = build_news_digest(brief)
     brief["reminder_plan"] = build_reminder_plan(brief)
@@ -652,4 +657,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

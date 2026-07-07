@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 from typing import Any
@@ -9,6 +9,7 @@ BEIJING_TZ = timezone(timedelta(hours=8))
 def build_news_digest(brief: dict) -> dict:
     sections = [
         build_overview_section(brief),
+        build_timeline_section(brief),
         build_china_market_section(brief),
         build_global_macro_section(brief),
         build_policy_section(brief),
@@ -52,6 +53,25 @@ def build_overview_section(brief: dict) -> dict:
     return {"title": "今日总览", "items": items[:3]}
 
 
+def build_timeline_section(brief: dict) -> dict:
+    timeline = brief.get("event_timeline", {}) or {}
+    events = timeline.get("events", []) or []
+    items = []
+    for event in events[:8]:
+        title = clean_text(event.get("title"))
+        if not title:
+            continue
+        impact = clean_text(event.get("impact"))
+        verification = clean_text(event.get("verification"))
+        summary_parts = []
+        if event.get("category"):
+            summary_parts.append(f"归类：{event.get('category')}")
+        if impact:
+            summary_parts.append(f"影响：{impact}")
+        if verification:
+            summary_parts.append(f"下一步核验：{verification}")
+        items.append(news_item(title, "；".join(summary_parts), clean_text(event.get("time"))))
+    return {"title": "过去24小时重要事件", "items": items}
 def build_china_market_section(brief: dict) -> dict:
     market = brief.get("market_data", {}) or {}
     indices = [

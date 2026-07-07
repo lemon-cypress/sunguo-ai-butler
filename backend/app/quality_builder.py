@@ -2,49 +2,61 @@ from __future__ import annotations
 
 
 def build_brief_analysis(brief: dict) -> dict:
-    insights = brief.get("insights", {})
+    insights = brief.get("insights", {}) or {}
     stories = []
 
-    market_story = build_market_story(brief, insights)
-    if market_story:
-        stories.append(market_story)
+    event_stories = build_event_stories(brief)
+    stories.extend(event_stories)
 
-    theme_story = build_theme_story(brief, insights)
-    if theme_story:
-        stories.append(theme_story)
-
-    company_story = build_company_story(brief, insights)
-    if company_story:
-        stories.append(company_story)
-
-    news_story = build_news_story(brief, insights)
-    if news_story:
-        stories.append(news_story)
-
-    schedule_story = build_schedule_story(brief)
-    if schedule_story:
-        stories.append(schedule_story)
+    for builder in [
+        build_market_story,
+        build_theme_story,
+        build_company_story,
+        build_news_story,
+        build_schedule_story,
+    ]:
+        story_item = builder(brief, insights) if builder != build_schedule_story else builder(brief)
+        if story_item and story_item.get("id") not in {item.get("id") for item in stories}:
+            stories.append(story_item)
 
     top_stories = stories[:3]
     return {
-        "version": "brief-analysis-v1",
-        "today_overview": build_overview(brief, top_stories),
+        "version": "brief-analysis-v2",
+        "today_overview": build_overview(top_stories),
         "top_stories": top_stories,
         "quality_rules": [
             "先讲结论，再讲证据。",
             "区分事实、线索和需要核验的推断。",
             "财经内容只做信息整理，不给买卖建议。",
+            "每条重要信息都要回答：为什么重要、影响谁、下一步看什么。",
         ],
     }
 
 
+def build_event_stories(brief: dict) -> list[dict]:
+    timeline = brief.get("event_timeline", {}) or {}
+    events = timeline.get("events", []) or []
+    stories = []
+    for index, event in enumerate(events[:3], start=1):
+        stories.append(story(
+            story_id=f"event-{index}",
+            title=event.get("title", "重点事件"),
+            why_it_matters=event.get("summary", "这条事件需要放进今日观察清单。"),
+            evidence=[event.get("time", ""), event.get("subject", ""), event.get("impact", "")],
+            impact=[event.get("impact", "")],
+            confidence=event.get("confidence", "线索"),
+            source="event_timeline",
+            follow_up=[event.get("verification", "继续核验原始来源和价格传导。")],
+        ))
+    return stories
+
+
 def build_market_story(brief: dict, insights: dict) -> dict | None:
-    market = insights.get("market", {})
-    movers = market.get("notable_movers", [])
+    market = insights.get("market", {}) or {}
+    movers = market.get("notable_movers", []) or []
     if not movers:
         return None
-
-    strongest = sorted(movers, key=lambda item: abs(item.get("change_percent", 0)), reverse=True)[0]
+    strongest = sorted(movers, key=lambda item: abs(item.get("change_percent", 0) or 0), reverse=True)[0]
     tone = market.get("tone", "市场方向待确认")
     evidence = f"{strongest.get('region', '')}{strongest.get('name', '')}变动约 {strongest.get('change_percent')}%。"
     return story(
@@ -60,19 +72,18 @@ def build_market_story(brief: dict, insights: dict) -> dict | None:
 
 
 def build_theme_story(brief: dict, insights: dict) -> dict | None:
-    themes = insights.get("themes", {})
-    candidates = themes.get("rising", []) + themes.get("falling", [])
+    themes = insights.get("themes", {}) or {}
+    candidates = (themes.get("rising", []) or []) + (themes.get("falling", []) or [])
     if not candidates:
         return None
-
-    strongest = sorted(candidates, key=lambda item: abs(item.get("change_percent", 0)), reverse=True)[0]
+    strongest = sorted(candidates, key=lambda item: abs(item.get("change_percent", 0) or 0), reverse=True)[0]
     direction = "上涨" if strongest.get("change_percent", 0) > 0 else "下跌"
     industries = strongest.get("affected_industries", [])[:4]
     return story(
         story_id="themes",
         title=f"{strongest.get('name', '主题价格')}{direction}，关注产业传导",
         why_it_matters="商品和主题价格变化会传导到成本、利润率、通胀预期和相关行业情绪。",
-        evidence=[f"{strongest.get('name', '')}{direction}约 {abs(strongest.get('change_percent', 0))}%。"],
+        evidence=[f"{strongest.get('name', '')}{direction}约 {abs(strongest.get('change_percent', 0) or 0)}%。"],
         impact=industries or ["能源", "金属", "半导体", "航运"],
         confidence="中",
         source=brief.get("theme_data", {}).get("source", "unknown"),
@@ -81,17 +92,17 @@ def build_theme_story(brief: dict, insights: dict) -> dict | None:
 
 
 def build_company_story(brief: dict, insights: dict) -> dict | None:
-    companies = insights.get("companies", {})
-    movers = companies.get("price_movers", [])
-    events = companies.get("article_events", [])
+    companies = insights.get("companies", {}) or {}
+    movers = companies.get("price_movers", []) or []
+    events = companies.get("article_events", []) or []
     if not movers and not events:
         return None
 
     if movers:
-        strongest = sorted(movers, key=lambda item: abs(item.get("change_percent", 0)), reverse=True)[0]
+        strongest = sorted(movers, key=lambda item: abs(item.get("change_percent", 0) or 0), reverse=True)[0]
         direction = "上涨" if strongest.get("change_percent", 0) > 0 else "下跌"
         title = f"{strongest.get('name', '重点公司')}{direction}，需要核验原因"
-        evidence = [f"{strongest.get('name', '')}{direction}约 {abs(strongest.get('change_percent', 0))}%。"]
+        evidence = [f"{strongest.get('name', '')}{direction}约 {abs(strongest.get('change_percent', 0) or 0)}%。"]
         impact = [strongest.get("sector", "公司观察池")]
     else:
         event = events[0]
@@ -112,11 +123,10 @@ def build_company_story(brief: dict, insights: dict) -> dict | None:
 
 
 def build_news_story(brief: dict, insights: dict) -> dict | None:
-    news = insights.get("news", {})
-    topics = news.get("possible_topics", [])
+    news = insights.get("news", {}) or {}
+    topics = news.get("possible_topics", []) or []
     if not topics:
         return None
-
     headline = first_headline(news)
     return story(
         story_id="news",
@@ -131,10 +141,9 @@ def build_news_story(brief: dict, insights: dict) -> dict | None:
 
 
 def build_schedule_story(brief: dict) -> dict | None:
-    tasks = brief.get("outlook_tasks", [])
+    tasks = brief.get("outlook_tasks", []) or []
     if not tasks:
         return None
-
     high = [task for task in tasks if task.get("priority") == "高"]
     task = high[0] if high else tasks[0]
     return story(
@@ -149,18 +158,17 @@ def build_schedule_story(brief: dict) -> dict | None:
     )
 
 
-def build_overview(brief: dict, stories: list[dict]) -> str:
+def build_overview(stories: list[dict]) -> str:
     if not stories:
         return "今天先保持轻量观察：天气、日程和市场线索都已整理，重点是把信息转成可执行行动。"
-
     first = stories[0]["title"]
     second = stories[1]["title"] if len(stories) > 1 else "待办事项已整理"
     return f"今天的早报重点是：{first}；同时关注{second}。我会把未核验内容标成线索，避免把标题直接当结论。"
 
 
 def first_headline(news: dict) -> str:
-    for group in news.get("headline_groups", []):
-        titles = group.get("top_titles", [])
+    for group in news.get("headline_groups", []) or []:
+        titles = group.get("top_titles", []) or []
         if titles:
             return titles[0]
     return ""

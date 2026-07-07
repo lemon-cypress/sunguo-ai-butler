@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import re
 
@@ -12,6 +12,7 @@ def build_output_bundle(brief: dict, rendered_text: str) -> dict:
         "brief_text": rendered_text,
         "brief_analysis": brief.get("brief_analysis", {}),
         "news_digest": brief.get("news_digest", {}),
+        "event_timeline": brief.get("event_timeline", {}),
         "insights": brief.get("insights", {}),
         "schedule": brief.get("schedule", {}),
         "news_data": brief.get("news_data", {}),
@@ -483,15 +484,3 @@ def format_schedule_items(events: list[dict]) -> list[str]:
         else:
             items.append(f"{start}-{end} {title}")
     return items
-
-
-
-
-
-
-
-
-
-
-
-
