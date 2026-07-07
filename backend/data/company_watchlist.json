@@ -26,13 +26,13 @@
   {
     "symbol": "MSFT",
     "name": "微软",
-    "sector": "云/AI应用",
+    "sector": "云与AI应用",
     "keywords": ["earnings", "Azure", "AI", "guidance"]
   },
   {
     "symbol": "GOOGL",
     "name": "Alphabet",
-    "sector": "云/AI应用",
+    "sector": "云与AI应用",
     "keywords": ["earnings", "cloud", "AI", "advertising"]
   },
   {
@@ -54,4 +54,3 @@
     "keywords": ["earnings", "freight rates", "shipping", "guidance"]
   }
 ]
-

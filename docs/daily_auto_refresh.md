@@ -5,13 +5,35 @@
 ## 现在已经实现的逻辑
 
 - 运行 `python3 backend/app/morning_brief_demo.py --save`
-- 无论是真实数据还是 mock 数据
-- 都会自动刷新：
+- 默认优先使用真实数据源：
+  - Open-Meteo 天气
+  - Yahoo Finance 行情
+  - Marketaux 新闻
+  - Google News RSS 公司线索
+  - DeepSeek 结构化改写
+- 生成成功后会自动刷新：
   - `demos/latest.json`
 - 如果当天产出是 mock 数据，`demos/latest.json` 会自动指向：
   - `mock/YYYY-MM-DD/output_bundle.json`
 
 这意味着前端网页始终读取当天最新结果。
+
+## 本地手动生成真实早报
+
+在 Windows PowerShell 里执行：
+
+```powershell
+cd E:\松果\ai-butler
+powershell -ExecutionPolicy Bypass -File .\scripts\generate_brief.ps1
+```
+
+如果只想测试页面结构，不调用真实接口：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\generate_brief.ps1 -Mock -NoAi
+```
+
+运行时生成的 `demos/YYYY-MM-DD/`、`demos/mock/`、`backend/data/todos.json` 都是运行时数据，不提交到 GitHub。
 
 ## 当前语音说明
 
@@ -43,6 +65,20 @@ cd /opt/sunguo/ai-butler
 sudo bash deploy/aliyun/refresh_sunguo_brief.sh
 cat demos/latest.json
 ```
+
+## 拉取 GitHub 最新代码并刷新网页
+
+```bash
+cd /opt/sunguo/ai-butler
+sudo bash deploy/aliyun/update_sunguo.sh
+```
+
+这个脚本会：
+
+- `git pull --ff-only`
+- `npm install`
+- 重启 `sunguo-dashboard`
+- 立即刷新一次当天早报
 
 ## 查看是否已经定时生效
 

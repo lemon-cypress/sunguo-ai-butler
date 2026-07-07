@@ -26,7 +26,7 @@ def fetch_marketaux_news(
 
     published_after = (
         datetime.now(timezone.utc) - timedelta(hours=max(1, published_after_hours))
-    ).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    ).strftime("%Y-%m-%d")
 
     params = {
         "api_token": api_key,
@@ -38,19 +38,7 @@ def fetch_marketaux_news(
         "sort": "published_desc",
         "group_similar": "true",
     }
-    url = f"{MARKETAUX_NEWS_URL}?{urllib.parse.urlencode(params)}"
-    request = urllib.request.Request(url, headers={"User-Agent": "sunguo-ai-butler/0.1"})
-
-    try:
-        with urllib.request.urlopen(request, timeout=20) as response:
-            payload = json.loads(response.read().decode("utf-8"))
-    except urllib.error.HTTPError as error:
-        body = error.read().decode("utf-8", errors="replace")
-        raise MarketauxClientError(f"Marketaux HTTP {error.code}: {body[:1000]}") from error
-    except urllib.error.URLError as error:
-        raise MarketauxClientError(f"Marketaux network error: {error}") from error
-    except json.JSONDecodeError as error:
-        raise MarketauxClientError("Marketaux returned invalid JSON.") from error
+    payload = fetch_marketaux_payload(params)
 
     if "error" in payload:
         raise MarketauxClientError(str(payload["error"]))
@@ -80,18 +68,63 @@ def fetch_marketaux_news(
     }
 
 
+def fetch_marketaux_payload(params: dict[str, str]) -> dict:
+    try:
+        return request_marketaux(params)
+    except MarketauxClientError as error:
+        lower = str(error).lower()
+        if "published_after" in lower and "malformed_parameters" in lower:
+            fallback_params = dict(params)
+            fallback_params.pop("published_after", None)
+            return request_marketaux(fallback_params)
+        raise
+
+
+def request_marketaux(params: dict[str, str]) -> dict:
+    url = f"{MARKETAUX_NEWS_URL}?{urllib.parse.urlencode(params)}"
+    request = urllib.request.Request(url, headers={"User-Agent": "sunguo-ai-butler/0.1"})
+
+    try:
+        with urllib.request.urlopen(request, timeout=20) as response:
+            return json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as error:
+        body = error.read().decode("utf-8", errors="replace")
+        raise MarketauxClientError(f"Marketaux HTTP {error.code}: {body[:1000]}") from error
+    except urllib.error.URLError as error:
+        raise MarketauxClientError(f"Marketaux network error: {error}") from error
+    except json.JSONDecodeError as error:
+        raise MarketauxClientError("Marketaux returned invalid JSON.") from error
+
+
 def normalize_marketaux_article(item: dict) -> dict:
     entities = item.get("entities") or []
-    symbols = [entity.get("symbol", "") for entity in entities if entity.get("symbol")]
-    entity_names = [entity.get("name", "") for entity in entities if entity.get("name")]
-    source = item.get("source") or {}
+    symbols = []
+    entity_names = []
+    for entity in entities:
+        if isinstance(entity, dict):
+            if entity.get("symbol"):
+                symbols.append(entity.get("symbol", ""))
+            if entity.get("name"):
+                entity_names.append(entity.get("name", ""))
+        elif isinstance(entity, str) and entity.strip():
+            entity_names.append(entity.strip())
+
+    source_name = ""
+    source_domain = ""
+    source = item.get("source")
+    if isinstance(source, dict):
+        source_name = str(source.get("name", "") or "")
+        source_domain = str(source.get("domain", "") or "")
+    elif isinstance(source, str):
+        source_name = source
+
     return {
         "title": item.get("title", ""),
         "url": item.get("url", ""),
         "published": item.get("published_at", ""),
         "description": item.get("description", "") or item.get("snippet", ""),
-        "source_name": source.get("name", ""),
-        "source_domain": source.get("domain", ""),
+        "source_name": source_name,
+        "source_domain": source_domain,
         "symbols": symbols[:8],
         "entities": entity_names[:8],
         "sentiment": item.get("sentiment"),

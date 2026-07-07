@@ -26,6 +26,7 @@ from market_client import MarketClientError, build_mock_market_snapshot, fetch_m
 from marketaux_client import MarketauxClientError, fetch_marketaux_news
 from mock_data import build_mock_brief
 from news_enrichment import enrich_company_snapshot, enrich_news_snapshot
+from news_digest_builder import build_news_digest
 from news_client import NewsClientError, build_mock_news_snapshot, fetch_news_snapshot, load_news_feeds
 from openai_client import OpenAIClientError, OpenAIQuotaError, create_response
 from output_builder import build_output_bundle
@@ -267,6 +268,118 @@ def generate_ai_brief(settings, brief: dict) -> str | None:
     return None
 
 
+def build_news_digest_prompt(brief: dict) -> str:
+    digest_input = {
+        "date": brief.get("date"),
+        "city": brief.get("city"),
+        "market_data": brief.get("market_data", {}),
+        "theme_data": brief.get("theme_data", {}),
+        "company_data": brief.get("company_data", {}),
+        "news_data": brief.get("news_data", {}),
+        "finance_reasoning": brief.get("finance_reasoning", {}),
+        "brief_analysis": brief.get("brief_analysis", {}),
+        "today_tasks": brief.get("outlook_tasks", []),
+        "project_priorities": (brief.get("insights") or {}).get("priorities", []),
+    }
+    payload = json.dumps(digest_input, ensure_ascii=False, indent=2)
+    return f"""
+你是“松果”的早报编辑，需要把原始行情、新闻和项目事项整理成网页可展示的中文早报。
+
+请只输出 JSON，不要输出 Markdown，不要解释。
+
+JSON 结构必须是：
+{{
+  "version": "news-digest-ai-v1",
+  "date": "...",
+  "city": "...",
+  "overview": ["一句话总览1", "一句话总览2", "一句话总览3"],
+  "sections": [
+    {{
+      "title": "中国市场",
+      "items": [
+        {{
+          "time": "07-06 09:30",
+          "thesis": "这里写一个明确判断或观点，不要写“观点：”两个字",
+          "summary": "解释为什么重要、影响哪些资产或行业、下一步核验什么"
+        }}
+      ]
+    }}
+  ]
+}}
+
+栏目建议：
+- 今日总览
+- 中国市场
+- 全球市场与宏观
+- 政策、监管与地缘
+- 科技与产业
+- 公司与资本运作
+- 大宗商品、能源与供应链
+- 今日重点观察
+
+写作要求：
+- 不要在正文展示信息来源。
+- 不要写“新闻1/新闻2/观点：xxx”。
+- 每条必须有信息增量：发生了什么、为什么重要、影响什么、下一步看什么。
+- 如果数据不足，明确写“暂不下结论”，不要编造事实。
+- 投资相关内容只做信息整理，不给买卖建议。
+- 每个栏目 1-4 条，总条数控制在 18-25 条。
+- 有时间就写 time；没有可靠时间就省略 time。
+
+原始数据：
+{payload}
+""".strip()
+
+
+def generate_ai_news_digest(settings, brief: dict) -> dict | None:
+    if settings.ai_provider != "deepseek" or not settings.deepseek_api_key:
+        return None
+
+    try:
+        raw = create_chat_completion(
+            settings.deepseek_api_key,
+            settings.deepseek_model,
+            build_news_digest_prompt(brief),
+        )
+        payload = parse_json_object(raw)
+        validate_news_digest(payload)
+        return payload
+    except (DeepSeekClientError, ValueError, json.JSONDecodeError) as error:
+        print("AI 新闻汇总生成失败，继续使用本地规则版新闻汇总。")
+        print(f"错误信息：{error}")
+        print("")
+        return None
+
+
+def parse_json_object(raw: str) -> dict:
+    text = raw.strip()
+    if text.startswith("```"):
+        text = text.strip("`")
+        if text.lower().startswith("json"):
+            text = text[4:].strip()
+    start = text.find("{")
+    end = text.rfind("}")
+    if start < 0 or end < start:
+        raise ValueError("AI response did not contain a JSON object.")
+    return json.loads(text[start : end + 1])
+
+
+def validate_news_digest(payload: dict) -> None:
+    if not isinstance(payload, dict):
+        raise ValueError("news digest is not an object")
+    if not isinstance(payload.get("sections"), list) or not payload["sections"]:
+        raise ValueError("news digest sections is empty")
+    for section in payload["sections"]:
+        if not isinstance(section, dict) or not section.get("title"):
+            raise ValueError("news digest section missing title")
+        if not isinstance(section.get("items"), list) or not section["items"]:
+            raise ValueError(f"news digest section has no items: {section.get('title')}")
+        for item in section["items"]:
+            if not isinstance(item, dict) or not item.get("thesis"):
+                raise ValueError(f"news digest item missing thesis: {section.get('title')}")
+            item.setdefault("summary", "")
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="生成松果早安汇报")
     parser.add_argument("--save", action="store_true", help="保存结构化输入和早报文本到 demos 目录")
@@ -336,6 +449,7 @@ def build_brief(
     brief["insights"] = build_insights(brief)
     brief["finance_reasoning"] = build_finance_reasoning(brief)
     brief["brief_analysis"] = build_brief_analysis(brief)
+    brief["news_digest"] = build_news_digest(brief)
     brief["reminder_plan"] = build_reminder_plan(brief)
     brief["butler_brief"] = build_butler_brief(brief)
     brief["avatar_3d"] = build_avatar_3d_package(brief)
@@ -490,6 +604,11 @@ def main() -> None:
     if args.show_json:
         print(json.dumps(brief, ensure_ascii=False, indent=2))
         return
+
+    if not args.no_ai:
+        ai_news_digest = generate_ai_news_digest(settings, brief)
+        if ai_news_digest:
+            brief["news_digest"] = ai_news_digest
 
     rendered = None if args.no_ai else generate_ai_brief(settings, brief)
     if not rendered:

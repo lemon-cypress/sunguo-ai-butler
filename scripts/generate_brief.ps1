@@ -6,9 +6,19 @@ param(
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
 Set-Location $ProjectRoot
 
-$Python = Get-Command python -ErrorAction SilentlyContinue
-if (-not $Python) {
-    Write-Host "Python was not found in PATH. Please open a new PowerShell window or reinstall Python with Add to PATH enabled."
+$PythonCommand = $null
+$SystemPython = Get-Command python -ErrorAction SilentlyContinue
+if ($SystemPython) {
+    $PythonCommand = $SystemPython.Source
+} else {
+    $BundledPython = Join-Path $env:USERPROFILE ".cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe"
+    if (Test-Path $BundledPython) {
+        $PythonCommand = $BundledPython
+    }
+}
+
+if (-not $PythonCommand) {
+    Write-Host "Python was not found. Please install Python 3.11+ or open the project from Codex so the bundled runtime is available."
     exit 1
 }
 
@@ -22,4 +32,4 @@ if ($NoAi) {
     $ArgsList += "--no-ai"
 }
 
-& python @ArgsList
+& $PythonCommand @ArgsList

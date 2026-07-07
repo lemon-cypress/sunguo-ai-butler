@@ -8,5 +8,10 @@
     "category": "business",
     "label": "商业财经",
     "url": "https://feeds.bbci.co.uk/news/business/rss.xml"
+  },
+  {
+    "category": "markets",
+    "label": "全球市场",
+    "url": "https://feeds.bbci.co.uk/news/business/rss.xml"
   }
 ]

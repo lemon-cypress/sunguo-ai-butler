@@ -16,6 +16,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 REMINDERS_PATH = PROJECT_ROOT / "backend" / "data" / "reminders.json"
 USER_PROFILE_PATH = PROJECT_ROOT / "backend" / "data" / "user_profile.json"
 MOTION_CONFIG_PATH = PROJECT_ROOT / "frontend" / "avatar_motion_clips.json"
+TODOS_PATH = PROJECT_ROOT / "backend" / "data" / "todos.json"
 MEMORY_SECTIONS = {"regions", "industries", "companies", "markets", "news_topics", "life_reminders"}
 
 
@@ -26,6 +27,28 @@ def read_json(path: Path) -> dict:
 def write_json(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=True, indent=2) + "\n", encoding="ascii")
+
+
+def read_todos() -> dict:
+    if TODOS_PATH.exists():
+        return read_json(TODOS_PATH)
+    payload = {"version": "todo-list-v1", "items": []}
+    write_json(TODOS_PATH, payload)
+    return payload
+
+
+def normalize_todo(payload: dict) -> dict:
+    title = str(payload.get("title", "")).strip()
+    note = str(payload.get("note", "")).strip()
+    if not title:
+        raise ValueError("title is required")
+    todo_id = str(payload.get("id", "")).strip() or f"todo-{abs(hash((title, note))) % 10_000_000}"
+    return {
+        "id": todo_id,
+        "title": title,
+        "note": note,
+        "completed": bool(payload.get("completed", False)),
+    }
 
 
 
@@ -81,6 +104,8 @@ class DashboardHandler(SimpleHTTPRequestHandler):
         parsed = urlparse(self.path)
         if parsed.path == "/api/reminders":
             return self.write_json_response(read_json(REMINDERS_PATH))
+        if parsed.path == "/api/todos":
+            return self.write_json_response(read_todos())
         if parsed.path == "/api/memory":
             return self.get_memory()
         return super().do_GET()
@@ -88,6 +113,12 @@ class DashboardHandler(SimpleHTTPRequestHandler):
     def do_POST(self) -> None:
         parsed = urlparse(self.path)
         try:
+            if parsed.path == "/api/todos/add":
+                return self.add_todo()
+            if parsed.path == "/api/todos/toggle":
+                return self.toggle_todo()
+            if parsed.path == "/api/todos/delete":
+                return self.delete_todos()
             if parsed.path == "/api/reminders/add":
                 return self.add_reminder()
             if parsed.path == "/api/reminders/toggle":
@@ -105,6 +136,45 @@ class DashboardHandler(SimpleHTTPRequestHandler):
         except Exception as error:
             return self.write_json_response({"ok": False, "error": str(error)}, status=400)
         self.write_json_response({"ok": False, "error": "unknown endpoint"}, status=404)
+
+    def add_todo(self) -> None:
+        payload = read_todos()
+        items = payload.setdefault("items", [])
+        items.insert(0, normalize_todo(self.read_body_json()))
+        write_json(TODOS_PATH, payload)
+        self.write_json_response({"ok": True, "todos": payload})
+
+    def toggle_todo(self) -> None:
+        payload = self.read_body_json()
+        todo_id = str(payload.get("id", "")).strip()
+        completed = bool(payload.get("completed", False))
+        if not todo_id:
+            raise ValueError("id is required")
+        todos = read_todos()
+        matched = 0
+        for item in todos.setdefault("items", []):
+            if str(item.get("id", "")) == todo_id:
+                item["completed"] = completed
+                matched += 1
+        if not matched:
+            raise ValueError(f"no todo matched: {todo_id}")
+        write_json(TODOS_PATH, todos)
+        self.write_json_response({"ok": True, "todos": todos})
+
+    def delete_todos(self) -> None:
+        payload = self.read_body_json()
+        ids = payload.get("ids", [])
+        if not isinstance(ids, list) or not ids:
+            raise ValueError("ids must be a non-empty list")
+        id_set = {str(item).strip() for item in ids if str(item).strip()}
+        todos = read_todos()
+        before = len(todos.get("items", []))
+        todos["items"] = [item for item in todos.get("items", []) if str(item.get("id", "")) not in id_set]
+        deleted = before - len(todos["items"])
+        if deleted <= 0:
+            raise ValueError("no todos deleted")
+        write_json(TODOS_PATH, todos)
+        self.write_json_response({"ok": True, "deleted": deleted, "todos": todos})
 
     def add_reminder(self) -> None:
         rules = read_json(REMINDERS_PATH)
