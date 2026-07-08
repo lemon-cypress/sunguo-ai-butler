@@ -285,50 +285,53 @@ def build_news_digest_prompt(brief: dict) -> str:
     }
     payload = json.dumps(digest_input, ensure_ascii=False, indent=2)
     return f"""
-你是“松果”的早报编辑，需要把原始行情、新闻和项目事项整理成网页可展示的中文早报。
+你是“松果”的高质量每日早报编辑。你的任务不是复述标题，而是把过去 24 小时的市场、政策、产业、公司和项目线索整理成网页可展示的中文早报。
 
-请只输出 JSON，不要输出 Markdown，不要解释。
+只输出 JSON，不要输出 Markdown，不要解释，不要在 JSON 外加任何文字。
 
 JSON 结构必须是：
 {{
-  "version": "news-digest-ai-v1",
+  "version": "news-digest-ai-v2",
   "date": "...",
   "city": "...",
   "overview": ["一句话总览1", "一句话总览2", "一句话总览3"],
   "sections": [
     {{
-      "title": "中国市场",
+      "title": "总览",
       "items": [
         {{
           "time": "07-06 09:30",
-          "thesis": "这里写一个明确判断或观点，不要写“观点：”两个字",
-          "summary": "解释为什么重要、影响哪些资产或行业、下一步核验什么"
+          "thesis": "中国市场：某个明确事件或判断是今天最值得先看的线索",
+          "summary": "解释发生了什么、为什么重要、可能影响哪些资产/行业/公司、后续观察什么。"
         }}
       ]
     }}
   ]
 }}
 
-栏目建议：
-- 今日总览
-- 过去24小时重要事件
-- 中国市场
-- 全球市场与宏观
-- 政策、监管与地缘
-- 科技与产业
-- 公司与资本运作
-- 大宗商品、能源与供应链
-- 今日重点观察
+必须使用这些栏目标题，并尽量按顺序输出：
+1. 总览
+2. 过去24小时重要事件
+3. 中国市场
+4. 全球市场与宏观
+5. 政治、政策与监管
+6. 地缘政治、军事与安全
+7. 科技与产业
+8. 大宗商品、能源与供应链
+9. 公司与资本运作
+10. 今日重点观察
 
-写作要求：
-- 不要在正文展示信息来源。
-- 不要写“新闻1/新闻2/观点：xxx”。
-- 优先使用 event_timeline 中的高分事件，保留可靠时间。
-- 每条必须有信息增量：发生了什么、为什么重要、影响什么、下一步看什么。
-- 如果数据不足，明确写“暂不下结论”，不要编造事实。
-- 投资相关内容只做信息整理，不给买卖建议。
-- 每个栏目 1-4 条，总条数控制在 18-25 条。
-- 有时间就写 time；没有可靠时间就省略 time。
+写作规则：
+- 每条 item 的 thesis 要直接写“判断/事件”，不要写“观点：”“新闻1”“新闻2”“要点1”。
+- 每条 summary 必须包含信息增量，至少回答四件事中的两件：发生了什么、为什么重要、影响谁、下一步看什么。
+- 优先使用 event_timeline 里的高分事件；有可靠时间就写 time，没有可靠时间就省略 time。
+- 不要在正文展示信息来源，不要写“信息来源：”。
+- 不要编造事实。数据不足时写“暂不下结论”，并说明还需要核验什么。
+- 财经内容只做信息整理，不给买卖建议，不写“买入/卖出/推荐”。
+- 总条数控制在 18-25 条；每个栏目 1-4 条。
+- 语言要像一个专业但温和的私人管家：清晰、克制、具体，不要空话。
+- 不要把公司股价涨跌直接等同于基本面变化；必须提示回到公告、财报、电话会或监管文件核验。
+- 对宏观和地缘事件，要写清楚可能传导到利率、汇率、能源、航运、军工、科技或消费中的哪条链路。
 
 原始数据：
 {payload}
@@ -371,17 +374,44 @@ def parse_json_object(raw: str) -> dict:
 def validate_news_digest(payload: dict) -> None:
     if not isinstance(payload, dict):
         raise ValueError("news digest is not an object")
+    version = payload.get("version", "")
+    if version not in {"news-digest-ai-v1", "news-digest-ai-v2", "news-digest-v4"}:
+        payload["version"] = "news-digest-ai-v2"
+    if not isinstance(payload.get("overview"), list):
+        payload["overview"] = []
     if not isinstance(payload.get("sections"), list) or not payload["sections"]:
         raise ValueError("news digest sections is empty")
+
+    total_items = 0
+    banned_prefixes = ("观点：", "观点:", "新闻1", "新闻2", "新闻3", "要点1", "要点2")
     for section in payload["sections"]:
-        if not isinstance(section, dict) or not section.get("title"):
+        if not isinstance(section, dict) or not clean_digest_text(section.get("title")):
             raise ValueError("news digest section missing title")
+        section["title"] = clean_digest_text(section.get("title"))
         if not isinstance(section.get("items"), list) or not section["items"]:
             raise ValueError(f"news digest section has no items: {section.get('title')}")
         for item in section["items"]:
-            if not isinstance(item, dict) or not item.get("thesis"):
+            if not isinstance(item, dict):
+                raise ValueError(f"news digest item is not object: {section.get('title')}")
+            thesis = clean_digest_text(item.get("thesis"))
+            summary = clean_digest_text(item.get("summary"))
+            if not thesis:
                 raise ValueError(f"news digest item missing thesis: {section.get('title')}")
-            item.setdefault("summary", "")
+            if thesis.startswith(banned_prefixes):
+                raise ValueError(f"news digest item uses weak label: {thesis}")
+            if "信息来源" in thesis or "信息来源" in summary:
+                raise ValueError("news digest should not expose source labels in body")
+            item["thesis"] = thesis
+            item["summary"] = summary
+            if item.get("time"):
+                item["time"] = clean_digest_text(item.get("time"))
+            total_items += 1
+    if total_items < 8:
+        raise ValueError("news digest has too few items")
+
+
+def clean_digest_text(value) -> str:
+    return " ".join(str(value or "").replace("\n", " ").split())
 
 
 def parse_args() -> argparse.Namespace:
