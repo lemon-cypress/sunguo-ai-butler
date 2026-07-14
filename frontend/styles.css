@@ -17,7 +17,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: "Calibri", "Segoe UI", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-  font-size: 24px;
+  font-size: 16px;
   line-height: 1.62;
   letter-spacing: 0;
 }
@@ -30,7 +30,7 @@ input {
 .shell {
   width: min(2200px, calc(100vw - 36px));
   margin: 0 auto;
-  padding: 34px 0 60px;
+  padding: 23px 0 40px;
 }
 
 .topbar {
@@ -54,27 +54,27 @@ h1 {
 }
 
 h2 {
-  font-size: 32px;
+  font-size: 21px;
   line-height: 1.35;
   font-weight: 700;
 }
 
 .module {
-  margin-top: 24px;
+  margin-top: 16px;
   padding: 0;
   border: 0;
   background: transparent;
 }
 
 .news-module {
-  margin-top: 42px;
+  margin-top: 28px;
 }
 
 .section-heading {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 16px;
+  gap: 11px;
   padding: 0 0 12px;
   border-bottom: 1px solid var(--line);
 }
@@ -91,14 +91,14 @@ h2 {
 .news-source-strip span {
   display: inline-flex;
   align-items: center;
-  min-height: 24px;
+  min-height: 16px;
   color: var(--muted);
-  font-size: 18px;
+  font-size: 12px;
   line-height: 1.4;
 }
 
 .ghost-button {
-  height: 40px;
+  height: 27px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -134,21 +134,21 @@ h2 {
 .todo-item-main {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  min-height: 34px;
+  gap: 7px;
+  min-height: 23px;
 }
 
 .todo-checkbox {
-  width: 15px;
-  height: 15px;
-  margin-top: 10px;
+  width: 12px;
+  height: 12px;
+  margin-top: 7px;
   accent-color: #000000;
-  flex: 0 0 15px;
+  flex: 0 0 12px;
 }
 
 .todo-copy strong {
   display: block;
-  font-size: 24px;
+  font-size: 16px;
   font-weight: 400;
   line-height: 1.6;
 }
@@ -156,27 +156,27 @@ h2 {
 .todo-copy span {
   display: block;
   color: var(--muted);
-  font-size: 18px;
+  font-size: 12px;
   line-height: 1.45;
 }
 
 .todo-form {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.65fr) 120px;
-  gap: 10px;
-  margin-top: 10px;
-  padding-left: 30px;
+  grid-template-columns: minmax(0, 1fr) minmax(173px, 0.65fr) 80px;
+  gap: 7px;
+  margin-top: 7px;
+  padding-left: 20px;
 }
 
 .todo-form input,
 .todo-form button {
-  height: 48px;
-  padding: 0 10px;
+  height: 32px;
+  padding: 0 7px;
   border: 1px solid var(--line);
   border-radius: 0;
   background: #ffffff;
   color: var(--text);
-  font-size: 22px;
+  font-size: 15px;
   line-height: 1.4;
 }
 
@@ -186,26 +186,26 @@ h2 {
 
 .news-section h3 {
   margin: 0;
-  font-size: 24px;
+  font-size: 16px;
   line-height: 1.6;
   font-weight: 400;
 }
 
 .news-sections {
   display: grid;
-  gap: 22px;
-  margin-top: 14px;
+  gap: 15px;
+  margin-top: 9px;
 }
 
 .news-section-content {
   margin: 5px 0 0;
-  padding-left: 24px;
+  padding-left: 16px;
 }
 
 .news-pool-summary,
 .news-section-content {
   color: #333;
-  font-size: 21px;
+  font-size: 14px;
   line-height: 1.68;
 }
 
@@ -230,7 +230,7 @@ h2 {
 
 .news-section {
   margin: 0;
-  padding-left: 20px;
+  padding-left: 13px;
 }
 
 .news-section-title-row {
@@ -242,43 +242,43 @@ h2 {
 
 .news-dot {
   position: relative;
-  width: 20px;
-  height: 36px;
-  margin-left: -20px;
+  width: 13px;
+  height: 24px;
+  margin-left: -13px;
   flex: 0 0 auto;
 }
 
 .news-dot::after {
   content: "";
   position: absolute;
-  left: 6px;
-  top: 13px;
-  width: 7px;
-  height: 7px;
+  left: 4px;
+  top: 9px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: #111111;
 }
 
 .news-sublist {
   display: grid;
-  gap: 7px;
-  margin: 8px 0 0;
+  gap: 5px;
+  margin: 5px 0 0;
   padding: 0;
 }
 
 .news-line {
   display: grid;
-  grid-template-columns: minmax(240px, 300px) 92px minmax(0, 1fr);
-  column-gap: 14px;
+  grid-template-columns: minmax(160px, 200px) 62px minmax(0, 1fr);
+  column-gap: 9px;
   align-items: baseline;
   margin: 0;
-  font-size: 22px;
+  font-size: 15px;
   line-height: 1.68;
 }
 
 .news-line-meta {
   color: var(--muted);
-  font-size: 17px;
+  font-size: 11px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -287,7 +287,7 @@ h2 {
 .news-line-score,
 .media-article-score {
   color: var(--red);
-  font-size: 17px;
+  font-size: 11px;
   font-variant-numeric: tabular-nums;
   text-align: right;
 }
@@ -317,36 +317,36 @@ h2 {
 .media-help {
   margin: 0 0 7px;
   color: var(--muted);
-  font-size: 18px;
+  font-size: 12px;
 }
 
 .media-choices {
   display: flex;
   flex-wrap: wrap;
-  gap: 9px 18px;
-  margin: 0 0 9px;
+  gap: 6px 12px;
+  margin: 0 0 6px;
 }
 
 .media-choice {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 5px;
   color: #333;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 12px;
   line-height: 1.4;
 }
 
 .media-choice input {
-  width: 17px;
-  height: 17px;
+  width: 12px;
+  height: 12px;
   margin: 0;
   accent-color: #111;
 }
 
 .media-choice em {
   color: var(--muted);
-  font-size: 15px;
+  font-size: 10px;
   font-style: normal;
 }
 
@@ -361,9 +361,9 @@ h2 {
 
 .media-article {
   display: flex;
-  gap: 14px;
+  gap: 9px;
   align-items: baseline;
-  font-size: 21px;
+  font-size: 14px;
   line-height: 1.62;
   min-width: max-content;
   white-space: nowrap;
@@ -386,7 +386,7 @@ h2 {
 
 .media-article-source {
   color: var(--muted);
-  font-size: 17px;
+  font-size: 11px;
   flex: 0 0 auto;
 }
 
@@ -416,7 +416,7 @@ h2 {
   }
 
   .news-line {
-    grid-template-columns: 1fr 92px;
+    grid-template-columns: 1fr 62px;
   }
 
   .news-line-copy {
