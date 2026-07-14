@@ -6,6 +6,7 @@ import mimetypes
 import subprocess
 import sys
 import threading
+import uuid
 from datetime import datetime, timedelta, timezone
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -21,6 +22,7 @@ MOTION_CONFIG_PATH = PROJECT_ROOT / "frontend" / "avatar_motion_clips.json"
 TODOS_PATH = PROJECT_ROOT / "backend" / "data" / "todos.json"
 MEMORY_SECTIONS = {"regions", "industries", "companies", "markets", "news_topics", "life_reminders"}
 NEWS_REFRESH_LOCK = threading.Lock()
+TODO_LOCK = threading.Lock()
 NEWS_REFRESH_STATE = {"running": False, "last_error": "", "last_finished_at": ""}
 NEWS_REFRESH_MIN_INTERVAL = timedelta(minutes=5)
 
@@ -87,7 +89,9 @@ def normalize_todo(payload: dict) -> dict:
     note = str(payload.get("note", "")).strip()
     if not title:
         raise ValueError("title is required")
-    todo_id = str(payload.get("id", "")).strip() or f"todo-{abs(hash((title, note))) % 10_000_000}"
+    # Python deliberately randomizes hash() between processes.  A UUID keeps
+    # the browser-facing ID stable and collision-free across server restarts.
+    todo_id = f"todo-{uuid.uuid4().hex}"
     return {
         "id": todo_id,
         "title": title,
@@ -187,10 +191,15 @@ class DashboardHandler(SimpleHTTPRequestHandler):
         self.write_json_response({"ok": False, "error": "unknown endpoint"}, status=404)
 
     def add_todo(self) -> None:
-        payload = read_todos()
-        items = payload.setdefault("items", [])
-        items.insert(0, normalize_todo(self.read_body_json()))
-        write_json(TODOS_PATH, payload)
+        new_item = normalize_todo(self.read_body_json())
+        # The dashboard uses ThreadingHTTPServer, so serialize the read-modify-
+        # write cycle and avoid dropping an item when two browser actions land
+        # at nearly the same time.
+        with TODO_LOCK:
+            payload = read_todos()
+            items = payload.setdefault("items", [])
+            items.insert(0, new_item)
+            write_json(TODOS_PATH, payload)
         self.write_json_response({"ok": True, "todos": payload})
 
     def toggle_todo(self) -> None:
@@ -199,15 +208,16 @@ class DashboardHandler(SimpleHTTPRequestHandler):
         completed = bool(payload.get("completed", False))
         if not todo_id:
             raise ValueError("id is required")
-        todos = read_todos()
-        matched = 0
-        for item in todos.setdefault("items", []):
-            if str(item.get("id", "")) == todo_id:
-                item["completed"] = completed
-                matched += 1
-        if not matched:
-            raise ValueError(f"no todo matched: {todo_id}")
-        write_json(TODOS_PATH, todos)
+        with TODO_LOCK:
+            todos = read_todos()
+            matched = 0
+            for item in todos.setdefault("items", []):
+                if str(item.get("id", "")) == todo_id:
+                    item["completed"] = completed
+                    matched += 1
+            if not matched:
+                raise ValueError(f"no todo matched: {todo_id}")
+            write_json(TODOS_PATH, todos)
         self.write_json_response({"ok": True, "todos": todos})
 
     def delete_todos(self) -> None:
@@ -216,13 +226,14 @@ class DashboardHandler(SimpleHTTPRequestHandler):
         if not isinstance(ids, list) or not ids:
             raise ValueError("ids must be a non-empty list")
         id_set = {str(item).strip() for item in ids if str(item).strip()}
-        todos = read_todos()
-        before = len(todos.get("items", []))
-        todos["items"] = [item for item in todos.get("items", []) if str(item.get("id", "")) not in id_set]
-        deleted = before - len(todos["items"])
-        if deleted <= 0:
-            raise ValueError("no todos deleted")
-        write_json(TODOS_PATH, todos)
+        with TODO_LOCK:
+            todos = read_todos()
+            before = len(todos.get("items", []))
+            todos["items"] = [item for item in todos.get("items", []) if str(item.get("id", "")) not in id_set]
+            deleted = before - len(todos["items"])
+            if deleted <= 0:
+                raise ValueError("no todos deleted")
+            write_json(TODOS_PATH, todos)
         self.write_json_response({"ok": True, "deleted": deleted, "todos": todos})
 
     def add_reminder(self) -> None:
