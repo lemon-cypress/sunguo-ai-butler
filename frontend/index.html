@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>松果早报</title>
-    <link rel="stylesheet" href="./styles.css?v=brief-v3-20260707" />
+    <link rel="stylesheet" href="./styles.css?v=brief-v9-20260714" />
   </head>
   <body>
     <main class="shell">
@@ -26,73 +26,20 @@
         <div id="todoList" class="todo-list"></div>
         <form id="todoForm" class="todo-form">
           <input id="todoTitleInput" type="text" placeholder="新增待办事项" />
+          <input id="todoNoteInput" type="text" placeholder="补充说明（可选）" />
           <button type="submit">新增</button>
         </form>
       </section>
 
       <section class="module news-module" aria-label="当日新闻">
         <div class="section-heading">
-          <h2>新闻汇总</h2>
+          <h2>新闻</h2>
           <div class="news-source-strip" id="newsSourceStrip"></div>
         </div>
-        <ul id="overviewList" class="overview-list"></ul>
         <div id="newsSections" class="news-sections"></div>
       </section>
     </main>
 
-    <aside class="format-panel" aria-label="排版调参">
-      <div class="format-panel-header">
-        <strong>排版调参</strong>
-        <div class="format-panel-actions">
-          <button id="copyFormatBtn" type="button">复制参数</button>
-          <button id="resetFormatBtn" type="button">重置</button>
-        </div>
-      </div>
-      <div class="format-panel-body">
-        <label class="format-control">
-          <span>标题字号</span>
-          <input id="controlHeadingSize" type="range" min="16" max="28" step="1" />
-          <output id="outputHeadingSize"></output>
-        </label>
-        <label class="format-control">
-          <span>正文字号</span>
-          <input id="controlBodySize" type="range" min="13" max="22" step="1" />
-          <output id="outputBodySize"></output>
-        </label>
-        <label class="format-control">
-          <span>行间距</span>
-          <input id="controlLineHeight" type="range" min="1" max="1.8" step="0.05" />
-          <output id="outputLineHeight"></output>
-        </label>
-        <label class="format-control">
-          <span>模块间距</span>
-          <input id="controlModuleGap" type="range" min="20" max="80" step="2" />
-          <output id="outputModuleGap"></output>
-        </label>
-        <label class="format-control">
-          <span>待办方框</span>
-          <input id="controlCheckboxSize" type="range" min="8" max="18" step="1" />
-          <output id="outputCheckboxSize"></output>
-        </label>
-        <label class="format-control">
-          <span>一级缩进</span>
-          <input id="controlLevel1Indent" type="range" min="0" max="30" step="1" />
-          <output id="outputLevel1Indent"></output>
-        </label>
-        <label class="format-control">
-          <span>二级缩进</span>
-          <input id="controlLevel2Indent" type="range" min="10" max="44" step="1" />
-          <output id="outputLevel2Indent"></output>
-        </label>
-        <label class="format-control">
-          <span>圆点宽度</span>
-          <input id="controlBulletWidth" type="range" min="8" max="24" step="1" />
-          <output id="outputBulletWidth"></output>
-        </label>
-      </div>
-      <textarea id="formatPresetText" class="format-preset-text" readonly></textarea>
-    </aside>
-
-    <script src="./app.js?v=brief-v3-20260707"></script>
+    <script src="./app.js?v=brief-v9-20260714"></script>
   </body>
 </html>

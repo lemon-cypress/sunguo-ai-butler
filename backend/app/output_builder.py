@@ -12,11 +12,17 @@ def build_output_bundle(brief: dict, rendered_text: str) -> dict:
         "brief_text": rendered_text,
         "brief_analysis": brief.get("brief_analysis", {}),
         "news_digest": brief.get("news_digest", {}),
+        # Kept for backend QA only. The browser continues to render the clean
+        # editorial digest and never exposes raw sources to the reader.
+        "news_pool_audit": ((brief.get("news_digest_rules") or {}).get("news_pool", {})),
         "event_timeline": brief.get("event_timeline", {}),
         "insights": brief.get("insights", {}),
         "schedule": brief.get("schedule", {}),
+        "economic_calendar": brief.get("economic_calendar", {}),
         "news_data": brief.get("news_data", {}),
         "market_data": brief.get("market_data", {}),
+        "china_market_data": brief.get("china_market_data", {}),
+        "structured_market_data": brief.get("structured_market_data", {}),
         "theme_data": brief.get("theme_data", {}),
         "company_data": brief.get("company_data", {}),
         "memory_summary": brief.get("memory_summary", {}),
@@ -440,7 +446,10 @@ def build_source_summary(brief: dict) -> dict:
     return {
         "weather": brief.get("weather", {}).get("source", "unknown"),
         "market": brief.get("market_data", {}).get("source", "unknown"),
+        "china_market": brief.get("china_market_data", {}).get("source", "unknown"),
+        "structured_market": brief.get("structured_market_data", {}).get("source", "unknown"),
         "news": brief.get("news_data", {}).get("source", "unknown"),
+        "economic_calendar": brief.get("economic_calendar", {}).get("source", "unknown"),
         "themes": brief.get("theme_data", {}).get("source", "unknown"),
         "companies": brief.get("company_data", {}).get("source", "unknown"),
         "schedule": brief.get("schedule", {}).get("source", "unknown"),

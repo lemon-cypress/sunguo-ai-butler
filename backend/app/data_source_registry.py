@@ -16,7 +16,21 @@ SUPPORTED_NEWS_PROVIDERS = {
     "rss": "RSS",
     "marketaux": "Marketaux",
     "newsapi": "NewsAPI",
+    "finnhub": "Finnhub",
     "gdelt": "GDELT",
+    "combined": "Marketaux + NewsAPI + Finnhub + X leads + GDELT + RSS",
+}
+
+SUPPORTED_ECONOMIC_CALENDAR_PROVIDERS = {
+    "nasdaq": "Nasdaq economic calendar",
+}
+
+SUPPORTED_CHINA_MARKET_PROVIDERS = {
+    "eastmoney": "Eastmoney public quote",
+}
+
+SUPPORTED_STRUCTURED_MARKET_PROVIDERS = {
+    "touzid": "Touzid open API",
 }
 
 SUPPORTED_THEME_PROVIDERS = {

@@ -1,0 +1,62 @@
+[
+  {
+    "symbol": "sh600519",
+    "name": "贵州茅台",
+    "sector": "消费"
+  },
+  {
+    "symbol": "sz300750",
+    "name": "宁德时代",
+    "sector": "新能源"
+  },
+  {
+    "symbol": "sh688981",
+    "name": "中芯国际",
+    "sector": "半导体"
+  },
+  {
+    "symbol": "sz000063",
+    "name": "中兴通讯",
+    "sector": "通信设备"
+  },
+  {
+    "symbol": "sz002475",
+    "name": "立讯精密",
+    "sector": "消费电子"
+  },
+  {
+    "symbol": "sh601012",
+    "name": "隆基绿能",
+    "sector": "光伏"
+  },
+  {
+    "symbol": "sz002594",
+    "name": "比亚迪",
+    "sector": "新能源汽车"
+  },
+  {
+    "symbol": "sh600036",
+    "name": "招商银行",
+    "sector": "银行"
+  },
+  {
+    "symbol": "sh601318",
+    "name": "中国平安",
+    "sector": "保险"
+  },
+  {
+    "symbol": "sh600900",
+    "name": "长江电力",
+    "sector": "公用事业"
+  },
+  {
+    "symbol": "sz000333",
+    "name": "美的集团",
+    "sector": "家电制造"
+  },
+  {
+    "symbol": "sh600030",
+    "name": "中信证券",
+    "sector": "证券"
+  }
+]

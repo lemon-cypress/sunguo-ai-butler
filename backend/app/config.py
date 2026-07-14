@@ -43,6 +43,7 @@ class Settings:
     finnhub_api_key: str
     polygon_api_key: str
     newsapi_api_key: str
+    x_bearer_token: str
     default_city: str
     weather_latitude: float
     weather_longitude: float
@@ -64,6 +65,24 @@ class Settings:
     news_provider: str
     news_feeds_path: Path
     news_max_records_per_query: int
+    use_real_economic_calendar: bool
+    economic_calendar_provider: str
+    economic_calendar_days: int
+    use_real_china_markets: bool
+    china_market_provider: str
+    china_sector_max_count: int
+    use_real_structured_market: bool
+    structured_market_provider: str
+    touzid_token: str
+    touzid_token_path: Path
+    touzid_timeout_seconds: int
+    touzid_industry_max_count: int
+    touzid_index_symbols: str
+    a_share_watchlist_path: Path
+    touzid_stock_max_count: int
+    touzid_announcement_days: int
+    touzid_finreport_fields: str
+    touzid_fundamental_limit: int
     use_real_themes: bool
     theme_provider: str
     theme_symbols_path: Path
@@ -90,6 +109,7 @@ def get_settings() -> Settings:
         finnhub_api_key=env_text("FINNHUB_API_KEY"),
         polygon_api_key=env_text("POLYGON_API_KEY"),
         newsapi_api_key=env_text("NEWSAPI_API_KEY"),
+        x_bearer_token=env_text("X_BEARER_TOKEN"),
         default_city=env_text("DEFAULT_CITY", "北京-朝阳"),
         weather_latitude=float(env_text("WEATHER_LATITUDE", "39.9219")),
         weather_longitude=float(env_text("WEATHER_LONGITUDE", "116.4433")),
@@ -126,6 +146,30 @@ def get_settings() -> Settings:
             "backend/data/news_feeds.json",
         ),
         news_max_records_per_query=int(env_text("NEWS_MAX_RECORDS_PER_QUERY", "5")),
+        use_real_economic_calendar=env_text("USE_REAL_ECONOMIC_CALENDAR", "true").lower() in {"1", "true", "yes", "on"},
+        economic_calendar_provider=env_text("ECONOMIC_CALENDAR_PROVIDER", "nasdaq").lower(),
+        economic_calendar_days=int(env_text("ECONOMIC_CALENDAR_DAYS", "2")),
+        use_real_china_markets=env_text("USE_REAL_CHINA_MARKETS", "true").lower() in {"1", "true", "yes", "on"},
+        china_market_provider=env_text("CHINA_MARKET_PROVIDER", "eastmoney").lower(),
+        china_sector_max_count=int(env_text("CHINA_SECTOR_MAX_COUNT", "10")),
+        use_real_structured_market=env_text("USE_REAL_STRUCTURED_MARKET", "true").lower() in {"1", "true", "yes", "on"},
+        structured_market_provider=env_text("STRUCTURED_MARKET_PROVIDER", "touzid").lower(),
+        touzid_token=env_text("TOUZID_TOKEN"),
+        touzid_token_path=Path(env_text("TOUZID_TOKEN_PATH", "")),
+        touzid_timeout_seconds=int(env_text("TOUZID_TIMEOUT_SECONDS", "20")),
+        touzid_industry_max_count=int(env_text("TOUZID_INDUSTRY_MAX_COUNT", "20")),
+        touzid_index_symbols=env_text("TOUZID_INDEX_SYMBOLS", "sh000001,sz399001,sh000300,sz399006,sh000688"),
+        a_share_watchlist_path=PROJECT_ROOT / env_text(
+            "A_SHARE_WATCHLIST_PATH",
+            "backend/data/a_share_watchlist.json",
+        ),
+        touzid_stock_max_count=int(env_text("TOUZID_STOCK_MAX_COUNT", "12")),
+        touzid_announcement_days=int(env_text("TOUZID_ANNOUNCEMENT_DAYS", "14")),
+        touzid_finreport_fields=env_text(
+            "TOUZID_FINREPORT_FIELDS",
+            "pr.toi.o,pr.toi.o_y,pr.np.o,pr.np.o_y,ca.ncffoa.o,ca.ncffoa.o_y,me.mt_roe_rt.o,bs.ta.o,bs.tl.o",
+        ),
+        touzid_fundamental_limit=int(env_text("TOUZID_FUNDAMENTAL_LIMIT", "1")),
         use_real_themes=env_text("USE_REAL_THEMES", "true").lower() in {"1", "true", "yes", "on"},
         theme_provider=env_text("THEME_PROVIDER", "yahoo").lower(),
         theme_symbols_path=PROJECT_ROOT / env_text(

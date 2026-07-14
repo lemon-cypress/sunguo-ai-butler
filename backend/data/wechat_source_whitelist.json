@@ -1,0 +1,22 @@
+{
+  "version": "wechat-source-whitelist-v1",
+  "mode": "manual_read_only",
+  "note": "仅整理用户已关注且在微信客户端内可见的公开文章；不转发、点赞、评论、订阅或改变账号设置。",
+  "accounts": [
+    {"name": "财新", "category": "财经宏观", "priority": "high"},
+    {"name": "经济观察报", "category": "财经宏观", "priority": "high"},
+    {"name": "中信建投研究", "category": "资本市场研究", "priority": "high"},
+    {"name": "雷锋网", "category": "科技产业", "priority": "high"},
+    {"name": "量子位", "category": "AI", "priority": "high"},
+    {"name": "新智元", "category": "AI", "priority": "high"},
+    {"name": "深度具身智能", "category": "具身智能", "priority": "high"},
+    {"name": "数据中心观察", "category": "算力与数据中心", "priority": "high"},
+    {"name": "IDC咨询", "category": "科技研究", "priority": "normal"},
+    {"name": "水清木华研究中心", "category": "科技产业研究", "priority": "normal"},
+    {"name": "HUST-机械研究院2号", "category": "先进制造", "priority": "normal"},
+    {"name": "佐思汽车研究", "category": "汽车产业", "priority": "high"},
+    {"name": "小瀚说车", "category": "汽车产业", "priority": "normal"},
+    {"name": "TOP行业报告", "category": "行业研究", "priority": "normal"},
+    {"name": "极客邦研究院", "category": "科技产业研究", "priority": "normal"}
+  ]
+}

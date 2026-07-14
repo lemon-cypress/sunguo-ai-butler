@@ -1,17 +1,317 @@
 [
   {
     "category": "world",
-    "label": "国际新闻",
+    "label": "BBC World",
+    "region": "global",
+    "topics": ["geopolitics", "society"],
     "url": "https://feeds.bbci.co.uk/news/world/rss.xml"
   },
   {
     "category": "business",
-    "label": "商业财经",
+    "label": "BBC Business",
+    "region": "global",
+    "topics": ["macro", "business"],
     "url": "https://feeds.bbci.co.uk/news/business/rss.xml"
   },
   {
+    "category": "technology",
+    "label": "BBC Technology",
+    "region": "global",
+    "topics": ["technology", "ai"],
+    "url": "https://feeds.bbci.co.uk/news/technology/rss.xml"
+  },
+  {
+    "category": "world",
+    "label": "NYTimes World",
+    "region": "global",
+    "topics": ["geopolitics", "society"],
+    "url": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"
+  },
+  {
+    "category": "business",
+    "label": "NYTimes Business",
+    "region": "us",
+    "topics": ["macro", "business"],
+    "url": "https://rss.nytimes.com/services/xml/rss/nyt/Business.xml"
+  },
+  {
+    "category": "technology",
+    "label": "NYTimes Technology",
+    "region": "us",
+    "topics": ["technology", "ai"],
+    "url": "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml"
+  },
+  {
     "category": "markets",
-    "label": "全球市场",
-    "url": "https://feeds.bbci.co.uk/news/business/rss.xml"
+    "label": "WSJ Markets",
+    "region": "us",
+    "topics": ["markets", "stocks"],
+    "url": "https://feeds.a.dj.com/rss/RSSMarketsMain.xml"
+  },
+  {
+    "category": "world",
+    "label": "WSJ World",
+    "region": "global",
+    "topics": ["geopolitics", "macro"],
+    "url": "https://feeds.a.dj.com/rss/RSSWorldNews.xml"
+  },
+  {
+    "category": "top",
+    "label": "CNBC Top News",
+    "region": "global",
+    "topics": ["markets", "macro", "business"],
+    "url": "https://www.cnbc.com/id/100003114/device/rss/rss.html"
+  },
+  {
+    "category": "economy",
+    "label": "CNBC Economy",
+    "region": "us",
+    "topics": ["macro", "rates"],
+    "url": "https://www.cnbc.com/id/20910258/device/rss/rss.html"
+  },
+  {
+    "category": "finance",
+    "label": "CNBC Finance",
+    "region": "us",
+    "topics": ["finance", "banks"],
+    "url": "https://www.cnbc.com/id/10000664/device/rss/rss.html"
+  },
+  {
+    "category": "technology",
+    "label": "CNBC Technology",
+    "region": "us",
+    "topics": ["technology", "ai", "semiconductors"],
+    "url": "https://www.cnbc.com/id/19854910/device/rss/rss.html"
+  },
+  {
+    "category": "economy",
+    "label": "Le Monde Economy",
+    "region": "europe",
+    "topics": ["macro", "europe", "business"],
+    "url": "https://www.lemonde.fr/en/economy/rss_full.xml"
+  },
+  {
+    "category": "china",
+    "label": "SCMP China",
+    "region": "china",
+    "topics": ["china", "geopolitics", "society"],
+    "url": "https://www.scmp.com/rss/4/feed"
+  },
+  {
+    "category": "technology",
+    "label": "The Verge",
+    "region": "us",
+    "topics": ["technology", "ai", "consumer-tech"],
+    "url": "https://www.theverge.com/rss/index.xml"
+  },
+  {
+    "category": "economy",
+    "label": "US Federal Reserve Press",
+    "region": "us",
+    "topics": ["macro", "rates", "central-bank", "policy"],
+    "url": "https://www.federalreserve.gov/feeds/press_all.xml"
+  },
+  {
+    "category": "company",
+    "label": "SEC Press Releases",
+    "region": "us",
+    "topics": ["regulation", "company", "markets"],
+    "url": "https://www.sec.gov/news/pressreleases.rss"
+  },
+  {
+    "category": "economy",
+    "label": "European Central Bank Press",
+    "region": "europe",
+    "topics": ["macro", "rates", "central-bank", "europe"],
+    "url": "https://www.ecb.europa.eu/rss/press.html"
+  },
+  {
+    "category": "macro",
+    "label": "Google News Macro 24h",
+    "region": "global",
+    "topics": ["macro", "inflation", "central-bank", "trade"],
+    "url": "https://news.google.com/rss/search?q=(central+bank+OR+inflation+OR+tariff+OR+trade+policy)+when%3A1d&hl=en-US&gl=US&ceid=US%3Aen"
+  },
+  {
+    "category": "company",
+    "label": "Google News Company 24h",
+    "region": "global",
+    "topics": ["earnings", "guidance", "orders", "capex"],
+    "url": "https://news.google.com/rss/search?q=(earnings+OR+revenue+OR+guidance+OR+orders+OR+capex)+when%3A1d&hl=en-US&gl=US&ceid=US%3Aen"
+  },
+  {
+    "category": "industry",
+    "label": "Google News Tech Industry 24h",
+    "region": "global",
+    "topics": ["semiconductors", "ai", "data-center", "supply-chain"],
+    "url": "https://news.google.com/rss/search?q=(semiconductor+OR+AI+OR+data+center+OR+supply+chain)+when%3A1d&hl=en-US&gl=US&ceid=US%3Aen"
+  },
+  {
+    "category": "finance",
+    "label": "Google News Energy Shipping 24h",
+    "region": "global",
+    "topics": ["oil", "energy", "shipping", "commodities"],
+    "url": "https://news.google.com/rss/search?q=(oil+OR+energy+OR+shipping+OR+commodity)+when%3A1d&hl=en-US&gl=US&ceid=US%3Aen"
+  },
+  {
+    "category": "china",
+    "label": "Google News China Economy 24h",
+    "region": "china",
+    "topics": ["china", "economy", "policy", "property"],
+    "url": "https://news.google.com/rss/search?q=(China+economy+OR+China+policy+OR+China+property)+when%3A1d&hl=en-US&gl=US&ceid=US%3Aen"
+  },
+  {
+    "category": "finance",
+    "label": "Google News Reuters Finance 24h",
+    "region": "global",
+    "topics": ["reuters", "macro", "markets", "company"],
+    "url": "https://news.google.com/rss/search?q=site%3Areuters.com+(earnings+OR+central+bank+OR+tariff+OR+oil+OR+semiconductor)+when%3A1d&hl=en-US&gl=US&ceid=US%3Aen"
+  },
+  {
+    "category": "global",
+    "label": "Google News AP Global 24h",
+    "region": "global",
+    "topics": ["ap", "sanctions", "trade", "energy", "geopolitics"],
+    "url": "https://news.google.com/rss/search?q=site%3Aapnews.com+(sanctions+OR+trade+OR+oil+OR+shipping+OR+central+bank)+when%3A1d&hl=en-US&gl=US&ceid=US%3Aen"
+  },
+  {
+    "category": "macro",
+    "label": "China Official Policy 24h",
+    "region": "china",
+    "topics": ["china", "policy", "macro", "trade"],
+    "url": "https://news.google.com/rss/search?q=(site%3Agov.cn+OR+site%3Apbc.gov.cn+OR+site%3Acsrc.gov.cn+OR+site%3Astats.gov.cn+OR+site%3Andrc.gov.cn+OR+site%3Amofcom.gov.cn)+(%E6%94%BF%E7%AD%96+OR+%E6%95%B0%E6%8D%AE+OR+%E5%87%BA%E5%8F%A3+OR+%E5%88%A9%E7%8E%87)+when%3A1d&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"
+  },
+  {
+    "category": "company",
+    "label": "China Exchange Disclosure 24h",
+    "region": "china",
+    "topics": ["china", "company", "earnings", "orders", "filings"],
+    "url": "https://news.google.com/rss/search?q=(site%3Acninfo.com.cn+OR+site%3Asse.com.cn+OR+site%3Aszse.cn+OR+site%3Ahkexnews.hk)+(%E4%B8%9A%E7%BB%A9%E9%A2%84%E5%91%8A+OR+%E5%85%AC%E5%91%8A+OR+%E9%87%8D%E5%A4%A7%E5%90%88%E5%90%8C+OR+%E5%9B%9E%E8%B4%AD+OR+%E5%B9%B6%E8%B4%AD)+when%3A1d&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"
+  },
+  {
+    "category": "industry",
+    "label": "China Industry Fact 24h",
+    "region": "china",
+    "topics": ["china", "semiconductor", "energy", "manufacturing", "supply-chain"],
+    "url": "https://news.google.com/rss/search?q=(%E5%8D%8A%E5%AF%BC%E4%BD%93+OR+%E6%96%B0%E8%83%BD%E6%BA%90+OR+%E6%9C%BA%E5%99%A8%E4%BA%BA+OR+%E4%BA%A7%E8%83%BD+OR+%E8%AE%A2%E5%8D%95)+(%E4%BA%A7%E9%87%8F+OR+%E4%BA%A7%E8%83%BD+OR+%E8%AE%A2%E5%8D%95+OR+%E6%B6%A8%E4%BB%B7)+when%3A1d&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"
+  },
+  {
+    "category": "property",
+    "label": "China Property Fact 24h",
+    "region": "china",
+    "topics": ["china", "property", "housing", "land-sale"],
+    "url": "https://news.google.com/rss/search?q=(%E6%88%BF%E5%9C%B0%E4%BA%A7+OR+%E4%BD%8F%E6%88%BF+OR+%E5%9C%9F%E5%9C%B0%E5%87%BA%E8%AE%A9)+(%E6%88%90%E4%BA%A4+OR+%E9%94%80%E5%94%AE+OR+%E6%96%B0%E6%94%BF+OR+%E5%BC%80%E5%B7%A5)+when%3A1d&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"
+  },
+  {
+    "category": "macro",
+    "label": "China Official Macro 24h",
+    "region": "china",
+    "topics": ["china", "macro", "statistics", "trade"],
+    "url": "https://news.google.com/rss/search?q=(site%3Astats.gov.cn+OR+site%3Acustoms.gov.cn+OR+site%3Apbc.gov.cn)+(%E7%BB%9F%E8%AE%A1+OR+%E8%B4%B8%E6%98%93+OR+%E7%A4%BE%E8%9E%8D+OR+%E7%89%A9%E4%BB%B7)+when%3A1d&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"
+  },
+  {
+    "category": "industry",
+    "label": "China Semiconductor AI 24h",
+    "region": "china",
+    "topics": ["china", "semiconductor", "ai", "data-center"],
+    "url": "https://news.google.com/rss/search?q=(%E5%8D%8A%E5%AF%BC%E4%BD%93+OR+AI+OR+%E7%AE%97%E5%8A%9B+OR+%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%BF%83)+(%E6%8A%95%E8%B5%84+OR+%E4%BA%A7%E8%83%BD+OR+%E8%AE%A2%E5%8D%95+OR+%E5%87%BA%E8%B4%A7)+when%3A1d&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"
+  },
+  {
+    "category": "industry",
+    "label": "China Auto Energy 24h",
+    "region": "china",
+    "topics": ["china", "ev", "battery", "energy"],
+    "url": "https://news.google.com/rss/search?q=(%E6%96%B0%E8%83%BD%E6%BA%90%E6%B1%BD%E8%BD%A6+OR+%E5%8A%A8%E5%8A%9B%E7%94%B5%E6%B1%A0+OR+%E5%85%89%E4%BC%8F+OR+%E5%82%A8%E8%83%BD)+(%E4%BA%A7%E9%87%8F+OR+%E9%94%80%E9%87%8F+OR+%E8%AE%A2%E5%8D%95+OR+%E4%BB%B7%E6%A0%BC)+when%3A1d&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"
+  },
+  {
+    "category": "industry",
+    "label": "China Manufacturing Trade 24h",
+    "region": "china",
+    "topics": ["china", "manufacturing", "export", "supply-chain"],
+    "url": "https://news.google.com/rss/search?q=(%E5%88%B6%E9%80%A0%E4%B8%9A+OR+%E5%87%BA%E5%8F%A3+OR+%E8%88%AA%E8%BF%90+OR+%E4%BE%9B%E5%BA%94%E9%93%BE)+(%E8%AE%A2%E5%8D%95+OR+%E4%BA%A7%E8%83%BD+OR+%E8%BF%90%E4%BB%B7+OR+%E5%85%B3%E7%A8%8E)+when%3A1d&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"
+  },
+  {
+    "category": "company",
+    "label": "China Listed Companies 24h",
+    "region": "china",
+    "topics": ["china", "company", "earnings", "filings"],
+    "url": "https://news.google.com/rss/search?q=(site%3Acninfo.com.cn+OR+site%3Asse.com.cn+OR+site%3Aszse.cn)+(%E4%B8%9A%E7%BB%A9%E9%A2%84%E5%91%8A+OR+%E5%9B%9E%E8%B4%AD+OR+%E9%87%8D%E5%A4%A7%E5%90%88%E5%90%8C+OR+%E5%85%BC%E5%B9%B6%E9%87%8D%E7%BB%84)+when%3A1d&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"
+  },
+  {
+    "category": "macro",
+    "label": "Caixin Macro Policy 24h",
+    "region": "china",
+    "topics": ["china", "macro", "policy", "finance"],
+    "url": "https://news.google.com/rss/search?q=site%3Acaixin.com+(%E5%AE%8F%E8%A7%82+OR+%E6%94%BF%E7%AD%96+OR+%E9%87%91%E8%9E%8D+OR+%E8%B4%B8%E6%98%93)+when%3A1d&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"
+  },
+  {
+    "category": "finance",
+    "label": "Yicai Markets 24h",
+    "region": "china",
+    "topics": ["china", "markets", "companies", "finance"],
+    "url": "https://news.google.com/rss/search?q=site%3Ayicai.com+(%E5%B8%82%E5%9C%BA+OR+%E8%B4%A2%E6%8A%A5+OR+%E8%82%A1%E7%A5%A8+OR+%E4%BA%A7%E4%B8%9A)+when%3A1d&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"
+  },
+  {
+    "category": "company",
+    "label": "Securities Times Disclosure 24h",
+    "region": "china",
+    "topics": ["china", "companies", "disclosure", "markets"],
+    "url": "https://news.google.com/rss/search?q=site%3Astcn.com+(%E5%85%AC%E5%91%8A+OR+%E4%B8%9A%E7%BB%A9+OR+%E5%85%AC%E5%8F%B8+OR+%E7%9B%91%E7%AE%A1)+when%3A1d&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"
+  },
+  {
+    "category": "finance",
+    "label": "China Securities Journal 24h",
+    "region": "china",
+    "topics": ["china", "markets", "funds", "companies"],
+    "url": "https://news.google.com/rss/search?q=site%3Acs.com.cn+(%E8%AF%81%E5%88%B8+OR+%E5%9F%BA%E9%87%91+OR+%E5%85%AC%E5%8F%B8+OR+%E5%B8%82%E5%9C%BA)+when%3A1d&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"
+  },
+  {
+    "category": "industry",
+    "label": "Shanghai Securities Industry 24h",
+    "region": "china",
+    "topics": ["china", "industry", "manufacturing", "technology"],
+    "url": "https://news.google.com/rss/search?q=site%3Acnstock.com+(%E4%BA%A7%E4%B8%9A+OR+%E5%88%B6%E9%80%A0+OR+%E7%A7%91%E6%8A%80+OR+%E8%83%BD%E6%BA%90)+when%3A1d&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"
+  },
+  {
+    "category": "industry",
+    "label": "21st Century Industry 24h",
+    "region": "china",
+    "topics": ["china", "industry", "technology", "consumption"],
+    "url": "https://news.google.com/rss/search?q=site%3A21jingji.com+(%E4%BA%A7%E4%B8%9A+OR+%E7%A7%91%E6%8A%80+OR+%E6%B6%88%E8%B4%B9+OR+%E5%88%B6%E9%80%A0)+when%3A1d&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"
+  },
+  {
+    "category": "industry",
+    "label": "CLS Industry Fast News 24h",
+    "region": "china",
+    "topics": ["china", "industry", "markets", "policy"],
+    "url": "https://news.google.com/rss/search?q=site%3Acls.cn+(%E4%BA%A7%E4%B8%9A+OR+%E6%94%BF%E7%AD%96+OR+%E5%85%AC%E5%8F%B8+OR+%E5%B8%82%E5%9C%BA)+when%3A1d&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"
+  },
+  {
+    "category": "macro",
+    "label": "China Mainstream Macro 24h",
+    "region": "china",
+    "topics": ["china", "macro", "policy", "consumption"],
+    "url": "https://news.google.com/rss/search?q=(site%3Athepaper.cn+OR+site%3Aeeo.com.cn+OR+site%3Axinhuanet.com+OR+site%3Achinanews.com.cn)+(%E7%BB%8F%E6%B5%8E+OR+%E6%94%BF%E7%AD%96+OR+%E6%B6%88%E8%B4%B9+OR+%E8%B4%B8%E6%98%93)+when%3A1d&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"
+  },
+  {
+    "category": "finance",
+    "label": "China Mainstream Markets 24h",
+    "region": "china",
+    "topics": ["china", "markets", "funds", "listed-companies"],
+    "url": "https://news.google.com/rss/search?q=(site%3Aeastmoney.com+OR+site%3Ajrj.com.cn+OR+site%3A10jqka.com.cn+OR+site%3Abjnews.com.cn)+(%E8%82%A1%E5%B8%82+OR+%E5%85%AC%E5%8F%B8+OR+%E5%9F%BA%E9%87%91+OR+%E7%9B%91%E7%AE%A1)+when%3A1d&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"
+  },
+  {
+    "category": "industry",
+    "label": "China Technology Industry 24h",
+    "region": "china",
+    "topics": ["china", "technology", "semiconductor", "telecom"],
+    "url": "https://news.google.com/rss/search?q=(site%3A36kr.com+OR+site%3Ajiemian.com+OR+site%3Aofweek.com+OR+site%3Ac114.com.cn)+(%E8%8A%AF%E7%89%87+OR+%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD+OR+%E6%B1%BD%E8%BD%A6+OR+%E9%80%9A%E4%BF%A1)+when%3A1d&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"
+  },
+  {
+    "category": "company",
+    "label": "China Company Deep Read 24h",
+    "region": "china",
+    "topics": ["china", "companies", "investment", "manufacturing"],
+    "url": "https://news.google.com/rss/search?q=(site%3Acaixin.com+OR+site%3Aeeo.com.cn+OR+site%3Athepaper.cn+OR+site%3Atmtpost.com)+(%E5%85%AC%E5%8F%B8+OR+%E6%8A%95%E8%B5%84+OR+%E5%B9%B6%E8%B4%AD+OR+%E4%BA%A7%E8%83%BD)+when%3A1d&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans"
   }
 ]

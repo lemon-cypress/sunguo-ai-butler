@@ -1,4 +1,4 @@
-﻿const params = new URLSearchParams(window.location.search);
+const params = new URLSearchParams(window.location.search);
 const requestedDate = params.get("date");
 
 const TEXT = {
@@ -10,40 +10,31 @@ const TEXT = {
   newsClue: "待补充",
 };
 
-const FORMAT_DEFAULTS = {
-  headingSize: 21,
-  bodySize: 16,
-  lineHeight: 1,
-  moduleGap: 46,
-  checkboxSize: 11,
-  level1Indent: 0,
-  level2Indent: 26,
-  bulletWidth: 14,
-};
+const HIDDEN_SECTIONS = new Set(["财秘关注", "财秘追踪", "财富聚焦"]);
 
 const state = {
   bundle: null,
   todos: [],
+  selectedMediaSources: null,
 };
 
-const overviewList = document.querySelector("#overviewList");
 const newsSections = document.querySelector("#newsSections");
 const newsSourceStrip = document.querySelector("#newsSourceStrip");
 const todoList = document.querySelector("#todoList");
 const todoForm = document.querySelector("#todoForm");
 const todoTitleInput = document.querySelector("#todoTitleInput");
+const todoNoteInput = document.querySelector("#todoNoteInput");
 const deleteSelectedBtn = document.querySelector("#deleteSelectedBtn");
-const rootStyle = document.documentElement;
 
 bootstrap();
-initFormatPanel();
 
 todoForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const title = todoTitleInput.value.trim();
   if (!title) return;
-  await postJson("/api/todos/add", { title, completed: false });
+  await postJson("/api/todos/add", { title, note: todoNoteInput.value.trim(), completed: false });
   todoTitleInput.value = "";
+  todoNoteInput.value = "";
   await loadTodos();
 });
 
@@ -122,6 +113,7 @@ function renderTodos() {
             <input class="todo-checkbox" type="checkbox" value="${escapeHtml(item.id)}" ${item.completed ? "checked" : ""} />
             <div class="todo-copy">
               <strong>${escapeHtml(item.title || "")}</strong>
+              ${item.note ? `<span>${escapeHtml(item.note)}</span>` : ""}
             </div>
           </div>
         </label>
@@ -143,41 +135,176 @@ function renderTodos() {
 
 function renderNews(bundle) {
   const digest = bundle.news_digest || {};
-  const overview = digest.overview || [];
-  const sections = digest.sections || [];
+  const pool = bundle.news_pool_audit || digest.news_pool || {};
+  const sections = (digest.sections || []).filter((section) => !HIDDEN_SECTIONS.has(section.title));
+  const cardsById = new Map((pool.top_candidates || []).map((card) => [card.id, card]));
+  const sourceNames = String((bundle.source_summary || {}).news || "")
+    .split(" + ")
+    .filter(Boolean)
+    .slice(0, 5);
 
-  overviewList.innerHTML = overview.length
-    ? overview.map((item) => `<li>${escapeHtml(item)}</li>`).join("")
-    : "";
-  newsSourceStrip.innerHTML = "";
+  newsSourceStrip.innerHTML = sourceNames.map((source) => `<span>${escapeHtml(source)}</span>`).join("");
 
   if (!sections.length) {
     newsSections.innerHTML = `<article class="empty-state">${escapeHtml(TEXT.newsEmpty)}</article>`;
     return;
   }
 
-  newsSections.innerHTML = sections.map(renderNewsSection).join("");
+  newsSections.innerHTML = [
+    renderNewsPoolSection(pool),
+    renderMediaSelectionSection(pool),
+    ...sections.map((section) => renderNewsSection(section, cardsById)),
+  ].join("");
+  bindMediaSelection(pool);
 }
 
-function renderNewsSection(section) {
+function renderNewsPoolSection(pool) {
+  const stages = pool.stage_counts || {};
+  const sourceCounts = Object.entries(pool.source_counts || {}).slice(0, 10);
+  const reasons = Object.entries(pool.rejection_reasons || {}).slice(0, 4);
+  const raw = stages.raw ?? pool.total_candidates ?? 0;
+  const ranked = stages.ranked ?? pool.ranked_candidates ?? 0;
+  const clustered = stages.clustered ?? pool.clustered_candidates ?? ranked;
+  const editorial = stages.editorial ?? pool.editorial_candidates ?? 0;
+
+  if (!raw && !editorial) {
+    return renderTextSection("新闻池摘要", `<p class="pool-empty">新闻池数据将在下一次刷新后显示。</p>`);
+  }
+
+  return renderTextSection("新闻池摘要", `
+    <p class="pool-funnel">本次从 <b>${raw}</b> 条原始信息中筛出 <b>${ranked}</b> 条相关候选，聚类为 <b>${clustered}</b> 个事件，最终保留 <b>${editorial}</b> 条可展示事实。</p>
+    <p class="pool-sources"><b>已摘录渠道：</b>${sourceCounts.length ? sourceCounts.map(([name, count]) => `<span>${escapeHtml(name)} ${count}条</span>`).join("、") : "待刷新"}</p>
+    ${reasons.length ? `<p class="pool-reasons"><b>主要过滤：</b>${reasons.map(([name, count]) => `${escapeHtml(name)} ${count}条`).join("；")}</p>` : ""}
+  `);
+}
+
+function renderTextSection(title, content, className = "") {
+  return `
+    <article class="news-section ${className}">
+      <div class="news-section-title-row">
+        <span class="news-dot"></span>
+        <h3>${escapeHtml(title)}</h3>
+      </div>
+      <div class="news-section-content">${content}</div>
+    </article>
+  `;
+}
+
+function renderMediaSelectionSection(pool) {
+  const candidates = mediaCandidates(pool);
+  const sources = mediaSourceOptions(candidates);
+  if (!sources.length) return "";
+  if (state.selectedMediaSources === null) {
+    state.selectedMediaSources = new Set(sources.slice(0, 6).map(([source]) => source));
+  }
+  const selected = state.selectedMediaSources;
+  const visible = candidates
+    .filter((item) => selected.has(item.source))
+    .sort((left, right) => mediaScore(right) - mediaScore(left) || String(right.time).localeCompare(String(left.time)))
+    .slice(0, 24);
+  const controls = sources.map(([source, count]) => `
+    <label class="media-choice"><input type="checkbox" value="${escapeHtml(source)}" ${selected.has(source) ? "checked" : ""} />
+      <span>${escapeHtml(source)}</span><em>${count}</em>
+    </label>
+  `).join("");
+  const rows = visible.length
+    ? visible.map((item) => `
+      <li class="media-article">
+        <span class="media-article-score">${mediaScore(item)}</span>
+        <a href="${escapeAttribute(safeExternalUrl(item.url))}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.title || TEXT.newsClue)}</a>
+        <span class="media-article-source">${escapeHtml(item.source || "")}</span>
+      </li>
+    `).join("")
+    : `<li class="pool-empty">勾选上方媒体后，这里会列出新闻池中的原文标题。</li>`;
+  return renderTextSection("主流媒体选读", `
+    <p class="media-help">选择媒体后，只列出新闻池中的标题；点击标题可打开原文。数字为重要性分值。</p>
+    <div class="media-choices" id="mediaChoices">${controls}</div>
+    <ol class="media-article-list">${rows}</ol>
+  `, "media-selection-section");
+}
+
+function mediaCandidates(pool) {
+  const items = pool.media_candidates || pool.top_candidates || [];
+  const seen = new Set();
+  return items.filter((item) => {
+    const key = `${item.source}|${item.title}`;
+    if (!item.source || !item.title || !item.url || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function mediaSourceOptions(candidates) {
+  const counts = new Map();
+  candidates.forEach((item) => counts.set(item.source, (counts.get(item.source) || 0) + 1));
+  return [...counts.entries()]
+    .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0], "zh-CN"))
+    .slice(0, 18);
+}
+
+function bindMediaSelection(pool) {
+  document.querySelectorAll("#mediaChoices input").forEach((node) => {
+    node.addEventListener("change", () => {
+      if (node.checked) state.selectedMediaSources.add(node.value);
+      else state.selectedMediaSources.delete(node.value);
+      renderNews(state.bundle);
+    });
+  });
+}
+
+function renderNewsSection(section, cardsById) {
+  const items = [...(section.items || [])]
+    .filter(isChineseNewsEntry)
+    .sort((left, right) => scoreForEntry(right, cardsById) - scoreForEntry(left, cardsById));
+  if (!items.length) return "";
   return `
     <article class="news-section">
       <div class="news-section-title-row">
         <span class="news-dot"></span>
         <h3>${escapeHtml(section.title || TEXT.newsClue)}</h3>
       </div>
-      <ul class="news-sublist">
-        ${(section.items || []).map(renderNewsEntry).join("")}
-      </ul>
+      <div class="news-sublist">
+        ${items.map((entry) => renderNewsEntry(entry, cardsById.get(entry.card_id))).join("")}
+      </div>
     </article>
   `;
 }
 
-function renderNewsEntry(entry) {
-  const timePrefix = entry.time ? `[${escapeHtml(entry.time)}] ` : "";
+function isChineseNewsEntry(entry) {
+  const title = String(entry?.thesis || "");
+  const summary = String(entry?.summary || "");
+  return /[\u4e00-\u9fff]/.test(title) && (!summary || /[\u4e00-\u9fff]/.test(summary));
+}
+
+function renderNewsEntry(entry, card = {}) {
+  const score = Number(entry.importance_score || card.importance_score || card.score || 0);
+  const clusterSize = Number(entry.cluster_size || card.cluster_size || 1);
+  const source = entry.source || card.source || "";
+  const sourceLabel = clusterSize > 1 ? `${clusterSize}个来源交叉印证` : source;
+  const timePrefix = entry.time ? `<time>${escapeHtml(formatNewsTime(entry.time))}</time>` : "";
   const thesis = escapeHtml(entry.thesis || TEXT.newsClue);
   const summary = escapeHtml(entry.summary || "");
-  return `<li>${timePrefix}${thesis}${summary ? `：${summary}` : ""}</li>`;
+  return `
+    <p class="news-line">
+      <span class="news-line-meta">${timePrefix}${sourceLabel ? ` · ${escapeHtml(sourceLabel)}` : ""}</span>
+      <span class="news-line-score">${score ? Math.min(100, Math.round(score)) : "—"}</span>
+      <span class="news-line-copy"><b>${thesis}</b>${summary ? `：${summary}` : ""}</span>
+    </p>
+  `;
+}
+
+function scoreForEntry(entry, cardsById) {
+  const card = cardsById.get(entry.card_id) || {};
+  return Number(entry.importance_score || card.importance_score || card.score || 0);
+}
+
+function mediaScore(item) {
+  return Math.min(100, Math.round(Number(item.importance_score || item.score || 0)));
+}
+
+function formatNewsTime(value) {
+  const text = String(value || "").replace("T", " ");
+  return text.length >= 16 ? text.slice(5, 16) : text;
 }
 
 async function postJson(url, payload) {
@@ -209,113 +336,15 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;");
 }
 
-function initFormatPanel() {
-  const controls = [
-    ["headingSize", "controlHeadingSize", "outputHeadingSize", "px"],
-    ["bodySize", "controlBodySize", "outputBodySize", "px"],
-    ["lineHeight", "controlLineHeight", "outputLineHeight", ""],
-    ["moduleGap", "controlModuleGap", "outputModuleGap", "px"],
-    ["checkboxSize", "controlCheckboxSize", "outputCheckboxSize", "px"],
-    ["level1Indent", "controlLevel1Indent", "outputLevel1Indent", "px"],
-    ["level2Indent", "controlLevel2Indent", "outputLevel2Indent", "px"],
-    ["bulletWidth", "controlBulletWidth", "outputBulletWidth", "px"],
-  ];
-
-  const saved = loadFormatSettings();
-  controls.forEach(([key, inputId, outputId, suffix]) => {
-    const input = document.querySelector(`#${inputId}`);
-    const output = document.querySelector(`#${outputId}`);
-    if (!input || !output) return;
-    input.value = saved[key];
-    output.textContent = `${saved[key]}${suffix}`;
-    input.addEventListener("input", () => {
-      const next = loadFormatSettings();
-      next[key] = Number(input.value);
-      saveFormatSettings(next);
-      applyFormatSettings(next);
-      renderFormatSummary(next);
-      output.textContent = `${input.value}${suffix}`;
-    });
-  });
-
-  const resetButton = document.querySelector("#resetFormatBtn");
-  if (resetButton) {
-    resetButton.addEventListener("click", () => {
-      saveFormatSettings(FORMAT_DEFAULTS);
-      applyFormatSettings(FORMAT_DEFAULTS);
-      renderFormatSummary(FORMAT_DEFAULTS);
-      controls.forEach(([key, inputId, outputId, suffix]) => {
-        const input = document.querySelector(`#${inputId}`);
-        const output = document.querySelector(`#${outputId}`);
-        if (!input || !output) return;
-        input.value = FORMAT_DEFAULTS[key];
-        output.textContent = `${FORMAT_DEFAULTS[key]}${suffix}`;
-      });
-    });
-  }
-
-  const copyButton = document.querySelector("#copyFormatBtn");
-  if (copyButton) {
-    copyButton.addEventListener("click", async () => {
-      const settings = loadFormatSettings();
-      const summary = buildFormatSummary(settings);
-      try {
-        await navigator.clipboard.writeText(summary);
-        copyButton.textContent = "已复制";
-        window.setTimeout(() => {
-          copyButton.textContent = "复制参数";
-        }, 1200);
-      } catch (error) {
-        console.warn("copy format settings failed", error);
-      }
-    });
-  }
-
-  applyFormatSettings(saved);
-  renderFormatSummary(saved);
+function escapeAttribute(value) {
+  return escapeHtml(value).replaceAll("'", "&#39;");
 }
 
-function loadFormatSettings() {
+function safeExternalUrl(value) {
   try {
-    const raw = window.localStorage.getItem("sunguo-format-panel-v1");
-    if (!raw) return { ...FORMAT_DEFAULTS };
-    return { ...FORMAT_DEFAULTS, ...JSON.parse(raw) };
+    const parsed = new URL(String(value || ""));
+    return ["http:", "https:"].includes(parsed.protocol) ? parsed.href : "#";
   } catch (error) {
-    return { ...FORMAT_DEFAULTS };
+    return "#";
   }
-}
-
-function saveFormatSettings(settings) {
-  window.localStorage.setItem("sunguo-format-panel-v1", JSON.stringify(settings));
-}
-
-function applyFormatSettings(settings) {
-  rootStyle.setProperty("--heading-size", `${settings.headingSize}px`);
-  rootStyle.setProperty("--body-size", `${settings.bodySize}px`);
-  rootStyle.setProperty("--body-line-height", String(settings.lineHeight));
-  rootStyle.setProperty("--news-module-gap", `${settings.moduleGap}px`);
-  rootStyle.setProperty("--checkbox-size", `${settings.checkboxSize}px`);
-  rootStyle.setProperty("--level1-indent", `${settings.level1Indent}px`);
-  rootStyle.setProperty("--level2-indent", `${settings.level2Indent}px`);
-  rootStyle.setProperty("--bullet-width", `${settings.bulletWidth}px`);
-  rootStyle.setProperty("--bullet-dot-size", `${Math.max(3, Math.round(settings.bulletWidth / 2.8))}px`);
-}
-
-function renderFormatSummary(settings) {
-  const node = document.querySelector("#formatPresetText");
-  if (!node) return;
-  node.value = buildFormatSummary(settings);
-}
-
-function buildFormatSummary(settings) {
-  return [
-    `标题 ${settings.headingSize}px`,
-    `正文 ${settings.bodySize}px`,
-    `行距 ${settings.lineHeight}`,
-    `模块间距 ${settings.moduleGap}px`,
-    `待办方框 ${settings.checkboxSize}px`,
-    `一级缩进 ${settings.level1Indent}px`,
-    `二级缩进 ${settings.level2Indent}px`,
-    `圆点宽度 ${settings.bulletWidth}px`,
-  ].join(" | ");
 }
