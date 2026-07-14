@@ -204,7 +204,7 @@ def build_news_digest(brief: dict) -> dict:
     # repeated across macro, market and global sections.
     clustered_pool = cluster_news_candidates(ranked_pool)
     editorial_pool = build_editorial_pool(clustered_pool)
-    pool_audit = build_news_pool_audit(pool, ranked_pool, editorial_pool, len(clustered_pool))
+    pool_audit = build_news_pool_audit(pool, ranked_pool, editorial_pool, len(clustered_pool), brief)
     # The deterministic fallback uses the same editorial pool as the AI. This
     # prevents a temporary model/API outage from turning the page back into a
     # long list of ticker movements.
@@ -246,7 +246,13 @@ def build_news_digest(brief: dict) -> dict:
     }
 
 
-def build_news_pool_audit(pool: list[dict], ranked_pool: list[dict], editorial_pool: list[dict], clustered_count: int | None = None) -> dict:
+def build_news_pool_audit(
+    pool: list[dict],
+    ranked_pool: list[dict],
+    editorial_pool: list[dict],
+    clustered_count: int | None = None,
+    brief: dict | None = None,
+) -> dict:
     """Explain in Chinese why the visible news count is high or low."""
     ranked_ids = {item.get("id") for item in ranked_pool}
     editorial_ids = {item.get("id") for item in editorial_pool}
@@ -282,6 +288,14 @@ def build_news_pool_audit(pool: list[dict], ranked_pool: list[dict], editorial_p
     if editorial_rejection_reasons:
         top_editorial_reasons = sorted(editorial_rejection_reasons.items(), key=lambda row: row[1], reverse=True)[:5]
         diagnostics.append("编辑精选阶段主要过滤原因：" + "；".join(f"{reason} {count}条" for reason, count in top_editorial_reasons))
+    content_extraction = ((brief or {}).get("news_data") or {}).get("content_extraction") or {}
+    if content_extraction.get("attempted"):
+        diagnostics.append(
+            "正文增强："
+            f"尝试 {content_extraction.get('attempted', 0)} 篇，"
+            f"新提取 {content_extraction.get('extracted', 0)} 篇，"
+            f"缓存命中 {content_extraction.get('cached', 0)} 篇。"
+        )
 
     return {
         "source_counts": sorted_count_dict(source_counts),
@@ -296,6 +310,7 @@ def build_news_pool_audit(pool: list[dict], ranked_pool: list[dict], editorial_p
         },
         "rejection_reasons": sorted_count_dict(rejection_reasons),
         "editorial_rejection_reasons": sorted_count_dict(editorial_rejection_reasons),
+        "content_extraction": content_extraction,
         "diagnostics": diagnostics,
     }
 
@@ -760,7 +775,14 @@ def collect_article_candidates(brief: dict) -> list[dict]:
             title = clean_text(article.get("title"))
             if not title:
                 continue
-            summary = clean_text(article.get("description"))
+            # Prefer text extracted from the publisher's publicly readable
+            # article page.  RSS/API descriptions remain as a fallback and are
+            # kept after the body excerpt for attribution and comparison.
+            body_text = clean_text(article.get("body_text"))
+            description = clean_text(article.get("description"))
+            summary = body_text or description
+            if body_text and description and description not in body_text:
+                summary = f"{body_text} {description}"
             section = classify_section([title, summary, feed_label, article.get("feed_topics")])
             if article_looks_like_company_item(title, summary):
                 section = COMPANY

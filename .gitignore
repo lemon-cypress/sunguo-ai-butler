@@ -13,6 +13,7 @@ tmp/
 demos/latest.json
 demos/[0-9][0-9][0-9][0-9]-*/
 demos/mock/
+demos/.article_content_cache/
 demos/*/speech_audio.wav
 demos/*/speech_audio.mp3
 demos/mock/*/speech_audio.wav

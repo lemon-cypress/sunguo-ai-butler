@@ -37,6 +37,7 @@ from finnhub_news_client import FinnhubNewsClientError, fetch_finnhub_news
 from x_client import XClientError, fetch_x_lead_snapshot
 from mock_data import build_mock_brief
 from news_enrichment import enrich_company_snapshot, enrich_news_snapshot
+from article_content_client import enrich_news_with_public_content
 from news_digest_builder import build_news_digest
 from news_client import NewsClientError, build_mock_news_snapshot, fetch_news_snapshot, load_news_feeds, merge_news_snapshots
 from openai_client import OpenAIClientError, OpenAIQuotaError, create_response
@@ -507,7 +508,7 @@ def build_brief(
     market_data = build_market_data(settings, use_mock_market)
     china_market_data = build_china_market_data(settings)
     structured_market_data = build_structured_market_data(settings, use_mock_structured)
-    news_data = enrich_news_snapshot(build_news_data(settings, use_mock_news))
+    news_data = enrich_news_snapshot(enrich_news_with_public_content(build_news_data(settings, use_mock_news)))
     economic_calendar = build_economic_calendar_data(settings)
     theme_data = build_theme_data(settings, use_mock_themes)
     company_data = enrich_company_snapshot(build_company_data(settings, use_mock_companies))

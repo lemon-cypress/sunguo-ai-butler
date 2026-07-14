@@ -24,6 +24,7 @@ from morning_brief_demo import (
 )
 from news_digest_builder import build_news_digest
 from news_enrichment import enrich_company_snapshot, enrich_news_snapshot
+from article_content_client import enrich_news_with_public_content
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -102,7 +103,7 @@ def main() -> None:
     bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
     bundle["date"] = str(latest.get("date") or bundle.get("date") or "")
 
-    news_data = enrich_news_snapshot(build_news_data(settings, use_mock_news=False))
+    news_data = enrich_news_snapshot(enrich_news_with_public_content(build_news_data(settings, use_mock_news=False)))
     # Refresh official company filings alongside the general news pool. This
     # gives the editor recent SEC/EDGAR evidence instead of stale bundle data.
     company_data = enrich_company_snapshot(build_company_data(settings, use_mock_companies=False))

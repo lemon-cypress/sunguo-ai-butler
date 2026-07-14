@@ -221,6 +221,7 @@ function renderNewsPoolSection(pool) {
   const ranked = stages.ranked ?? pool.ranked_candidates ?? 0;
   const clustered = stages.clustered ?? pool.clustered_candidates ?? ranked;
   const editorial = stages.editorial ?? pool.editorial_candidates ?? 0;
+  const content = pool.content_extraction || {};
 
   if (!raw && !editorial) {
     return renderTextSection("新闻池摘要", `<p class="pool-empty">新闻池数据将在下一次刷新后显示。</p>`);
@@ -229,6 +230,7 @@ function renderNewsPoolSection(pool) {
   return renderTextSection("新闻池摘要", `
     <p class="pool-funnel">本次从 <b>${raw}</b> 条原始信息中筛出 <b>${ranked}</b> 条相关候选，聚类为 <b>${clustered}</b> 个事件，最终保留 <b>${editorial}</b> 条可展示事实。</p>
     <p class="pool-sources"><b>已摘录渠道：</b>${sourceCounts.length ? sourceCounts.map(([name, count]) => `<span>${escapeHtml(name)} ${count}条</span>`).join("、") : "待刷新"}</p>
+    ${content.attempted ? `<p class="pool-content"><b>正文增强：</b>尝试 ${Number(content.attempted) || 0} 篇，新提取 ${Number(content.extracted) || 0} 篇，缓存命中 ${Number(content.cached) || 0} 篇。</p>` : ""}
     ${reasons.length ? `<p class="pool-reasons"><b>主要过滤：</b>${reasons.map(([name, count]) => `${escapeHtml(name)} ${count}条`).join("；")}</p>` : ""}
   `);
 }
