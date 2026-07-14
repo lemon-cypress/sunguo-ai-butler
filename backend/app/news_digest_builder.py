@@ -782,7 +782,7 @@ def collect_economic_calendar_candidates(brief: dict) -> list[dict]:
         actual = clean_text(event.get("actual")) or zh("\\u5f85\\u516c\\u5e03")
         consensus = clean_text(event.get("consensus")) or zh("\\u672a\\u7ed9\\u51fa")
         previous = clean_text(event.get("previous")) or zh("\\u672a\\u7ed9\\u51fa")
-        title = f"{country} {name}{zh('\\u516c\\u5e03\\u503c\\u4e3a')}{actual}"
+        title = f"{country} {name}" + zh("\\u516c\\u5e03\\u503c\\u4e3a") + actual
         summary = zh("\\u5e02\\u573a\\u9884\\u671f\\u4e3a") + f"{consensus}" + zh("\\uff0c\\u524d\\u503c\\u4e3a") + f"{previous}" + zh("\\uff1b\\u8fd9\\u7c7b\\u6570\\u636e\\u4f1a\\u5f71\\u54cd\\u5229\\u7387\\u3001\\u6c47\\u7387\\u548c\\u80a1\\u503a\\u5546\\u54c1\\u7684\\u98ce\\u9669\\u504f\\u597d\\u3002")
         items.append(candidate(
             kind="economic_calendar",
@@ -876,7 +876,7 @@ def collect_global_company_candidates(brief: dict) -> list[dict]:
         change = number(quote.get("change_percent_from_previous_close") or quote.get("change_percent_from_open"))
         if change is not None and abs(change) >= 1.5:
             price = format_number(quote.get("regular_market_price") or quote.get("close"))
-            title = f"{name}{zh('\\u80a1\\u4ef7')}{direction(change)}{abs(change):.2f}%"
+            title = name + zh("\\u80a1\\u4ef7") + direction(change) + f"{abs(change):.2f}%"
             summary = zh("\\u6700\\u65b0\\u4ef7\\u683c\\u4e3a") + f"{price}" + zh("\\uff1b\\u516c\\u53f8\\u80a1\\u4ef7\\u5f02\\u52a8\\u9700\\u8981\\u4e0e\\u8d22\\u62a5\\u3001\\u6307\\u5f15\\u3001\\u8ba2\\u5355\\u6216\\u884c\\u4e1a\\u65b0\\u95fb\\u5408\\u5e76\\u5224\\u65ad\\u3002")
             items.append(candidate("company_price", COMPANY, title, summary, market_time(quote), "company_watchlist", facts=extract_facts(title, summary)))
         for article in company.get("articles") or company.get("news", []) or []:
@@ -942,7 +942,8 @@ def collect_a_share_company_candidates(brief: dict) -> list[dict]:
         for row in company.get("financials", []) or []:
             summary = summarize_financial_row(row)
             if summary:
-                items.append(candidate("a_share_financial", COMPANY, f"{name}{zh('\\u8d22\\u52a1\\u6570\\u636e\\u66f4\\u65b0')}", summary, clean_text(row.get("report_date") or row.get("date")), "a_share_financials", facts=extract_facts(summary)))
+                title = name + zh("\\u8d22\\u52a1\\u6570\\u636e\\u66f4\\u65b0")
+                items.append(candidate("a_share_financial", COMPANY, title, summary, clean_text(row.get("report_date") or row.get("date")), "a_share_financials", facts=extract_facts(summary)))
         for row in company.get("supervision", []) or []:
             title = clean_text(row.get("title") or row.get("type"))
             if title:
