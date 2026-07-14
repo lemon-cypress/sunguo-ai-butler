@@ -380,10 +380,32 @@ def generate_ai_news_digest(settings, brief: dict) -> dict | None:
         validate_news_digest(payload)
         return payload
     except (DeepSeekClientError, ValueError, json.JSONDecodeError) as error:
-        print("AI 新闻汇总生成失败，继续使用本地规则版新闻汇总。")
+        print("AI 新闻汇总生成失败，改用分批事实提炼。")
         print(f"错误信息：{error}")
         print("")
+        return build_localized_rule_digest(settings, brief)
+
+
+def build_localized_rule_digest(settings, brief: dict) -> dict | None:
+    """Reliable fallback: translate/summarise small fact-card batches, not raw titles."""
+    rule_digest = get_rule_digest_with_pool(brief)
+    sections = json.loads(json.dumps(rule_digest.get("sections") or [], ensure_ascii=False))
+    payload = {
+        "version": "news-digest-ai-v4",
+        "date": brief.get("date", ""),
+        "city": brief.get("city", ""),
+        "overview": [],
+        "sections": sections,
+        "_force_refine": True,
+    }
+    localize_news_digest_items(settings, payload)
+    payload.pop("_force_refine", None)
+    refresh_digest_overview(payload)
+    try:
+        validate_news_digest(payload)
+    except ValueError:
         return None
+    return payload
 
 
 def parse_json_object(raw: str) -> dict:
@@ -1464,7 +1486,11 @@ def localize_news_digest_items(settings, payload: dict) -> None:
                 continue
             thesis = clean_digest_text(item.get("thesis"))
             summary = clean_digest_text(item.get("summary"))
-            if thesis and (not contains_cjk(thesis) or (summary and not contains_cjk(summary))):
+            if thesis and (
+                payload.get("_force_refine")
+                or not contains_cjk(thesis)
+                or (summary and not contains_cjk(summary))
+            ):
                 targets.append(
                     {
                         "index": len(targets),
@@ -1480,47 +1506,52 @@ def localize_news_digest_items(settings, payload: dict) -> None:
     if not targets:
         return
 
-    prompt = f"""
-把下面这些财经早报条目翻译/改写成中文。只输出 JSON：
-{{"items":[{{"index":0,"thesis":"中文事实标题","summary":"中文事实摘要"}}]}}
+    target_by_index = {item["index"]: item for item in targets}
+    model = "deepseek-chat" if "v4" in settings.deepseek_model.lower() or "reason" in settings.deepseek_model.lower() else settings.deepseek_model
+    # Large JSON responses are occasionally truncated by the provider. Eight
+    # cards per request keeps every result small and lets one weak batch fail
+    # without discarding the rest of the morning brief.
+    for start in range(0, len(targets), 8):
+        batch = targets[start : start + 8]
+        prompt = f"""
+把下面原始新闻改写为中文财经早报事实条目。只输出 JSON：
+{{"items":[{{"index":0,"thesis":"中文事实提炼标题","summary":"中文提炼摘要"}}]}}
 
 要求：
-- 只翻译和改写已有事实，不新增背景、判断、影响、投资建议或信息来源。
+- 不是逐字翻译或照抄原标题。先抓住主体、动作、关键数字或政策，再写成一句中文事实标题。
+- summary 用 1-2 句说明发生了什么及可核验的信息增量；不得复制标题，不新增背景、判断、影响、投资建议或来源。
 - 公司名、人名、机构名、产品名可以保留英文；普通英文句子必须转成中文。
 - 数字、百分比、金额、时间保持原样。
 - thesis 不要写“观点：”“新闻1”“要点1”。
-- summary 控制在 50-140 个中文字符；原文没有摘要时可输出空字符串。
+- summary 控制在 45-120 个中文字符；原文没有摘要时可输出空字符串。
 
 待处理条目：
-{json.dumps([{k: v for k, v in item.items() if k in {"index", "section", "time", "thesis", "summary"}} for item in targets], ensure_ascii=False)}
+{json.dumps([{k: v for k, v in item.items() if k in {"index", "section", "time", "thesis", "summary"}} for item in batch], ensure_ascii=False)}
 """.strip()
-    try:
-        model = "deepseek-chat" if "v4" in settings.deepseek_model.lower() or "reason" in settings.deepseek_model.lower() else settings.deepseek_model
-        raw = create_chat_completion(settings.deepseek_api_key, model, prompt, json_mode=True)
-        translated = parse_json_object(raw).get("items", [])
-    except (DeepSeekClientError, ValueError, json.JSONDecodeError) as error:
-        print(f"英文新闻条目中文化失败，先隐藏未翻译条目：{error}")
-        remove_untranslated_news_items(payload)
-        return
-
-    target_by_index = {item["index"]: item for item in targets}
-    for translated_item in translated if isinstance(translated, list) else []:
-        if not isinstance(translated_item, dict):
-            continue
         try:
-            target = target_by_index[int(translated_item.get("index"))]
-        except (TypeError, ValueError, KeyError):
+            raw = create_chat_completion(settings.deepseek_api_key, model, prompt, json_mode=True)
+            translated = parse_json_object(raw).get("items", [])
+        except (DeepSeekClientError, ValueError, json.JSONDecodeError) as error:
+            print(f"第 {start // 8 + 1} 批新闻提炼失败，保留其余批次：{error}")
             continue
-        thesis = clean_digest_text(translated_item.get("thesis"))
-        summary = clean_digest_text(translated_item.get("summary"))
-        if not thesis or not contains_cjk(thesis):
-            continue
-        if summary and not contains_cjk(summary):
-            continue
-        section = payload["sections"][target["section_index"]]
-        item = section["items"][target["item_index"]]
-        item["thesis"] = thesis
-        item["summary"] = summary
+
+        for translated_item in translated if isinstance(translated, list) else []:
+            if not isinstance(translated_item, dict):
+                continue
+            try:
+                target = target_by_index[int(translated_item.get("index"))]
+            except (TypeError, ValueError, KeyError):
+                continue
+            thesis = clean_digest_text(translated_item.get("thesis"))
+            summary = clean_digest_text(translated_item.get("summary"))
+            if not thesis or not contains_cjk(thesis):
+                continue
+            if summary and not contains_cjk(summary):
+                continue
+            section = payload["sections"][target["section_index"]]
+            item = section["items"][target["item_index"]]
+            item["thesis"] = thesis
+            item["summary"] = summary
 
     remove_untranslated_news_items(payload)
 
