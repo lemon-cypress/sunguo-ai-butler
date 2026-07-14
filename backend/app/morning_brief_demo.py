@@ -1627,7 +1627,7 @@ def localize_news_digest_items(settings, payload: dict, brief: dict | None = Non
     remove_untranslated_news_items(payload)
 
 
-def localize_media_candidate_titles(settings, news_pool: dict, limit: int = 32) -> None:
+def localize_media_candidate_titles(settings, news_pool: dict, limit: int = 100) -> None:
     """Attach concise Chinese translations to selectable original headlines.
 
     This intentionally runs on the separate reader list, not on the editorial
@@ -1648,8 +1648,11 @@ def localize_media_candidate_titles(settings, news_pool: dict, limit: int = 32) 
         return
 
     model = "deepseek-chat" if "v4" in settings.deepseek_model.lower() or "reason" in settings.deepseek_model.lower() else settings.deepseek_model
-    for start in range(0, len(targets), 16):
-        batch = targets[start : start + 16]
+    # Reader candidates can come from many selected publications.  Keep batches
+    # small enough that a single incomplete model response does not leave half
+    # of the visible list without a Chinese title.
+    for start in range(0, len(targets), 8):
+        batch = targets[start : start + 8]
         prompt = f"""
 把下列英文新闻标题翻译成简洁、忠实的中文。只输出 JSON：
 {{"items":[{{"index":0,"title_zh":"中文翻译"}}]}}
