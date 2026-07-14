@@ -17,6 +17,7 @@ const state = {
   todos: [],
   selectedMediaSources: null,
   newsRefreshPoll: null,
+  awaitingFirstNews: false,
 };
 
 const newsSections = document.querySelector("#newsSections");
@@ -63,7 +64,10 @@ async function refreshNewsOnPageLoad() {
     }, 12000);
     const result = await response.json();
     if (!response.ok || result.ok === false) throw new Error(result.error || "新闻池刷新失败");
-    if (result.running) watchNewsRefresh();
+    if (result.running) {
+      state.awaitingFirstNews = true;
+      watchNewsRefresh();
+    }
   } catch (error) {
     console.warn("news refresh failed; loading last available bundle", error);
     setNewsLoading("正在载入上一次成功新闻…");
@@ -81,7 +85,10 @@ function watchNewsRefresh() {
       if (!result.running) {
         window.clearInterval(state.newsRefreshPoll);
         state.newsRefreshPoll = null;
-        if (!result.last_error) await loadBundle();
+        if (!result.last_error) {
+          state.awaitingFirstNews = false;
+          await loadBundle();
+        }
       }
     } catch (error) {
       console.warn("news refresh status unavailable", error);
@@ -102,8 +109,13 @@ async function loadBundle() {
     renderBundle();
   } catch (error) {
     console.error(error);
-    document.querySelector("#dateLabel").textContent = "新闻加载失败";
-    newsSections.innerHTML = `<article class="empty-state error-state">${escapeHtml(TEXT.loadError)}</article>`;
+    if (state.awaitingFirstNews) {
+      document.querySelector("#dateLabel").textContent = "正在生成首份新闻…";
+      newsSections.innerHTML = `<article class="empty-state">首次打开正在汇集新闻，完成后会自动显示，无需再次刷新。</article>`;
+    } else {
+      document.querySelector("#dateLabel").textContent = "新闻加载失败";
+      newsSections.innerHTML = `<article class="empty-state error-state">${escapeHtml(TEXT.loadError)}</article>`;
+    }
   }
 }
 

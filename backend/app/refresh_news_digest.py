@@ -42,7 +42,20 @@ def resolve_bundle_path(date_text: str = "") -> tuple[Path, dict]:
     if date_text:
         return DEMOS_DIR / date_text / "output_bundle.json", {"date": date_text}
     if not latest_path.exists():
-        raise FileNotFoundError("demos/latest.json does not exist. Run morning_brief_demo.py --save once first.")
+        # A newly deployed server has no historical morning brief yet.  The
+        # focused news refresh is self-sufficient: seed a minimal bundle and
+        # let the normal news pipeline populate it on the first browser load.
+        today = datetime.now(BEIJING_TZ).date().isoformat()
+        today_path = DEMOS_DIR / today / "output_bundle.json"
+        today_path.parent.mkdir(parents=True, exist_ok=True)
+        if not today_path.exists():
+            today_path.write_text(json.dumps({
+                "version": "output-v1",
+                "project": "松果",
+                "date": today,
+                "city": "北京-朝阳",
+            }, ensure_ascii=False, indent=2), encoding="utf-8")
+        return today_path, {"date": today, "bundle_path": f"{today}/output_bundle.json"}
     latest = json.loads(latest_path.read_text(encoding="utf-8"))
     bundle_path = DEMOS_DIR / str(latest.get("bundle_path") or "")
     if not bundle_path.exists():

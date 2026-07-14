@@ -6,7 +6,7 @@ import mimetypes
 import subprocess
 import sys
 import threading
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote, urlparse
@@ -22,6 +22,7 @@ TODOS_PATH = PROJECT_ROOT / "backend" / "data" / "todos.json"
 MEMORY_SECTIONS = {"regions", "industries", "companies", "markets", "news_topics", "life_reminders"}
 NEWS_REFRESH_LOCK = threading.Lock()
 NEWS_REFRESH_STATE = {"running": False, "last_error": "", "last_finished_at": ""}
+NEWS_REFRESH_MIN_INTERVAL = timedelta(minutes=5)
 
 
 def read_json(path: Path) -> dict:
@@ -56,6 +57,21 @@ def run_news_refresh() -> None:
         NEWS_REFRESH_STATE["last_finished_at"] = datetime.now(timezone.utc).isoformat()
         NEWS_REFRESH_STATE["running"] = False
         NEWS_REFRESH_LOCK.release()
+
+
+def latest_bundle_is_fresh() -> bool:
+    latest_path = PROJECT_ROOT / "demos" / "latest.json"
+    if not latest_path.exists():
+        return False
+    try:
+        latest = read_json(latest_path)
+        bundle_path = PROJECT_ROOT / "demos" / str(latest.get("bundle_path") or "")
+        if not bundle_path.exists():
+            return False
+        modified_at = datetime.fromtimestamp(bundle_path.stat().st_mtime, tz=timezone.utc)
+        return datetime.now(timezone.utc) - modified_at < NEWS_REFRESH_MIN_INTERVAL
+    except (OSError, ValueError, json.JSONDecodeError):
+        return False
 
 
 def read_todos() -> dict:
@@ -310,6 +326,9 @@ class DashboardHandler(SimpleHTTPRequestHandler):
 
     def refresh_news(self) -> None:
         """Refresh only the news pool; used by a normal browser F5."""
+        if latest_bundle_is_fresh():
+            self.write_json_response({"ok": True, "running": False, "skipped": True, "message": "新闻池仍在最新窗口内"})
+            return
         if not NEWS_REFRESH_LOCK.acquire(blocking=False):
             self.write_json_response({"ok": True, "running": True, "message": "新闻池正在刷新"}, status=202)
             return
