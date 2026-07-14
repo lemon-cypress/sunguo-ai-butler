@@ -519,6 +519,17 @@ def is_disallowed_visible_story(item: dict, text: str) -> bool:
     ):
         return True
 
+    # Crime, missing-person, consumer-product and local-opening stories often
+    # arrive through otherwise credible media feeds.  They are valid news, but
+    # not material enough for a finance/industry morning brief on their own.
+    low_material_terms = [
+        "murder", "missing person", "missing photos", "police reveal", "body found",
+        "restaurant opens", "opens new store", "new store", "headphone", "headphones",
+        "shokz openrun", "celebrity", "royal family",
+    ]
+    if any(term in combined for term in low_material_terms):
+        return True
+
     return False
 
 
@@ -676,6 +687,8 @@ def build_sections(ranked_pool: list[dict], brief: dict) -> list[dict]:
         for candidate in ranked_pool:
             if candidate["id"] in used_ids or candidate.get("section") != title:
                 continue
+            if not is_candidate_suitable_for_section(candidate, title):
+                continue
             section_items.append(candidate_to_digest_item(candidate))
             used_ids.add(candidate["id"])
             if len(section_items) >= section_limit(title):
@@ -685,6 +698,28 @@ def build_sections(ranked_pool: list[dict], brief: dict) -> list[dict]:
         # editorial fact card in the verified pool.
         sections.append({"title": title, "items": section_items[:section_limit(title)]})
     return sections
+
+
+def is_candidate_suitable_for_section(candidate: dict, title: str) -> bool:
+    """Keep each public column semantically clean before the AI rewrites it."""
+    text = " ".join([
+        clean_text(candidate.get("title")), clean_text(candidate.get("summary")),
+    ]).lower()
+    if title == INDUSTRY:
+        industry_terms = [
+            "ai", "artificial intelligence", "semiconductor", "chip", "robot", "data center",
+            "cloud", "ev", "battery", "energy", "solar", "pharma", "biotech", "shipping",
+            "oil", "gas", "copper", "manufacturing", "supply chain", "rare earth",
+            "人工智能", "半导体", "芯片", "机器人", "算力", "数据中心", "新能源", "汽车",
+            "电池", "光伏", "医药", "航运", "原油", "制造业", "供应链", "稀土",
+        ]
+        return any(term in text for term in industry_terms)
+    if title == FINANCE:
+        # Trade and customs releases are macro data, not a financial-data row.
+        macro_trade_terms = ["customs", "trade balance", "export", "import", "海关", "进出口", "出口", "进口", "外贸"]
+        if any(term in text for term in macro_trade_terms):
+            return False
+    return True
 
 
 def build_market_context_items(brief: dict, used_ids: set[str], limit: int) -> list[dict]:
@@ -1208,6 +1243,8 @@ def corrected_section(item: dict) -> str:
     if any(pattern in text for pattern in [
         "cpi", "ppi", "inflation", "gdp", "pmi", "unemployment", "jobs report",
         "central bank", "interest rate", "rate decision", "trade balance",
+        "customs", "export", "import", "trade deficit", "trade surplus",
+        "海关", "进出口", "出口", "进口", "外贸", "贸易顺差", "贸易逆差",
     ]):
         return MACRO
     if any(pattern in text for pattern in FORCE_GLOBAL_PATTERNS):

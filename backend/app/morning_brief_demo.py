@@ -375,7 +375,7 @@ def generate_ai_news_digest(settings, brief: dict) -> dict | None:
                 break
             append_missing_fact_cards(settings, payload, brief)
         repair_news_digest_payload(payload, brief, min_items=minimum_digest_items(brief))
-        localize_news_digest_items(settings, payload)
+        localize_news_digest_items(settings, payload, brief)
         refresh_digest_overview(payload)
         validate_news_digest(payload)
         return payload
@@ -398,7 +398,7 @@ def build_localized_rule_digest(settings, brief: dict) -> dict | None:
         "sections": sections,
         "_force_refine": True,
     }
-    localize_news_digest_items(settings, payload)
+    localize_news_digest_items(settings, payload, brief)
     payload.pop("_force_refine", None)
     refresh_digest_overview(payload)
     try:
@@ -962,6 +962,47 @@ JSON 结构必须是：
 """.strip()
 
 
+def is_editorially_complete_digest_item(thesis: str, summary: str) -> bool:
+    """Reject public rows that are vague, duplicated, or lack a market period."""
+    compact_thesis = re.sub(r"[\s，。；：、,.!！?？-]", "", thesis).lower()
+    compact_summary = re.sub(r"[\s，。；：、,.!！?？-]", "", summary).lower()
+    # Keep concise, evidence-rich details (for example a multi-day fund-flow
+    # window) instead of discarding them merely because they are short.
+    if len(compact_summary) < 8:
+        return False
+    if len(compact_thesis) >= 12 and (
+        compact_thesis in compact_summary or compact_summary in compact_thesis
+    ):
+        return False
+
+    vague_subjects = (
+        "某头部企业", "又一头部企业", "这只股票", "该股", "该公司", "上述公司",
+        "相关公司", "相关股票", "一家企业", "一只股票",
+    )
+    if any(term in f"{thesis}{summary}" for term in vague_subjects):
+        return False
+    if "更名" in thesis and not any(marker in summary for marker in ("更名为", "改名为", "原名", "新名称")):
+        return False
+    if any(term in thesis for term in ("答案", "解决方案")) and any(
+        term in summary for term in ("已有答案", "给出答案", "答案是", "有了答案")
+    ):
+        return False
+
+    market_move_terms = ("上涨", "下跌", "涨", "跌", "熔断", "反弹", "回落", "净流入", "净流出")
+    if any(term in f"{thesis}{summary}" for term in market_move_terms):
+        # A bare publication date (or merely the character "日") is not a
+        # usable market window.  The rendered sentence needs to say when the
+        # move happened or over which trading period it accumulated.
+        explicit_window = re.compile(
+            r"(?:\d{1,2}月\d{1,2}[日号]|\d{1,2}-\d{1,2}(?:至\d{1,2}-\d{1,2})?|"
+            r"今日|昨日|当天|当日|盘中|收盘|截至(?:收盘|\d{1,2}月\d{1,2}[日号])|"
+            r"本周|本月|过去\d+[个]?(?:交易)?日|连续\d+[个]?(?:交易)?日|近\d+[个]?(?:交易)?日)"
+        )
+        if not explicit_window.search(f"{thesis}{summary}"):
+            return False
+    return True
+
+
 def validate_news_digest(payload: dict) -> None:
     """Validate and normalize the stricter AI news digest payload."""
     if not isinstance(payload, dict):
@@ -1471,11 +1512,20 @@ def append_missing_fact_cards(settings, payload: dict, brief: dict) -> None:
         print(f"遗漏事实卡翻译未完整覆盖：待补 {len(missing)} 条，已补 {appended} 条。")
 
 
-def localize_news_digest_items(settings, payload: dict) -> None:
+def localize_news_digest_items(settings, payload: dict, brief: dict | None = None) -> None:
     """Translate final visible digest rows into Chinese without adding facts."""
     if settings.ai_provider != "deepseek" or not settings.deepseek_api_key:
         remove_untranslated_news_items(payload)
         return
+
+    card_by_id = {}
+    if isinstance(brief, dict):
+        rule_digest = get_rule_digest_with_pool(brief)
+        card_by_id = {
+            clean_digest_text(card.get("id")): card
+            for card in (rule_digest.get("news_pool") or {}).get("top_candidates", [])
+            if isinstance(card, dict) and clean_digest_text(card.get("id"))
+        }
 
     targets = []
     for section_index, section in enumerate(payload.get("sections") or []):
@@ -1491,6 +1541,7 @@ def localize_news_digest_items(settings, payload: dict) -> None:
                 or not contains_cjk(thesis)
                 or (summary and not contains_cjk(summary))
             ):
+                card = card_by_id.get(clean_digest_text(item.get("card_id")), {})
                 targets.append(
                     {
                         "index": len(targets),
@@ -1500,6 +1551,15 @@ def localize_news_digest_items(settings, payload: dict) -> None:
                         "time": clean_digest_text(item.get("time")),
                         "thesis": thesis,
                         "summary": summary,
+                        # The original evidence is passed into the small batch,
+                        # so the model can name the company/ETF and retain the
+                        # period of a price move instead of paraphrasing a thin
+                        # RSS headline.
+                        "evidence": {
+                            "title": clean_digest_text(card.get("title")),
+                            "summary": clean_digest_text(card.get("summary")),
+                            "facts": [clean_digest_text(fact) for fact in (card.get("facts") or [])[:8]],
+                        },
                     }
                 )
 
@@ -1518,15 +1578,18 @@ def localize_news_digest_items(settings, payload: dict) -> None:
 {{"items":[{{"index":0,"thesis":"中文事实提炼标题","summary":"中文提炼摘要"}}]}}
 
 要求：
-- 不是逐字翻译或照抄原标题。先抓住主体、动作、关键数字或政策，再写成一句中文事实标题。
-- summary 用 1-2 句说明发生了什么及可核验的信息增量；不得复制标题，不新增背景、判断、影响、投资建议或来源。
+- 不是逐字翻译或照抄原标题。thesis 只保留一个最关键、可核验的事实；summary 只补充 thesis 没有写出的细节，二者不得重复或近似改写。
+- 必须写清主体：公司、ETF、股票、机构、人物、产品不能用“某头部企业”“这只股票”“该公司”等代词替代。改名新闻必须写出原名和新名；“答案/方案”类新闻必须在 summary 直接写出答案。
+- 涨跌、熔断、反弹、资金流入等市场表述必须给出来源中明确的日期或时间窗口（如“7月14日盘中”“截至收盘”“过去4个交易日”）。条目里的发布时间不等于事件时间窗，不能拿发布时间替代；来源没有时间窗口时，不要保留该条。
+- summary 用 1-2 句说明发生了什么及可核验的信息增量；不新增背景、判断、影响、投资建议或来源。
+- 产业观察只收录供需、产能、技术、监管、供应链或关键公司动作；犯罪、失踪、消费产品或一般社会新闻不要改写。
 - 公司名、人名、机构名、产品名可以保留英文；普通英文句子必须转成中文。
 - 数字、百分比、金额、时间保持原样。
 - thesis 不要写“观点：”“新闻1”“要点1”。
 - summary 控制在 45-120 个中文字符；原文没有摘要时可输出空字符串。
 
 待处理条目：
-{json.dumps([{k: v for k, v in item.items() if k in {"index", "section", "time", "thesis", "summary"}} for item in batch], ensure_ascii=False)}
+{json.dumps([{k: v for k, v in item.items() if k in {"index", "section", "time", "thesis", "summary", "evidence"}} for item in batch], ensure_ascii=False)}
 """.strip()
         try:
             raw = create_chat_completion(settings.deepseek_api_key, model, prompt, json_mode=True)
@@ -1730,6 +1793,8 @@ def validate_news_digest(payload: dict) -> None:
                 if thesis.startswith(banned_prefixes):
                     raise ValueError(f"news digest item uses weak label: {thesis}")
                 if any(term in thesis or term in summary for term in banned_terms):
+                    continue
+                if not is_editorially_complete_digest_item(thesis, summary):
                     continue
                 cleaned_item = {"thesis": thesis, "summary": summary}
                 if item.get("card_id"):
