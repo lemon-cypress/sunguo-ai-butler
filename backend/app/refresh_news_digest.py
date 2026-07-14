@@ -19,6 +19,7 @@ from morning_brief_demo import (
     build_company_data,
     build_news_data,
     generate_ai_news_digest,
+    localize_media_candidate_titles,
     remove_untranslated_news_items,
 )
 from news_digest_builder import build_news_digest
@@ -117,6 +118,9 @@ def main() -> None:
     # original-title list remain the place for reading source-language articles.
     if digest is None:
         remove_untranslated_news_items(bundle["news_digest"])
+    # Keep the reader's original English headline clickable, while attaching a
+    # short Chinese translation for mixed-language mainstream-media scanning.
+    localize_media_candidate_titles(settings, rule_digest.get("news_pool", {}))
     bundle["news_pool_audit"] = rule_digest.get("news_pool", {})
     bundle["news_data"] = news_data
     bundle["company_data"] = company_data

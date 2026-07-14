@@ -974,6 +974,14 @@ def is_editorially_complete_digest_item(thesis: str, summary: str) -> bool:
         compact_thesis in compact_summary or compact_summary in compact_thesis
     ):
         return False
+    # Catch lightly edited title repetition as well.  A summary is useful only
+    # when it contributes a new fact, not when it repeats most of the bold
+    # thesis with a few words inserted.
+    if len(compact_thesis) >= 16:
+        thesis_ngrams = {compact_thesis[index : index + 5] for index in range(len(compact_thesis) - 4)}
+        copied_ngrams = sum(1 for phrase in thesis_ngrams if phrase in compact_summary)
+        if thesis_ngrams and copied_ngrams / len(thesis_ngrams) >= 0.68:
+            return False
 
     vague_subjects = (
         "某头部企业", "又一头部企业", "这只股票", "该股", "该公司", "上述公司",
@@ -1619,6 +1627,59 @@ def localize_news_digest_items(settings, payload: dict, brief: dict | None = Non
     remove_untranslated_news_items(payload)
 
 
+def localize_media_candidate_titles(settings, news_pool: dict, limit: int = 32) -> None:
+    """Attach concise Chinese translations to selectable original headlines.
+
+    This intentionally runs on the separate reader list, not on the editorial
+    digest: the clickable English headline remains the source of record while
+    the Chinese text makes scanning a mixed-language pool practical.
+    """
+    if settings.ai_provider != "deepseek" or not settings.deepseek_api_key or not isinstance(news_pool, dict):
+        return
+    candidates = news_pool.get("media_candidates") or []
+    targets = [
+        {"index": index, "title": clean_digest_text(item.get("title"))}
+        for index, item in enumerate(candidates[:limit])
+        if isinstance(item, dict)
+        and clean_digest_text(item.get("title"))
+        and not contains_cjk(clean_digest_text(item.get("title")))
+    ]
+    if not targets:
+        return
+
+    model = "deepseek-chat" if "v4" in settings.deepseek_model.lower() or "reason" in settings.deepseek_model.lower() else settings.deepseek_model
+    for start in range(0, len(targets), 16):
+        batch = targets[start : start + 16]
+        prompt = f"""
+把下列英文新闻标题翻译成简洁、忠实的中文。只输出 JSON：
+{{"items":[{{"index":0,"title_zh":"中文翻译"}}]}}
+
+要求：
+- 保留公司、机构、人名、产品名、数字、百分比和时间；不增加原题没有的事实或判断。
+- 只翻译标题，不写摘要，不加引号，不加“据报道”。
+- 每条中文不超过55个汉字；无法忠实翻译时返回空字符串。
+
+标题：
+{json.dumps(batch, ensure_ascii=False)}
+""".strip()
+        try:
+            response = parse_json_object(create_chat_completion(settings.deepseek_api_key, model, prompt, json_mode=True))
+        except (DeepSeekClientError, ValueError, json.JSONDecodeError) as error:
+            print(f"主流媒体标题翻译跳过：{error}")
+            continue
+        for translated in response.get("items", []) if isinstance(response, dict) else []:
+            if not isinstance(translated, dict):
+                continue
+            try:
+                index = int(translated.get("index"))
+                item = candidates[index]
+            except (TypeError, ValueError, IndexError):
+                continue
+            chinese_title = clean_digest_text(translated.get("title_zh"))[:110]
+            if chinese_title and contains_cjk(chinese_title):
+                item["title_zh"] = chinese_title
+
+
 def remove_untranslated_news_items(payload: dict) -> None:
     """Keep the public page Chinese-only even when a model response is weak."""
     sections = []
@@ -1739,7 +1800,8 @@ def build_news_digest_prompt(brief: dict) -> str:
 8. 产业新闻优先写供需、价格、产能、库存、政策补贴、出口管制、资本开支和关键公司动作。
 9. 每张 fact_card 已是一个去重后的事件簇；cluster_size 表示相互印证的报道数。每张卡只能生成一条，不能把同一事件换标题后重复写到其他栏目。
 10. 质量优先。fact_cards 少于或等于 30 张时，必须逐条覆盖全部 fact_cards；超过 30 张时选择最重要的 24-30 条。每个栏目 1-12 条；素材不足时允许栏目较少。
-11. 每条 summary 控制在 50-140 个中文字符，写成简洁事实正文；输入没有数字就不要杜撰数字。
+11. thesis 是页面加粗的关键事实；summary 必须补充 thesis 未出现的时间、主体、数字、监管动作或直接结果，不能换词重说标题。若没有新的可核验细节，不选该卡。
+12. 商业卫星、火箭、航天器、太空通信等归入“行业观察”；不得放入“宏观经济”。每条 summary 控制在 50-140 个中文字符，输入没有数字就不要杜撰数字。
 
 输入数据：
 {payload}

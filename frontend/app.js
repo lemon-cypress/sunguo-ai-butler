@@ -267,12 +267,13 @@ function renderMediaSelectionSection(pool) {
       <li class="media-article">
         <span class="media-article-score">${mediaScore(item)}</span>
         <a href="${escapeAttribute(safeExternalUrl(item.url))}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.title || TEXT.newsClue)}</a>
+        ${item.title_zh ? `<span class="media-article-translation">（${escapeHtml(item.title_zh)}）</span>` : ""}
         <span class="media-article-source">${escapeHtml(item.source || "")}</span>
       </li>
     `).join("")
     : `<li class="pool-empty">勾选上方媒体后，这里会列出新闻池中的原文标题。</li>`;
   return renderTextSection("主流媒体选读", `
-    <p class="media-help">选择媒体后，只列出新闻池中的标题；点击标题可打开原文。数字为重要性分值。</p>
+    <p class="media-help">选择媒体后，只列出新闻池中的原文标题；英文标题后附中文翻译，点击英文标题可打开原文。数字为重要性分值。</p>
     <div class="media-choices" id="mediaChoices">${controls}</div>
     <ol class="media-article-list">${rows}</ol>
   `, "media-selection-section");

@@ -40,7 +40,8 @@ SECTION_KEYWORDS = {
     INDUSTRY: [
         "ai", "semiconductor", "chip", "robot", "data center", "cloud", "ev", "battery",
         "energy", "solar", "pharma", "biotech", "shipping", "oil", "gas", "copper",
-        "manufacturing", "supply chain", "rare earth", "export controls",
+        "manufacturing", "supply chain", "rare earth", "export controls", "satellite",
+        "orbital", "space launch", "rocket", "spacecraft", "aerospace", "卫星", "航天", "火箭", "太空",
     ],
     COMPANY: [
         "earnings", "revenue", "profit", "guidance", "buyback", "merger", "acquisition",
@@ -125,6 +126,10 @@ SECTION_REQUIRED_PATTERNS = {
 }
 
 FORCE_COMPANY_PATTERNS = ["trade secret", "lawsuit", "sues", "earnings", "revenue", "profit", "guidance"]
+FORCE_INDUSTRY_PATTERNS = [
+    "satellite", "orbital", "space launch", "rocket", "spacecraft", "aerospace",
+    "卫星", "航天", "火箭", "太空",
+]
 FORCE_GLOBAL_PATTERNS = [
     "sanction", "blacklist", "export controls", "iran", "ukraine", "israel", "russia",
     "china-us", "airstrike", "military", "hormuz", "container ship", "west bank",
@@ -710,8 +715,9 @@ def is_candidate_suitable_for_section(candidate: dict, title: str) -> bool:
             "ai", "artificial intelligence", "semiconductor", "chip", "robot", "data center",
             "cloud", "ev", "battery", "energy", "solar", "pharma", "biotech", "shipping",
             "oil", "gas", "copper", "manufacturing", "supply chain", "rare earth",
+            "satellite", "orbital", "space launch", "rocket", "spacecraft", "aerospace",
             "人工智能", "半导体", "芯片", "机器人", "算力", "数据中心", "新能源", "汽车",
-            "电池", "光伏", "医药", "航运", "原油", "制造业", "供应链", "稀土",
+            "电池", "光伏", "医药", "航运", "原油", "制造业", "供应链", "稀土", "卫星", "航天", "火箭", "太空",
         ]
         return any(term in text for term in industry_terms)
     if title == FINANCE:
@@ -1240,6 +1246,11 @@ def candidate_to_digest_item(item: dict) -> dict:
 
 def corrected_section(item: dict) -> str:
     text = " ".join([clean_text(item.get("title")), clean_text(item.get("summary"))]).lower()
+    # Commercial satellites and launches are aerospace/technology supply-chain
+    # stories.  They must not inherit a broad "macro" feed label merely
+    # because the article mentions a regulator or a government agency.
+    if any(pattern in text for pattern in FORCE_INDUSTRY_PATTERNS):
+        return INDUSTRY
     if any(pattern in text for pattern in [
         "cpi", "ppi", "inflation", "gdp", "pmi", "unemployment", "jobs report",
         "central bank", "interest rate", "rate decision", "trade balance",
@@ -1286,6 +1297,8 @@ def section_limit(title: str) -> int:
 
 def classify_section(parts: list[Any]) -> str:
     text = " ".join(clean_text(part) for part in parts if part).lower()
+    if any(pattern in text for pattern in FORCE_INDUSTRY_PATTERNS):
+        return INDUSTRY
     if any(pattern in text for pattern in FORCE_GLOBAL_PATTERNS):
         return GLOBAL
     if any(pattern in text for pattern in FORCE_COMPANY_PATTERNS):
