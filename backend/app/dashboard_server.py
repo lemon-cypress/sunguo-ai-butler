@@ -5,6 +5,8 @@ import json
 import mimetypes
 import subprocess
 import sys
+import threading
+from datetime import datetime, timezone
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote, urlparse
@@ -18,6 +20,8 @@ USER_PROFILE_PATH = PROJECT_ROOT / "backend" / "data" / "user_profile.json"
 MOTION_CONFIG_PATH = PROJECT_ROOT / "frontend" / "avatar_motion_clips.json"
 TODOS_PATH = PROJECT_ROOT / "backend" / "data" / "todos.json"
 MEMORY_SECTIONS = {"regions", "industries", "companies", "markets", "news_topics", "life_reminders"}
+NEWS_REFRESH_LOCK = threading.Lock()
+NEWS_REFRESH_STATE = {"running": False, "last_error": "", "last_finished_at": ""}
 
 
 def read_json(path: Path) -> dict:
@@ -27,6 +31,31 @@ def read_json(path: Path) -> dict:
 def write_json(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=True, indent=2) + "\n", encoding="ascii")
+
+
+def run_news_refresh() -> None:
+    """Refresh in the background so an ordinary F5 never leaves the page blank."""
+    try:
+        command = [sys.executable, str(PROJECT_ROOT / "backend" / "app" / "refresh_news_digest.py")]
+        result = subprocess.run(
+            command,
+            cwd=str(PROJECT_ROOT),
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=150,
+        )
+        if result.returncode != 0:
+            NEWS_REFRESH_STATE["last_error"] = (result.stderr or result.stdout or "news refresh failed")[-1000:]
+        else:
+            NEWS_REFRESH_STATE["last_error"] = ""
+    except Exception as error:
+        NEWS_REFRESH_STATE["last_error"] = str(error)
+    finally:
+        NEWS_REFRESH_STATE["last_finished_at"] = datetime.now(timezone.utc).isoformat()
+        NEWS_REFRESH_STATE["running"] = False
+        NEWS_REFRESH_LOCK.release()
 
 
 def read_todos() -> dict:
@@ -108,6 +137,8 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             return self.write_json_response(read_todos())
         if parsed.path == "/api/memory":
             return self.get_memory()
+        if parsed.path == "/api/news/status":
+            return self.write_json_response({"ok": True, **NEWS_REFRESH_STATE})
         return super().do_GET()
 
     def do_POST(self) -> None:
@@ -125,6 +156,8 @@ class DashboardHandler(SimpleHTTPRequestHandler):
                 return self.toggle_reminder()
             if parsed.path == "/api/brief/regenerate":
                 return self.regenerate_brief()
+            if parsed.path == "/api/news/refresh":
+                return self.refresh_news()
             if parsed.path == "/api/ask":
                 return self.answer_question()
             if parsed.path == "/api/memory/add":
@@ -274,6 +307,16 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             "latest": latest,
             "stdout_tail": result.stdout[-2000:],
         })
+
+    def refresh_news(self) -> None:
+        """Refresh only the news pool; used by a normal browser F5."""
+        if not NEWS_REFRESH_LOCK.acquire(blocking=False):
+            self.write_json_response({"ok": True, "running": True, "message": "新闻池正在刷新"}, status=202)
+            return
+        NEWS_REFRESH_STATE["running"] = True
+        NEWS_REFRESH_STATE["last_error"] = ""
+        threading.Thread(target=run_news_refresh, name="sunguo-news-refresh", daemon=True).start()
+        self.write_json_response({"ok": True, "running": True, "message": "已开始刷新新闻池"}, status=202)
 
 
 

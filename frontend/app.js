@@ -16,6 +16,7 @@ const state = {
   bundle: null,
   todos: [],
   selectedMediaSources: null,
+  newsRefreshPoll: null,
 };
 
 const newsSections = document.querySelector("#newsSections");
@@ -48,25 +49,67 @@ deleteSelectedBtn.addEventListener("click", async () => {
 });
 
 async function bootstrap() {
-  await Promise.all([loadBundle(), loadTodos()]);
+  await Promise.all([refreshNewsOnPageLoad(), loadTodos()]);
+  await loadBundle();
+}
+
+async function refreshNewsOnPageLoad() {
+  setNewsLoading("正在载入新闻…");
+  try {
+    const response = await fetchWithTimeout("/api/news/refresh", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: "{}",
+    }, 12000);
+    const result = await response.json();
+    if (!response.ok || result.ok === false) throw new Error(result.error || "新闻池刷新失败");
+    if (result.running) watchNewsRefresh();
+  } catch (error) {
+    console.warn("news refresh failed; loading last available bundle", error);
+    setNewsLoading("正在载入上一次成功新闻…");
+  }
+}
+
+function watchNewsRefresh() {
+  if (state.newsRefreshPoll) window.clearInterval(state.newsRefreshPoll);
+  let attempts = 0;
+  state.newsRefreshPoll = window.setInterval(async () => {
+    attempts += 1;
+    try {
+      const response = await fetchWithTimeout("/api/news/status", { cache: "no-store" }, 8000);
+      const result = await response.json();
+      if (!result.running) {
+        window.clearInterval(state.newsRefreshPoll);
+        state.newsRefreshPoll = null;
+        if (!result.last_error) await loadBundle();
+      }
+    } catch (error) {
+      console.warn("news refresh status unavailable", error);
+    }
+    if (attempts >= 90 && state.newsRefreshPoll) {
+      window.clearInterval(state.newsRefreshPoll);
+      state.newsRefreshPoll = null;
+    }
+  }, 2000);
 }
 
 async function loadBundle() {
   const bundlePath = await resolveBundlePath();
   try {
-    const response = await fetch(bundlePath, { cache: "no-store" });
+    const response = await fetchWithTimeout(bundlePath, { cache: "no-store" });
     if (!response.ok) throw new Error(`Cannot read ${bundlePath}`);
     state.bundle = await response.json();
     renderBundle();
   } catch (error) {
     console.error(error);
+    document.querySelector("#dateLabel").textContent = "新闻加载失败";
     newsSections.innerHTML = `<article class="empty-state error-state">${escapeHtml(TEXT.loadError)}</article>`;
   }
 }
 
 async function loadTodos() {
   try {
-    const response = await fetch("/api/todos", { cache: "no-store" });
+    const response = await fetchWithTimeout("/api/todos", { cache: "no-store" });
     if (!response.ok) throw new Error("Cannot read todos");
     const payload = await response.json();
     state.todos = payload.items || [];
@@ -79,7 +122,7 @@ async function loadTodos() {
 async function resolveBundlePath() {
   if (requestedDate) return `../demos/${requestedDate}/output_bundle.json`;
   try {
-    const response = await fetch("../demos/latest.json", { cache: "no-store" });
+    const response = await fetchWithTimeout("../demos/latest.json", { cache: "no-store" });
     if (response.ok) {
       const latest = await response.json();
       if (latest.bundle_path) return `../demos/${latest.bundle_path}`;
@@ -308,7 +351,7 @@ function formatNewsTime(value) {
 }
 
 async function postJson(url, payload) {
-  const response = await fetch(url, {
+  const response = await fetchWithTimeout(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
@@ -318,6 +361,20 @@ async function postJson(url, payload) {
     throw new Error(result.error || response.statusText);
   }
   return result;
+}
+
+function setNewsLoading(message) {
+  document.querySelector("#dateLabel").textContent = message;
+}
+
+async function fetchWithTimeout(url, options = {}, timeoutMs = 20000) {
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    window.clearTimeout(timer);
+  }
 }
 
 function getLocalDateText() {
