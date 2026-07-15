@@ -261,7 +261,7 @@ h2 {
 .stock-head,
 .stock-line {
   display: grid;
-  grid-template-columns: minmax(150px, 1.2fr) minmax(130px, 1fr) minmax(90px, 0.7fr) minmax(90px, 0.7fr) minmax(150px, 1fr) minmax(80px, 0.65fr) minmax(80px, 0.65fr) 45px;
+  grid-template-columns: minmax(150px, 1.1fr) minmax(130px, 0.9fr) minmax(90px, 0.65fr) minmax(80px, 0.6fr) minmax(760px, 4.3fr) 45px;
   gap: 9px;
   min-width: 1010px;
   align-items: center;
@@ -293,6 +293,66 @@ h2 {
 
 .stock-name b {
   font-weight: 700;
+}
+
+.stock-financial-panels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+  min-width: 0;
+}
+
+.financial-panel {
+  min-width: 0;
+  padding-left: 8px;
+  border-left: 1px solid #e3e3e3;
+}
+
+.financial-panel h4 {
+  margin: 0 0 3px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.financial-quarter-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.financial-quarter {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.financial-quarter em {
+  margin: 0;
+  color: var(--muted);
+  font-size: 9px;
+  font-style: normal;
+  white-space: nowrap;
+}
+
+.financial-quarter b {
+  overflow: hidden;
+  color: #222;
+  font-size: 11px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.financial-quarter small {
+  overflow: hidden;
+  color: #5e5e5e;
+  font-size: 9px;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .stock-line .is-up {

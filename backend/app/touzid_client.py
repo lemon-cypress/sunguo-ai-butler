@@ -399,20 +399,43 @@ def fetch_stock_kline(
     return sorted(items, key=lambda item: item.get("date") or "")
 
 
-def fetch_stock_financial_snapshot(symbol: str, token: str, timeout_seconds: int = 20) -> dict:
-    """Fetch only the latest income-statement fields required by the dashboard."""
-    fields = ["pr.toi.o", "pr.oc_rt.o", "pr.np_rt.o"]
-    rows = fetch_stock_finreport(symbol, token, fields=fields, timeout_seconds=timeout_seconds)
-    if not rows:
-        return {}
-    row = rows[0]
-    metrics = row.get("metrics", {}) or {}
-    return {
-        "report_date": clean_text(row.get("date")),
-        "revenue": as_number(metrics.get("pr.toi.o")),
-        "gross_margin": as_number(metrics.get("pr.oc_rt.o")),
-        "net_margin": as_number(metrics.get("pr.np_rt.o")),
-    }
+FINANCIAL_QUARTERS = (
+    ("25Q3", "2025-09-30"),
+    ("25Q4", "2025-12-31"),
+    ("26Q1", "2026-03-31"),
+    ("26Q2", "2026-06-30"),
+)
+
+
+def fetch_stock_financial_series(symbol: str, token: str, timeout_seconds: int = 20) -> list[dict]:
+    """Return an explicitly quarterly income-statement series for the dashboard.
+
+    Do not silently substitute cumulative or annual figures: each request uses
+    the period-end date and the API's single-quarter (``.q``) field type.
+    """
+    fields = ["pr.toi.q", "pr.toi.q_y", "pr.oc_rt.q", "pr.np.q", "pr.np_rt.q"]
+    series: list[dict] = []
+    for label, report_date in FINANCIAL_QUARTERS:
+        rows = fetch_stock_finreport(
+            symbol,
+            token,
+            date=report_date,
+            fields=fields,
+            timeout_seconds=timeout_seconds,
+        )
+        row = rows[0] if rows else {}
+        metrics = row.get("metrics", {}) or {}
+        series.append({
+            "label": label,
+            "report_date": report_date,
+            "available": bool(row and clean_text(row.get("date")) == report_date),
+            "revenue": as_number(metrics.get("pr.toi.q")),
+            "revenue_yoy": as_number(metrics.get("pr.toi.q_y")),
+            "gross_margin": as_number(metrics.get("pr.oc_rt.q")),
+            "net_profit": as_number(metrics.get("pr.np.q")),
+            "net_margin": as_number(metrics.get("pr.np_rt.q")),
+        })
+    return series
 
 
 def fetch_stock_watchlist_snapshot(
@@ -446,9 +469,9 @@ def fetch_stock_watchlist_snapshot(
             prices = []
             errors.append(f"kline: {error}")
         try:
-            financial = fetch_stock_financial_snapshot(symbol, api_token, timeout_seconds=timeout_seconds)
+            financial_series = fetch_stock_financial_series(symbol, api_token, timeout_seconds=timeout_seconds)
         except TouzidClientError as error:
-            financial = {}
+            financial_series = []
             errors.append(f"finreport: {error}")
         latest = prices[-1] if prices else {}
         previous = prices[-2] if len(prices) > 1 else {}
@@ -469,7 +492,7 @@ def fetch_stock_watchlist_snapshot(
                 "data_label": "最新交易日收盘价",
             },
             "valuation": valuations.get(symbol, {}),
-            "financial": financial,
+            "financial_series": financial_series,
             "errors": errors,
         })
     return rows
@@ -478,10 +501,13 @@ def fetch_stock_watchlist_snapshot(
 def fetch_stock_finreport(
     symbol: str,
     token: str,
+    date: str = "",
     fields: list[str] | None = None,
     timeout_seconds: int = 20,
 ) -> list[dict]:
     body: dict = {"token": token, "symbol": symbol}
+    if date:
+        body["date"] = date
     if fields:
         body["fields"] = fields
     rows = request_touzid("stock/finreport", body, timeout_seconds=timeout_seconds)

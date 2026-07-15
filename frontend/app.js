@@ -139,7 +139,7 @@ function renderStockWatchlist(error = "") {
     const data = rowsBySymbol.get(stock.symbol) || {};
     const quote = data.quote || {};
     const valuation = data.valuation || {};
-    const financial = data.financial || {};
+    const financialSeries = data.financial_series || [];
     const change = Number(quote.change_percent);
     const changeClass = Number.isFinite(change) ? (change > 0 ? "is-up" : change < 0 ? "is-down" : "") : "";
     return `
@@ -148,13 +148,15 @@ function renderStockWatchlist(error = "") {
         <span><small>价格</small>${formatStockNumber(quote.price)}<em>${escapeHtml(quote.date || "待更新")}</em></span>
         <span class="${changeClass}"><small>较前收盘</small>${formatPercent(quote.change_percent)}</span>
         <span><small>PE(TTM)</small>${formatStockNumber(valuation.pe_ttm)}</span>
-        <span><small>最新季度收入</small>${formatCurrency(financial.revenue)}<em>${escapeHtml(financial.report_date || "待披露")}</em></span>
-        <span><small>毛利率</small>${formatPercentRatio(financial.gross_margin)}</span>
-        <span><small>净利率</small>${formatPercentRatio(financial.net_margin)}</span>
+        <div class="stock-financial-panels">
+          ${renderFinancialPanel("收入", financialSeries, "revenue")}
+          ${renderFinancialPanel("毛利率", financialSeries, "gross_margin")}
+          ${renderFinancialPanel("净利润", financialSeries, "net_profit")}
+        </div>
         <button class="stock-remove" type="button" data-symbol="${escapeAttribute(stock.symbol)}">移除</button>
       </div>`;
   }).join("");
-  stockWatchlist.innerHTML = `${error ? `<p class="stock-error">${escapeHtml(error)}</p>` : ""}<div class="stock-head"><span>股票</span><span>最新交易日收盘价</span><span>涨跌幅</span><span>估值</span><span>财务</span></div>${rows}`;
+  stockWatchlist.innerHTML = `${error ? `<p class="stock-error">${escapeHtml(error)}</p>` : ""}<div class="stock-head"><span>股票</span><span>最新交易日收盘价</span><span>涨跌幅</span><span>PE(TTM)</span><span>单季财务</span></div>${rows}`;
   stockWatchlist.querySelectorAll(".stock-remove").forEach((node) => {
     node.addEventListener("click", async () => {
       await postJson("/api/stocks/remove", { symbol: node.dataset.symbol });
@@ -176,17 +178,46 @@ function formatPercent(value) {
 
 function formatPercentRatio(value) {
   const number = Number(value);
-  if (!Number.isFinite(number)) return "—";
+  if (!Number.isFinite(number)) return "NA";
   const percent = Math.abs(number) <= 1.5 ? number * 100 : number;
   return `${percent.toFixed(2)}%`;
 }
 
 function formatCurrency(value) {
   const number = Number(value);
-  if (!Number.isFinite(number)) return "—";
+  if (!Number.isFinite(number)) return "NA";
   if (Math.abs(number) >= 1e8) return `${(number / 1e8).toFixed(2)}亿`;
   if (Math.abs(number) >= 1e4) return `${(number / 1e4).toFixed(2)}万`;
   return number.toFixed(2);
+}
+
+function renderFinancialPanel(title, rawSeries, metric) {
+  const expected = ["25Q3", "25Q4", "26Q1", "26Q2"];
+  const rows = new Map(rawSeries.map((row) => [row.label, row]));
+  const cells = expected.map((label) => {
+    const row = rows.get(label) || {};
+    const available = Boolean(row.available);
+    let value = "NA";
+    let sub = "";
+    if (available && metric === "revenue") {
+      value = formatCurrency(row.revenue);
+      sub = `同比 ${formatSignedPercentRatio(row.revenue_yoy)}`;
+    } else if (available && metric === "gross_margin") {
+      value = formatPercentRatio(row.gross_margin);
+    } else if (available && metric === "net_profit") {
+      value = formatCurrency(row.net_profit);
+      sub = `净利率 ${formatPercentRatio(row.net_margin)}`;
+    }
+    return `<span class="financial-quarter"><em>${label}</em><b>${value}</b>${sub ? `<small>${sub}</small>` : ""}</span>`;
+  }).join("");
+  return `<section class="financial-panel"><h4>${title}</h4><div class="financial-quarter-list">${cells}</div></section>`;
+}
+
+function formatSignedPercentRatio(value) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return "NA";
+  const percent = Math.abs(number) <= 1.5 ? number * 100 : number;
+  return `${percent > 0 ? "+" : ""}${percent.toFixed(2)}%`;
 }
 
 async function refreshNewsOnPageLoad() {
