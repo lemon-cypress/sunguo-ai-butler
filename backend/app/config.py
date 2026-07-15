@@ -79,6 +79,7 @@ class Settings:
     touzid_industry_max_count: int
     touzid_index_symbols: str
     a_share_watchlist_path: Path
+    stock_watchlist_path: Path
     touzid_stock_max_count: int
     touzid_announcement_days: int
     touzid_finreport_fields: str
@@ -162,6 +163,10 @@ def get_settings() -> Settings:
         a_share_watchlist_path=PROJECT_ROOT / env_text(
             "A_SHARE_WATCHLIST_PATH",
             "backend/data/a_share_watchlist.json",
+        ),
+        stock_watchlist_path=PROJECT_ROOT / env_text(
+            "STOCK_WATCHLIST_PATH",
+            "backend/data/stock_watchlist.json",
         ),
         touzid_stock_max_count=int(env_text("TOUZID_STOCK_MAX_COUNT", "12")),
         touzid_announcement_days=int(env_text("TOUZID_ANNOUNCEMENT_DAYS", "14")),

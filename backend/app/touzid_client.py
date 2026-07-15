@@ -350,6 +350,131 @@ def fetch_stock_valuation(symbols: list[str], token: str, timeout_seconds: int =
     return items
 
 
+def fetch_stock_baseinfo(symbols: list[str], token: str, timeout_seconds: int = 20) -> list[dict]:
+    """Return the small identity record used by the self-selected-stock UI."""
+    body: dict = {"token": token}
+    if symbols:
+        body["symbols"] = symbols
+    rows = request_touzid("stock/baseinfo", body, timeout_seconds=timeout_seconds)
+    return [
+        {
+            "symbol": clean_text(row.get("symbol")),
+            "name": clean_text(row.get("name")),
+            "exchange": clean_text(row.get("exchange")),
+            "market": clean_text(row.get("market")),
+            "report_date": clean_text(row.get("report_date")),
+        }
+        for row in rows
+        if isinstance(row, dict) and clean_text(row.get("symbol"))
+    ]
+
+
+def fetch_stock_kline(
+    symbol: str,
+    token: str,
+    start_date: str = "",
+    end_date: str = "",
+    timeout_seconds: int = 20,
+) -> list[dict]:
+    body: dict = {"token": token, "symbol": symbol}
+    if start_date:
+        body["start_date"] = start_date
+    if end_date:
+        body["end_date"] = end_date
+    rows = request_touzid("stock/kline", body, timeout_seconds=timeout_seconds)
+    items = []
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        close = as_number(row.get("close"))
+        if close is None:
+            continue
+        items.append({
+            "date": clean_text(row.get("date")),
+            "close": close,
+            "open": as_number(row.get("open")),
+            "high": as_number(row.get("high")),
+            "low": as_number(row.get("low")),
+        })
+    return sorted(items, key=lambda item: item.get("date") or "")
+
+
+def fetch_stock_financial_snapshot(symbol: str, token: str, timeout_seconds: int = 20) -> dict:
+    """Fetch only the latest income-statement fields required by the dashboard."""
+    fields = ["pr.toi.o", "pr.oc_rt.o", "pr.np_rt.o"]
+    rows = fetch_stock_finreport(symbol, token, fields=fields, timeout_seconds=timeout_seconds)
+    if not rows:
+        return {}
+    row = rows[0]
+    metrics = row.get("metrics", {}) or {}
+    return {
+        "report_date": clean_text(row.get("date")),
+        "revenue": as_number(metrics.get("pr.toi.o")),
+        "gross_margin": as_number(metrics.get("pr.oc_rt.o")),
+        "net_margin": as_number(metrics.get("pr.np_rt.o")),
+    }
+
+
+def fetch_stock_watchlist_snapshot(
+    watchlist: list[dict],
+    token: str = "",
+    token_path: Path | None = None,
+    timeout_seconds: int = 20,
+) -> list[dict]:
+    """Build the lightweight quote/valuation/financial view for selected A shares.
+
+    Touzid's public K-line endpoint is daily data.  The UI intentionally labels
+    the value as the latest trading-day close instead of claiming an intraday
+    real-time quote.
+    """
+    api_token = resolve_token(token, token_path)
+    selected = [item for item in watchlist if clean_text(item.get("symbol"))]
+    if not selected:
+        return []
+    symbols = [clean_text(item.get("symbol")) for item in selected]
+    valuation_rows = fetch_stock_valuation(symbols, api_token, timeout_seconds=timeout_seconds)
+    valuations = {clean_text(row.get("symbol")): row for row in valuation_rows}
+    rows: list[dict] = []
+    start = format_date(date.today() - timedelta(days=12))
+    end = format_date(date.today())
+    for item in selected:
+        symbol = clean_text(item.get("symbol"))
+        errors: list[str] = []
+        try:
+            prices = fetch_stock_kline(symbol, api_token, start, end, timeout_seconds=timeout_seconds)
+        except TouzidClientError as error:
+            prices = []
+            errors.append(f"kline: {error}")
+        try:
+            financial = fetch_stock_financial_snapshot(symbol, api_token, timeout_seconds=timeout_seconds)
+        except TouzidClientError as error:
+            financial = {}
+            errors.append(f"finreport: {error}")
+        latest = prices[-1] if prices else {}
+        previous = prices[-2] if len(prices) > 1 else {}
+        latest_close = as_number(latest.get("close"))
+        previous_close = as_number(previous.get("close"))
+        change_percent = None
+        if latest_close is not None and previous_close not in (None, 0):
+            change_percent = (latest_close - previous_close) / previous_close * 100
+        rows.append({
+            "symbol": symbol,
+            "name": clean_text(item.get("name")) or clean_text((valuations.get(symbol) or {}).get("name")),
+            "sector": clean_text(item.get("sector")),
+            "quote": {
+                "price": latest_close,
+                "date": clean_text(latest.get("date")),
+                "previous_close": previous_close,
+                "change_percent": change_percent,
+                "data_label": "最新交易日收盘价",
+            },
+            "valuation": valuations.get(symbol, {}),
+            "financial": financial,
+            "errors": errors,
+        })
+    return rows
+
+
 def fetch_stock_finreport(
     symbol: str,
     token: str,

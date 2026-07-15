@@ -1,0 +1,10 @@
+{
+  "version": "stock-watchlist-v1",
+  "items": [
+    {
+      "symbol": "sz000568",
+      "name": "泸州老窖",
+      "sector": "白酒/大众消费"
+    }
+  ]
+}

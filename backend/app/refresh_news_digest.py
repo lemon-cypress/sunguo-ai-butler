@@ -16,6 +16,7 @@ from pathlib import Path
 from brief_writer import write_latest_index
 from config import get_settings
 from local_memory import load_user_profile
+from stock_watchlist import load_stock_watchlist
 from morning_brief_demo import (
     build_company_data,
     build_news_data,
@@ -113,6 +114,7 @@ def main() -> None:
     # profile explicitly; otherwise a browser-triggered refresh would ignore
     # the user's company, industry and macro priorities.
     brief["user_profile"] = load_user_profile(settings.user_profile_path)
+    brief["stock_watchlist"] = load_stock_watchlist(settings.stock_watchlist_path)
     rule_digest = build_news_digest(brief)
     brief["news_digest"] = rule_digest
     brief["news_digest_rules"] = rule_digest

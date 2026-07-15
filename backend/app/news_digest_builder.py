@@ -1225,12 +1225,31 @@ def attention_matches(item: dict, brief: dict | None = None) -> list[str]:
         clean_text(item.get("source")),
     ]).lower()
     matches: list[str] = []
+    # Self-selected A shares are the only stock names that receive automatic
+    # news prioritization. This prevents the legacy sample list from silently
+    # steering the daily brief.
+    selected_symbols: set[str] = set()
+    for stock in (brief or {}).get("stock_watchlist") or []:
+        if not isinstance(stock, dict):
+            continue
+        name = clean_text(stock.get("name"))
+        symbol = clean_text(stock.get("symbol")).lower()
+        aliases = [name.lower(), symbol]
+        if len(symbol) == 8 and symbol[:2] in {"sh", "sz", "bj"}:
+            aliases.append(symbol[2:])
+        if name and any(alias and alias in text for alias in aliases):
+            matches.append(f"自选股：{name}")
+            selected_symbols.add(symbol)
     for company in focus.get("priority_companies") or []:
         if not isinstance(company, dict):
             continue
         aliases = [clean_text(value).lower() for value in company.get("aliases") or []]
+        company_name = clean_text(company.get("name"))
+        company_symbols = {alias for alias in aliases if len(alias) == 8 and alias[:2] in {"sh", "sz", "bj"}}
+        if company_symbols and not (company_symbols & selected_symbols):
+            continue
         if any(alias and alias in text for alias in aliases):
-            matches.append(f"公司：{clean_text(company.get('name'))}")
+            matches.append(f"公司：{company_name}")
     for industry in focus.get("priority_industries") or []:
         if not isinstance(industry, dict):
             continue
@@ -1280,7 +1299,7 @@ def score_candidate(item: dict, brief: dict | None = None) -> int:
     # relevance gate.
     score += min(
         12,
-        sum(6 for match in matches if match.startswith("公司："))
+        sum(6 for match in matches if match.startswith(("公司：", "自选股：")))
         + sum(3 for match in matches if match.startswith("行业："))
         + sum(3 for match in matches if match.startswith("宏观：")),
     )

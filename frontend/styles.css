@@ -184,6 +184,132 @@ h2 {
   cursor: pointer;
 }
 
+.stock-module {
+  margin-top: 22px;
+}
+
+.stock-help,
+.stock-empty,
+.stock-search-empty,
+.stock-error {
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.stock-error {
+  color: var(--red);
+}
+
+.stock-search-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 110px;
+  gap: 7px;
+  max-width: 780px;
+  margin-top: 7px;
+}
+
+.stock-search-form input,
+.stock-search-form button,
+.stock-result-add,
+.stock-remove {
+  height: 30px;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: #fff;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.stock-search-form input {
+  min-width: 0;
+  padding: 0 7px;
+}
+
+.stock-search-form button,
+.stock-result-add,
+.stock-remove {
+  cursor: pointer;
+}
+
+.stock-search-results {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 0;
+  margin-top: 6px;
+}
+
+.stock-result-add {
+  padding: 0 8px;
+}
+
+.stock-result-add span,
+.stock-name em,
+.stock-line em {
+  margin-left: 5px;
+  color: var(--muted);
+  font-size: 10px;
+  font-style: normal;
+}
+
+.stock-watchlist {
+  margin-top: 8px;
+  overflow-x: auto;
+}
+
+.stock-head,
+.stock-line {
+  display: grid;
+  grid-template-columns: minmax(150px, 1.2fr) minmax(130px, 1fr) minmax(90px, 0.7fr) minmax(90px, 0.7fr) minmax(150px, 1fr) minmax(80px, 0.65fr) minmax(80px, 0.65fr) 45px;
+  gap: 9px;
+  min-width: 1010px;
+  align-items: center;
+}
+
+.stock-head {
+  padding: 2px 0 4px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.stock-line {
+  min-height: 42px;
+  padding: 5px 0;
+  border-bottom: 1px solid #ececec;
+  color: #222;
+  font-size: 13px;
+  line-height: 1.28;
+}
+
+.stock-line > span:not(.stock-name) {
+  font-variant-numeric: tabular-nums;
+}
+
+.stock-line small {
+  display: none;
+}
+
+.stock-name b {
+  font-weight: 700;
+}
+
+.stock-line .is-up {
+  color: #9b332c;
+}
+
+.stock-line .is-down {
+  color: #246e4b;
+}
+
+.stock-remove {
+  height: 25px;
+  padding: 0 4px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
 .news-section h3 {
   margin: 0;
   font-size: 16px;
@@ -412,6 +538,10 @@ h2 {
   }
 
   .todo-form {
+    grid-template-columns: 1fr;
+  }
+
+  .stock-search-form {
     grid-template-columns: 1fr;
   }
 

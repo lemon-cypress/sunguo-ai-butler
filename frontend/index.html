@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>松果早报</title>
-    <link rel="stylesheet" href="./styles.css?v=brief-v11-20260714" />
+    <link rel="stylesheet" href="./styles.css?v=brief-v12-20260715" />
   </head>
   <body>
     <main class="shell">
@@ -31,6 +31,20 @@
         </form>
       </section>
 
+      <section class="module stock-module" aria-label="自选股票">
+        <div class="section-heading">
+          <h2>自选股票</h2>
+          <button id="refreshStocksBtn" type="button" class="ghost-button">刷新数据</button>
+        </div>
+        <p class="stock-help">仅自选 A 股会进入新闻定向关注。价格为投资数据网提供的最新交易日收盘价，不等同于盘中实时行情。</p>
+        <form id="stockSearchForm" class="stock-search-form">
+          <input id="stockSearchInput" type="text" placeholder="输入 A 股代码或已自选股票名称，如 000568" autocomplete="off" />
+          <button type="submit">搜索并加入</button>
+        </form>
+        <div id="stockSearchResults" class="stock-search-results"></div>
+        <div id="stockWatchlist" class="stock-watchlist"></div>
+      </section>
+
       <section class="module news-module" aria-label="当日新闻">
         <div class="section-heading">
           <h2>新闻</h2>
@@ -40,6 +54,6 @@
       </section>
     </main>
 
-    <script src="./app.js?v=brief-v11-20260714"></script>
+    <script src="./app.js?v=brief-v12-20260715"></script>
   </body>
 </html>

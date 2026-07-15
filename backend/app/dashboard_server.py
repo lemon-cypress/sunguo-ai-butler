@@ -14,17 +14,23 @@ from urllib.parse import unquote, urlparse
 
 from local_memory import add_list_item, load_user_profile, remove_list_item, save_user_profile, summarize_profile
 from qa_builder import answer_question, load_latest_bundle
+from stock_watchlist import add_stock, load_stock_watchlist, remove_stock, search_stock
+from touzid_client import TouzidClientError, fetch_stock_watchlist_snapshot
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 REMINDERS_PATH = PROJECT_ROOT / "backend" / "data" / "reminders.json"
 USER_PROFILE_PATH = PROJECT_ROOT / "backend" / "data" / "user_profile.json"
 MOTION_CONFIG_PATH = PROJECT_ROOT / "frontend" / "avatar_motion_clips.json"
 TODOS_PATH = PROJECT_ROOT / "backend" / "data" / "todos.json"
+STOCK_WATCHLIST_PATH = PROJECT_ROOT / "backend" / "data" / "stock_watchlist.json"
 MEMORY_SECTIONS = {"regions", "industries", "companies", "markets", "news_topics", "life_reminders"}
 NEWS_REFRESH_LOCK = threading.Lock()
 TODO_LOCK = threading.Lock()
+STOCK_LOCK = threading.Lock()
 NEWS_REFRESH_STATE = {"running": False, "last_error": "", "last_finished_at": ""}
 NEWS_REFRESH_MIN_INTERVAL = timedelta(minutes=5)
+STOCK_SNAPSHOT_CACHE = {"items": [], "updated_at": "", "error": ""}
+STOCK_SNAPSHOT_MIN_INTERVAL = timedelta(seconds=90)
 
 
 def read_json(path: Path) -> dict:
@@ -65,6 +71,38 @@ def latest_bundle_is_fresh() -> bool:
     latest_path = PROJECT_ROOT / "demos" / "latest.json"
     if not latest_path.exists():
         return False
+
+
+def stock_snapshot_is_fresh() -> bool:
+    updated = STOCK_SNAPSHOT_CACHE.get("updated_at") or ""
+    if not updated:
+        return False
+    try:
+        return datetime.now(timezone.utc) - datetime.fromisoformat(updated) < STOCK_SNAPSHOT_MIN_INTERVAL
+    except ValueError:
+        return False
+
+
+def get_stock_snapshot(force: bool = False) -> dict:
+    """Fetch selected A-share indicators with a short server-side cache."""
+    with STOCK_LOCK:
+        selected = load_stock_watchlist(STOCK_WATCHLIST_PATH)
+        if not force and stock_snapshot_is_fresh():
+            return {"items": STOCK_SNAPSHOT_CACHE["items"], "cached": True, "error": STOCK_SNAPSHOT_CACHE["error"]}
+        try:
+            items = fetch_stock_watchlist_snapshot(selected)
+            STOCK_SNAPSHOT_CACHE.update({
+                "items": items,
+                "updated_at": datetime.now(timezone.utc).isoformat(),
+                "error": "",
+            })
+        except TouzidClientError as error:
+            STOCK_SNAPSHOT_CACHE.update({
+                "items": [],
+                "updated_at": datetime.now(timezone.utc).isoformat(),
+                "error": str(error),
+            })
+        return {"items": STOCK_SNAPSHOT_CACHE["items"], "cached": False, "error": STOCK_SNAPSHOT_CACHE["error"]}
     try:
         latest = read_json(latest_path)
         bundle_path = PROJECT_ROOT / "demos" / str(latest.get("bundle_path") or "")
@@ -157,6 +195,8 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             return self.write_json_response(read_todos())
         if parsed.path == "/api/memory":
             return self.get_memory()
+        if parsed.path == "/api/stocks/watchlist":
+            return self.get_stock_watchlist()
         if parsed.path == "/api/news/status":
             return self.write_json_response({"ok": True, **NEWS_REFRESH_STATE})
         return super().do_GET()
@@ -184,6 +224,14 @@ class DashboardHandler(SimpleHTTPRequestHandler):
                 return self.add_memory()
             if parsed.path == "/api/memory/remove":
                 return self.remove_memory()
+            if parsed.path == "/api/stocks/search":
+                return self.search_stocks()
+            if parsed.path == "/api/stocks/add":
+                return self.add_stock_watchlist()
+            if parsed.path == "/api/stocks/remove":
+                return self.remove_stock_watchlist()
+            if parsed.path == "/api/stocks/refresh":
+                return self.refresh_stock_watchlist()
             if parsed.path == "/api/motion/save":
                 return self.save_motion_config()
         except Exception as error:
@@ -289,6 +337,40 @@ class DashboardHandler(SimpleHTTPRequestHandler):
         profile = remove_list_item(profile, section, item)
         save_user_profile(USER_PROFILE_PATH, profile)
         self.write_json_response({"ok": True, "profile": profile, "summary": summarize_profile(profile)})
+
+    def get_stock_watchlist(self) -> None:
+        selected = load_stock_watchlist(STOCK_WATCHLIST_PATH)
+        snapshot = get_stock_snapshot()
+        self.write_json_response({"ok": True, "watchlist": selected, **snapshot})
+
+    def search_stocks(self) -> None:
+        payload = self.read_body_json()
+        query = str(payload.get("query", "")).strip()
+        if not query:
+            raise ValueError("请输入股票代码或名称")
+        selected = load_stock_watchlist(STOCK_WATCHLIST_PATH)
+        rows = search_stock(query, selected)
+        self.write_json_response({"ok": True, "items": rows})
+
+    def add_stock_watchlist(self) -> None:
+        payload = self.read_body_json()
+        with STOCK_LOCK:
+            items = add_stock(STOCK_WATCHLIST_PATH, payload)
+            STOCK_SNAPSHOT_CACHE.update({"items": [], "updated_at": "", "error": ""})
+        self.write_json_response({"ok": True, "watchlist": items})
+
+    def remove_stock_watchlist(self) -> None:
+        payload = self.read_body_json()
+        symbol = str(payload.get("symbol", "")).strip()
+        if not symbol:
+            raise ValueError("缺少股票代码")
+        with STOCK_LOCK:
+            items = remove_stock(STOCK_WATCHLIST_PATH, symbol)
+            STOCK_SNAPSHOT_CACHE.update({"items": [], "updated_at": "", "error": ""})
+        self.write_json_response({"ok": True, "watchlist": items})
+
+    def refresh_stock_watchlist(self) -> None:
+        self.write_json_response({"ok": True, "watchlist": load_stock_watchlist(STOCK_WATCHLIST_PATH), **get_stock_snapshot(force=True)})
     def answer_question(self) -> None:
         payload = self.read_body_json()
         question = str(payload.get("question", "")).strip()

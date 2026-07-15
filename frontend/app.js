@@ -18,6 +18,8 @@ const state = {
   selectedMediaSources: null,
   newsRefreshPoll: null,
   awaitingFirstNews: false,
+  stockWatchlist: [],
+  stockSnapshot: [],
 };
 
 const newsSections = document.querySelector("#newsSections");
@@ -27,6 +29,11 @@ const todoForm = document.querySelector("#todoForm");
 const todoTitleInput = document.querySelector("#todoTitleInput");
 const todoNoteInput = document.querySelector("#todoNoteInput");
 const deleteSelectedBtn = document.querySelector("#deleteSelectedBtn");
+const stockSearchForm = document.querySelector("#stockSearchForm");
+const stockSearchInput = document.querySelector("#stockSearchInput");
+const stockSearchResults = document.querySelector("#stockSearchResults");
+const stockWatchlist = document.querySelector("#stockWatchlist");
+const refreshStocksBtn = document.querySelector("#refreshStocksBtn");
 
 bootstrap();
 
@@ -51,7 +58,135 @@ deleteSelectedBtn.addEventListener("click", async () => {
 
 async function bootstrap() {
   await Promise.all([refreshNewsOnPageLoad(), loadTodos()]);
+  loadStockWatchlist();
   await loadBundle();
+}
+
+stockSearchForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const query = stockSearchInput.value.trim();
+  if (!query) return;
+  stockSearchResults.textContent = "正在搜索…";
+  try {
+    const result = await postJson("/api/stocks/search", { query });
+    renderStockSearchResults(result.items || [], query);
+  } catch (error) {
+    stockSearchResults.innerHTML = `<span class="stock-error">${escapeHtml(error.message)}</span>`;
+  }
+});
+
+refreshStocksBtn.addEventListener("click", async () => {
+  refreshStocksBtn.disabled = true;
+  refreshStocksBtn.textContent = "刷新中…";
+  try {
+    const result = await postJson("/api/stocks/refresh", {});
+    state.stockWatchlist = result.watchlist || [];
+    state.stockSnapshot = result.items || [];
+    renderStockWatchlist(result.error || "");
+  } catch (error) {
+    renderStockWatchlist(error.message);
+  } finally {
+    refreshStocksBtn.disabled = false;
+    refreshStocksBtn.textContent = "刷新数据";
+  }
+});
+
+async function loadStockWatchlist() {
+  try {
+    const response = await fetchWithTimeout("/api/stocks/watchlist", { cache: "no-store" }, 30000);
+    if (!response.ok) throw new Error("无法读取自选股票");
+    const result = await response.json();
+    state.stockWatchlist = result.watchlist || [];
+    state.stockSnapshot = result.items || [];
+    renderStockWatchlist(result.error || "");
+  } catch (error) {
+    stockWatchlist.innerHTML = `<p class="stock-error">${escapeHtml(error.message)}</p>`;
+  }
+}
+
+function renderStockSearchResults(items, query) {
+  if (!items.length) {
+    stockSearchResults.innerHTML = `<span class="stock-search-empty">未找到“${escapeHtml(query)}”。请输入 A 股六位代码，例如 000568。</span>`;
+    return;
+  }
+  stockSearchResults.innerHTML = items.map((item) => `
+    <button class="stock-result-add" type="button" data-symbol="${escapeAttribute(item.symbol)}" data-name="${escapeAttribute(item.name)}" data-sector="${escapeAttribute(item.sector || "")}">
+      加入自选：${escapeHtml(item.name || item.symbol)} <span>${escapeHtml(item.symbol)}</span>
+    </button>
+  `).join("");
+  stockSearchResults.querySelectorAll(".stock-result-add").forEach((node) => {
+    node.addEventListener("click", async () => {
+      await postJson("/api/stocks/add", {
+        symbol: node.dataset.symbol,
+        name: node.dataset.name,
+        sector: node.dataset.sector,
+      });
+      stockSearchInput.value = "";
+      stockSearchResults.textContent = "已加入自选；下次新闻刷新会开始定向关注。";
+      await loadStockWatchlist();
+    });
+  });
+}
+
+function renderStockWatchlist(error = "") {
+  const rowsBySymbol = new Map((state.stockSnapshot || []).map((row) => [row.symbol, row]));
+  const items = state.stockWatchlist || [];
+  if (!items.length) {
+    stockWatchlist.innerHTML = `<p class="stock-empty">尚未加入自选股票。加入后才会进入新闻定向关注。</p>`;
+    return;
+  }
+  const rows = items.map((stock) => {
+    const data = rowsBySymbol.get(stock.symbol) || {};
+    const quote = data.quote || {};
+    const valuation = data.valuation || {};
+    const financial = data.financial || {};
+    const change = Number(quote.change_percent);
+    const changeClass = Number.isFinite(change) ? (change > 0 ? "is-up" : change < 0 ? "is-down" : "") : "";
+    return `
+      <div class="stock-line">
+        <span class="stock-name"><b>${escapeHtml(stock.name || stock.symbol)}</b><em>${escapeHtml(stock.symbol)}</em></span>
+        <span><small>价格</small>${formatStockNumber(quote.price)}<em>${escapeHtml(quote.date || "待更新")}</em></span>
+        <span class="${changeClass}"><small>较前收盘</small>${formatPercent(quote.change_percent)}</span>
+        <span><small>PE(TTM)</small>${formatStockNumber(valuation.pe_ttm)}</span>
+        <span><small>最新季度收入</small>${formatCurrency(financial.revenue)}<em>${escapeHtml(financial.report_date || "待披露")}</em></span>
+        <span><small>毛利率</small>${formatPercentRatio(financial.gross_margin)}</span>
+        <span><small>净利率</small>${formatPercentRatio(financial.net_margin)}</span>
+        <button class="stock-remove" type="button" data-symbol="${escapeAttribute(stock.symbol)}">移除</button>
+      </div>`;
+  }).join("");
+  stockWatchlist.innerHTML = `${error ? `<p class="stock-error">${escapeHtml(error)}</p>` : ""}<div class="stock-head"><span>股票</span><span>最新交易日收盘价</span><span>涨跌幅</span><span>估值</span><span>财务</span></div>${rows}`;
+  stockWatchlist.querySelectorAll(".stock-remove").forEach((node) => {
+    node.addEventListener("click", async () => {
+      await postJson("/api/stocks/remove", { symbol: node.dataset.symbol });
+      stockSearchResults.textContent = "已移除；后续新闻刷新不会再对该股定向关注。";
+      await loadStockWatchlist();
+    });
+  });
+}
+
+function formatStockNumber(value) {
+  const number = Number(value);
+  return Number.isFinite(number) ? number.toFixed(number >= 100 ? 2 : 3).replace(/\.0+$/, "") : "—";
+}
+
+function formatPercent(value) {
+  const number = Number(value);
+  return Number.isFinite(number) ? `${number > 0 ? "+" : ""}${number.toFixed(2)}%` : "—";
+}
+
+function formatPercentRatio(value) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return "—";
+  const percent = Math.abs(number) <= 1.5 ? number * 100 : number;
+  return `${percent.toFixed(2)}%`;
+}
+
+function formatCurrency(value) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return "—";
+  if (Math.abs(number) >= 1e8) return `${(number / 1e8).toFixed(2)}亿`;
+  if (Math.abs(number) >= 1e4) return `${(number / 1e4).toFixed(2)}万`;
+  return number.toFixed(2);
 }
 
 async function refreshNewsOnPageLoad() {

@@ -4,6 +4,7 @@ import argparse
 import json
 import re
 import sys
+import urllib.parse
 
 from brief_writer import save_daily_brief, save_output_bundle, write_latest_index
 from butler_persona import build_butler_brief
@@ -49,6 +50,7 @@ from quality_builder import build_brief_analysis
 from reminder_builder import build_reminder_plan
 from theme_client import ThemeClientError, build_mock_theme_snapshot, fetch_theme_snapshot, load_theme_symbols
 from touzid_client import TouzidClientError, fetch_touzid_market_snapshot, load_a_share_watchlist, parse_symbol_list
+from stock_watchlist import load_stock_watchlist
 from weather_client import WeatherClientError, fetch_weather
 
 
@@ -546,6 +548,7 @@ def build_brief(
         "companies": (structured_market_data or {}).get("a_share_companies", []),
     }
     brief["user_profile"] = user_profile
+    brief["stock_watchlist"] = load_stock_watchlist(settings.stock_watchlist_path)
     brief["memory_summary"] = summarize_profile(user_profile)
     if schedule.get("source") == "Microsoft Graph":
         brief["outlook_tasks"] = summarize_outlook_tasks(schedule)
@@ -603,7 +606,7 @@ def build_news_data(settings, use_mock_news: bool) -> dict:
     if settings.use_real_news and not use_mock_news:
         try:
             if settings.news_provider == "rss":
-                feeds = load_news_feeds(settings.news_feeds_path)
+                feeds = load_news_feeds(settings.news_feeds_path) + build_selected_stock_news_feeds(settings)
                 return fetch_news_snapshot(feeds, max_records_per_feed=settings.news_max_records_per_query)
             if settings.news_provider == "marketaux":
                 return fetch_marketaux_news(
@@ -684,7 +687,7 @@ def build_combined_news_data(settings) -> dict:
             errors.append(f"X leads: {error}")
 
     try:
-        feeds = load_news_feeds(settings.news_feeds_path)
+        feeds = load_news_feeds(settings.news_feeds_path) + build_selected_stock_news_feeds(settings)
         snapshots.append(fetch_news_snapshot(feeds, max_records_per_feed=settings.news_max_records_per_query))
     except NewsClientError as error:
         errors.append(f"RSS: {error}")
@@ -704,6 +707,30 @@ def build_combined_news_data(settings) -> dict:
     merged = merge_news_snapshots(snapshots)
     merged["errors"] = (merged.get("errors") or []) + errors
     return merged
+
+
+def build_selected_stock_news_feeds(settings) -> list[dict]:
+    """Add targeted RSS searches only for stocks the user has selected."""
+    try:
+        selected = load_stock_watchlist(settings.stock_watchlist_path)
+    except ValueError:
+        return []
+    feeds = []
+    for stock in selected[:12]:
+        name = str(stock.get("name") or "").strip()
+        symbol = str(stock.get("symbol") or "").strip().lower()
+        code = symbol[2:] if len(symbol) == 8 else symbol
+        if not name:
+            continue
+        query = urllib.parse.quote(f'"{name}" OR "{code}" when:1d')
+        feeds.append({
+            "label": f"自选股：{name}",
+            "category": "stocks",
+            "region": "CN",
+            "topics": ["stocks", "company", name, code],
+            "url": f"https://news.google.com/rss/search?q={query}&hl=zh-CN&gl=CN&ceid=CN:zh-Hans",
+        })
+    return feeds
 
 
 def build_economic_calendar_data(settings) -> dict:
@@ -758,7 +785,7 @@ def build_structured_market_data(settings, use_mock_structured: bool = False) ->
                     timeout_seconds=settings.touzid_timeout_seconds,
                     industry_max_count=settings.touzid_industry_max_count,
                     index_symbols=parse_symbol_list(settings.touzid_index_symbols),
-                    a_share_watchlist=load_a_share_watchlist(settings.a_share_watchlist_path),
+                    a_share_watchlist=load_stock_watchlist(settings.stock_watchlist_path),
                     stock_max_count=settings.touzid_stock_max_count,
                     announcement_days=settings.touzid_announcement_days,
                     finreport_fields=parse_symbol_list(settings.touzid_finreport_fields),
