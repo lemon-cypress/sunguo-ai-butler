@@ -15,6 +15,7 @@ from pathlib import Path
 
 from brief_writer import write_latest_index
 from config import get_settings
+from local_memory import load_user_profile
 from morning_brief_demo import (
     build_company_data,
     build_news_data,
@@ -108,6 +109,10 @@ def main() -> None:
     # gives the editor recent SEC/EDGAR evidence instead of stale bundle data.
     company_data = enrich_company_snapshot(build_company_data(settings, use_mock_companies=False))
     brief = build_news_refresh_context(bundle, news_data, company_data)
+    # The focused refresh bypasses build_brief(), so load the same interest
+    # profile explicitly; otherwise a browser-triggered refresh would ignore
+    # the user's company, industry and macro priorities.
+    brief["user_profile"] = load_user_profile(settings.user_profile_path)
     rule_digest = build_news_digest(brief)
     brief["news_digest"] = rule_digest
     brief["news_digest_rules"] = rule_digest

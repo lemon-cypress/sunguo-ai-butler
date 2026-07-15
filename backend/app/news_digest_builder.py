@@ -145,7 +145,7 @@ TRUSTED_DOMAINS = [
     "thepaper.cn", "eeo.com.cn", "xinhuanet.com", "chinanews.com.cn", "people.com.cn",
     "eastmoney.com", "jrj.com.cn", "10jqka.com.cn", "bjnews.com.cn", "36kr.com",
     "jiemian.com", "ofweek.com", "c114.com.cn", "tmtpost.com",
-    "federalreserve.gov", "ecb.europa.eu",
+    "federalreserve.gov", "ecb.europa.eu", "whitehouse.gov", "defense.gov",
 ]
 
 # Recognised public-interest and business newsrooms.  These stories are useful
@@ -197,7 +197,7 @@ NUMERIC_RE = re.compile(r"[-+]?\d+(?:\.\d+)?\s*(?:%|bp|bps|bn|billion|m|million|
 
 def build_news_digest(brief: dict) -> dict:
     pool = build_news_pool(brief)
-    ranked_pool = rank_news_pool(pool)
+    ranked_pool = rank_news_pool(pool, brief)
     # A news event often arrives through several wires with slightly different
     # section labels.  Cluster before the editorial gate so the reader sees a
     # single, best-supported event rather than the same Hormuz/earnings story
@@ -569,7 +569,7 @@ def build_news_pool(brief: dict) -> list[dict]:
     return dedupe_candidates(candidates)
 
 
-def rank_news_pool(candidates: list[dict]) -> list[dict]:
+def rank_news_pool(candidates: list[dict], brief: dict | None = None) -> list[dict]:
     scored = []
     cutoff = datetime.now(BEIJING_TZ) - timedelta(hours=30)
     for item in candidates:
@@ -580,7 +580,8 @@ def rank_news_pool(candidates: list[dict]) -> list[dict]:
             continue
         item = dict(item)
         item["section"] = corrected_section(item)
-        item["score"] = score_candidate(item)
+        item["score"] = score_candidate(item, brief)
+        item["attention_matches"] = attention_matches(item, brief)
         if item["score"] >= 6:
             scored.append(item)
 
@@ -1216,7 +1217,36 @@ def passes_relevance_gate(item: dict) -> bool:
     return False
 
 
-def score_candidate(item: dict) -> int:
+def attention_matches(item: dict, brief: dict | None = None) -> list[str]:
+    """Return explicit user-focus matches used only after relevance filtering."""
+    focus = ((brief or {}).get("user_profile") or {}).get("news_focus") or {}
+    text = " ".join([
+        clean_text(item.get("title")), clean_text(item.get("summary")),
+        clean_text(item.get("source")),
+    ]).lower()
+    matches: list[str] = []
+    for company in focus.get("priority_companies") or []:
+        if not isinstance(company, dict):
+            continue
+        aliases = [clean_text(value).lower() for value in company.get("aliases") or []]
+        if any(alias and alias in text for alias in aliases):
+            matches.append(f"公司：{clean_text(company.get('name'))}")
+    for industry in focus.get("priority_industries") or []:
+        if not isinstance(industry, dict):
+            continue
+        keywords = [clean_text(value).lower() for value in industry.get("keywords") or []]
+        if any(keyword and keyword in text for keyword in keywords):
+            matches.append(f"行业：{clean_text(industry.get('name'))}")
+    for topic in focus.get("macro_topics") or []:
+        if not isinstance(topic, dict):
+            continue
+        keywords = [clean_text(value).lower() for value in topic.get("keywords") or []]
+        if any(keyword and keyword in text for keyword in keywords):
+            matches.append(f"宏观：{clean_text(topic.get('name'))}")
+    return matches
+
+
+def score_candidate(item: dict, brief: dict | None = None) -> int:
     text = " ".join([clean_text(item.get("title")), clean_text(item.get("summary")), clean_text(item.get("source"))]).lower()
     score = 0
     score += {"economic_calendar": 8, "a_share_announcement": 9, "a_share_financial": 8, "a_share_supervision": 8, "a_share_industry": 7, "a_share_index_valuation": 7, "theme": 7, "company_news": 6, "article": 5, "timeline": 5, "china_market": 5, "market": 4, "company_price": 4}.get(item.get("kind"), 3)
@@ -1244,6 +1274,16 @@ def score_candidate(item: dict) -> int:
         score -= 4
     if len(clean_text(item.get("summary"))) < 25 and item.get("kind") in {"article", "timeline", "company_news"}:
         score -= 6
+    matches = attention_matches(item, brief)
+    # A named company deserves the largest uplift; sector/macro matches keep
+    # the daily brief useful without allowing a weak story through the base
+    # relevance gate.
+    score += min(
+        12,
+        sum(6 for match in matches if match.startswith("公司："))
+        + sum(3 for match in matches if match.startswith("行业："))
+        + sum(3 for match in matches if match.startswith("宏观：")),
+    )
     return score
 
 
@@ -1590,7 +1630,7 @@ def source_confidence_for(article: dict) -> str:
         clean_text(article.get("source_domain")),
         clean_text(article.get("source_name")),
     ]).lower()
-    if any(marker in url for marker in ["sec.gov", "sse.com.cn", "szse.cn", "hkexnews.hk", "pbc.gov.cn", "mof.gov.cn", "stats.gov.cn", "ndrc.gov.cn"]):
+    if any(marker in url for marker in ["sec.gov", "sse.com.cn", "szse.cn", "hkexnews.hk", "pbc.gov.cn", "mof.gov.cn", "stats.gov.cn", "ndrc.gov.cn", "whitehouse.gov", "defense.gov"]):
         return "high"
     if any(marker in url for marker in TRUSTED_DOMAINS):
         return "medium"

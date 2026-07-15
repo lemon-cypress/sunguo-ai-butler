@@ -1,5 +1,11 @@
 [
   {
+    "symbol": "1888.HK",
+    "name": "建滔积层板",
+    "sector": "覆铜板/电子材料",
+    "keywords": ["建滔积层板", "Kingboard Laminates", "覆铜板", "铜箔", "电子材料"]
+  },
+  {
     "symbol": "NVDA",
     "name": "英伟达",
     "sector": "AI算力/半导体",

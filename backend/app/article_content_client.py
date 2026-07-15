@@ -26,7 +26,7 @@ ALLOWED_DOMAINS = (
     "21jingji.com", "stcn.com", "cs.com.cn", "cnstock.com", "cls.cn", "jiemian.com",
     "thepaper.cn", "eeo.com.cn", "xinhuanet.com", "chinanews.com", "people.com.cn",
     "gov.cn", "pbc.gov.cn", "mof.gov.cn", "stats.gov.cn", "customs.gov.cn", "sec.gov",
-    "federalreserve.gov", "ecb.europa.eu",
+    "federalreserve.gov", "ecb.europa.eu", "whitehouse.gov", "defense.gov",
 )
 
 # The refresh endpoint is also invoked by the browser.  Caching public pages
