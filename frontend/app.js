@@ -227,7 +227,7 @@ function renderFinancialHeader() {
       <b>${title}</b>
       <div class="financial-quarter-list">${labels.map((label) => `<span>${label}</span>`).join("")}</div>
     </section>`).join("");
-  return `<div class="stock-financial-panels stock-financial-header"><span class="stock-financial-label">单季财务</span>${panels}</div>`;
+  return `<div class="stock-financial-panels stock-financial-header">${panels}</div>`;
 }
 
 async function refreshNewsOnPageLoad() {
@@ -414,7 +414,7 @@ function renderNewsPoolSection(pool) {
 function renderTextSection(title, content, className = "", collapsible = false) {
   if (collapsible) {
     return `
-      <details class="news-section news-section-collapsible ${className}" open>
+      <details class="news-section news-section-collapsible ${className}">
         <summary class="news-section-title-row">
           <span class="news-dot"></span>
           <h3>${escapeHtml(title)}</h3>

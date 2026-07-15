@@ -303,17 +303,7 @@ h2 {
 }
 
 .stock-financial-header {
-  position: relative;
   align-items: end;
-  padding-top: 11px;
-}
-
-.stock-financial-label {
-  position: absolute;
-  top: 0;
-  left: 0;
-  color: var(--muted);
-  font-size: 10px;
 }
 
 .financial-panel {
