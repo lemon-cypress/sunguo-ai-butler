@@ -441,6 +441,30 @@ h2 {
   margin: 0;
 }
 
+.news-section-collapsible > summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.news-section-collapsible > summary::-webkit-details-marker {
+  display: none;
+}
+
+.collapse-indicator {
+  width: 7px;
+  height: 7px;
+  margin: 9px 0 0 7px;
+  border-right: 1px solid var(--muted);
+  border-bottom: 1px solid var(--muted);
+  transform: rotate(45deg);
+  transition: transform 120ms ease;
+}
+
+.news-section-collapsible:not([open]) .collapse-indicator {
+  margin-top: 7px;
+  transform: rotate(-45deg);
+}
+
 .news-dot {
   position: relative;
   width: 13px;

@@ -400,7 +400,7 @@ function renderNewsPoolSection(pool) {
   const content = pool.content_extraction || {};
 
   if (!raw && !editorial) {
-    return renderTextSection("新闻池摘要", `<p class="pool-empty">新闻池数据将在下一次刷新后显示。</p>`);
+    return renderTextSection("新闻池摘要", `<p class="pool-empty">新闻池数据将在下一次刷新后显示。</p>`, "", true);
   }
 
   return renderTextSection("新闻池摘要", `
@@ -408,10 +408,22 @@ function renderNewsPoolSection(pool) {
     <p class="pool-sources"><b>已摘录渠道：</b>${sourceCounts.length ? sourceCounts.map(([name, count]) => `<span>${escapeHtml(name)} ${count}条</span>`).join("、") : "待刷新"}</p>
     ${content.attempted ? `<p class="pool-content"><b>正文增强：</b>尝试 ${Number(content.attempted) || 0} 篇，新提取 ${Number(content.extracted) || 0} 篇，缓存命中 ${Number(content.cached) || 0} 篇。</p>` : ""}
     ${reasons.length ? `<p class="pool-reasons"><b>主要过滤：</b>${reasons.map(([name, count]) => `${escapeHtml(name)} ${count}条`).join("；")}</p>` : ""}
-  `);
+  `, "", true);
 }
 
-function renderTextSection(title, content, className = "") {
+function renderTextSection(title, content, className = "", collapsible = false) {
+  if (collapsible) {
+    return `
+      <details class="news-section news-section-collapsible ${className}" open>
+        <summary class="news-section-title-row">
+          <span class="news-dot"></span>
+          <h3>${escapeHtml(title)}</h3>
+          <span class="collapse-indicator" aria-hidden="true"></span>
+        </summary>
+        <div class="news-section-content">${content}</div>
+      </details>
+    `;
+  }
   return `
     <article class="news-section ${className}">
       <div class="news-section-title-row">
@@ -454,7 +466,7 @@ function renderMediaSelectionSection(pool) {
     <p class="media-help">选择媒体后，只列出新闻池中的原文标题；英文标题后附中文翻译，点击英文标题可打开原文。数字为重要性分值。</p>
     <div class="media-choices" id="mediaChoices">${controls}</div>
     <ol class="media-article-list">${rows}</ol>
-  `, "media-selection-section");
+  `, "media-selection-section", true);
 }
 
 function mediaCandidates(pool) {
