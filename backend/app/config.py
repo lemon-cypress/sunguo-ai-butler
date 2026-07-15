@@ -28,7 +28,12 @@ def load_env_file(path: Path = ENV_FILE) -> None:
         key, value = line.split("=", 1)
         key = key.strip()
         value = value.strip().strip('"').strip("'")
-        os.environ.setdefault(key, value)
+        # A systemd unit can define an empty placeholder such as
+        # TOUZID_TOKEN=.  Treat that as unset so the project's .env still
+        # supplies the credential, while preserving a genuinely configured
+        # process environment value.
+        if not os.getenv(key, "").strip():
+            os.environ[key] = value
 
 
 @dataclass(frozen=True)
