@@ -14,6 +14,7 @@ from urllib.parse import unquote, urlparse
 
 from local_memory import add_list_item, load_user_profile, remove_list_item, save_user_profile, summarize_profile
 from qa_builder import answer_question, load_latest_bundle
+from config import get_settings
 from stock_watchlist import add_stock, load_stock_watchlist, remove_stock, search_stock
 from touzid_client import TouzidClientError, fetch_stock_watchlist_snapshot
 
@@ -90,7 +91,17 @@ def get_stock_snapshot(force: bool = False) -> dict:
         if not force and stock_snapshot_is_fresh():
             return {"items": STOCK_SNAPSHOT_CACHE["items"], "cached": True, "error": STOCK_SNAPSHOT_CACHE["error"]}
         try:
-            items = fetch_stock_watchlist_snapshot(selected)
+            # This request originates from the long-running dashboard process,
+            # not from morning_brief_demo.py. Load .env here before resolving
+            # the Touzid token; otherwise a shell test succeeds while the web
+            # endpoint incorrectly reports a missing credential.
+            settings = get_settings()
+            items = fetch_stock_watchlist_snapshot(
+                selected,
+                token=settings.touzid_token,
+                token_path=settings.touzid_token_path,
+                timeout_seconds=settings.touzid_timeout_seconds,
+            )
             STOCK_SNAPSHOT_CACHE.update({
                 "items": items,
                 "updated_at": datetime.now(timezone.utc).isoformat(),
@@ -349,7 +360,13 @@ class DashboardHandler(SimpleHTTPRequestHandler):
         if not query:
             raise ValueError("请输入股票代码或名称")
         selected = load_stock_watchlist(STOCK_WATCHLIST_PATH)
-        rows = search_stock(query, selected)
+        settings = get_settings()
+        rows = search_stock(
+            query,
+            selected,
+            token=settings.touzid_token,
+            token_path=settings.touzid_token_path,
+        )
         self.write_json_response({"ok": True, "items": rows})
 
     def add_stock_watchlist(self) -> None:
