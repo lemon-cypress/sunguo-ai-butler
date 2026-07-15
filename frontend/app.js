@@ -16,6 +16,7 @@ const state = {
   bundle: null,
   todos: [],
   selectedMediaSources: null,
+  newsPanelOpen: {},
   newsRefreshPoll: null,
   awaitingFirstNews: false,
   stockWatchlist: [],
@@ -386,6 +387,7 @@ function renderNews(bundle) {
     renderMediaSelectionSection(pool),
     ...sections.map((section) => renderNewsSection(section, cardsById)),
   ].join("");
+  bindCollapsibleNewsSections();
   bindMediaSelection(pool);
 }
 
@@ -413,8 +415,9 @@ function renderNewsPoolSection(pool) {
 
 function renderTextSection(title, content, className = "", collapsible = false) {
   if (collapsible) {
+    const isOpen = Boolean(state.newsPanelOpen[title]);
     return `
-      <details class="news-section news-section-collapsible ${className}">
+      <details class="news-section news-section-collapsible ${className}" data-collapse-key="${escapeAttribute(title)}"${isOpen ? " open" : ""}>
         <summary class="news-section-title-row">
           <span class="news-dot"></span>
           <h3>${escapeHtml(title)}</h3>
@@ -433,6 +436,20 @@ function renderTextSection(title, content, className = "", collapsible = false) 
       <div class="news-section-content">${content}</div>
     </article>
   `;
+}
+
+function bindCollapsibleNewsSections() {
+  newsSections.querySelectorAll(".news-section-collapsible").forEach((node) => {
+    node.addEventListener("toggle", () => {
+      state.newsPanelOpen[node.dataset.collapseKey] = node.open;
+    });
+  });
+}
+
+function rememberNewsPanelStates() {
+  newsSections.querySelectorAll(".news-section-collapsible").forEach((node) => {
+    state.newsPanelOpen[node.dataset.collapseKey] = node.open;
+  });
 }
 
 function renderMediaSelectionSection(pool) {
@@ -493,6 +510,7 @@ function bindMediaSelection(pool) {
     node.addEventListener("change", () => {
       if (node.checked) state.selectedMediaSources.add(node.value);
       else state.selectedMediaSources.delete(node.value);
+      rememberNewsPanelStates();
       renderNews(state.bundle);
     });
   });
