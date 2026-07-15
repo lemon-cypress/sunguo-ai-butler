@@ -156,7 +156,7 @@ function renderStockWatchlist(error = "") {
         <button class="stock-remove" type="button" data-symbol="${escapeAttribute(stock.symbol)}">移除</button>
       </div>`;
   }).join("");
-  stockWatchlist.innerHTML = `${error ? `<p class="stock-error">${escapeHtml(error)}</p>` : ""}<div class="stock-head"><span>股票</span><span>最新交易日收盘价</span><span>涨跌幅</span><span>PE(TTM)</span><span>单季财务</span></div>${rows}`;
+  stockWatchlist.innerHTML = `${error ? `<p class="stock-error">${escapeHtml(error)}</p>` : ""}<div class="stock-head"><span>股票</span><span>最新交易日收盘价</span><span>涨跌幅</span><span>PE(TTM)</span>${renderFinancialHeader()}</div>${rows}`;
   stockWatchlist.querySelectorAll(".stock-remove").forEach((node) => {
     node.addEventListener("click", async () => {
       await postJson("/api/stocks/remove", { symbol: node.dataset.symbol });
@@ -178,14 +178,14 @@ function formatPercent(value) {
 
 function formatPercentRatio(value) {
   const number = Number(value);
-  if (!Number.isFinite(number)) return "NA";
+  if (!Number.isFinite(number)) return "na";
   const percent = Math.abs(number) <= 1.5 ? number * 100 : number;
   return `${percent.toFixed(2)}%`;
 }
 
 function formatCurrency(value) {
   const number = Number(value);
-  if (!Number.isFinite(number)) return "NA";
+  if (!Number.isFinite(number)) return "na";
   if (Math.abs(number) >= 1e8) return `${(number / 1e8).toFixed(2)}亿`;
   if (Math.abs(number) >= 1e4) return `${(number / 1e4).toFixed(2)}万`;
   return number.toFixed(2);
@@ -197,7 +197,7 @@ function renderFinancialPanel(title, rawSeries, metric) {
   const cells = expected.map((label) => {
     const row = rows.get(label) || {};
     const available = Boolean(row.available);
-    let value = "NA";
+    let value = "na";
     let sub = "";
     if (available && metric === "revenue") {
       value = formatCurrency(row.revenue);
@@ -208,16 +208,26 @@ function renderFinancialPanel(title, rawSeries, metric) {
       value = formatCurrency(row.net_profit);
       sub = `净利率 ${formatPercentRatio(row.net_margin)}`;
     }
-    return `<span class="financial-quarter"><em>${label}</em><b>${value}</b>${sub ? `<small>${sub}</small>` : ""}</span>`;
+    return `<span class="financial-quarter"><b>${value}</b>${sub ? `<span class="financial-sub">${sub}</span>` : ""}</span>`;
   }).join("");
-  return `<section class="financial-panel"><h4>${title}</h4><div class="financial-quarter-list">${cells}</div></section>`;
+  return `<section class="financial-panel"><div class="financial-quarter-list">${cells}</div></section>`;
 }
 
 function formatSignedPercentRatio(value) {
   const number = Number(value);
-  if (!Number.isFinite(number)) return "NA";
+  if (!Number.isFinite(number)) return "na";
   const percent = Math.abs(number) <= 1.5 ? number * 100 : number;
   return `${percent > 0 ? "+" : ""}${percent.toFixed(2)}%`;
+}
+
+function renderFinancialHeader() {
+  const labels = ["25Q3", "25Q4", "26Q1", "26Q2"];
+  const panels = ["收入", "毛利率", "净利润"].map((title) => `
+    <section class="financial-panel financial-panel-head">
+      <b>${title}</b>
+      <div class="financial-quarter-list">${labels.map((label) => `<span>${label}</span>`).join("")}</div>
+    </section>`).join("");
+  return `<div class="stock-financial-panels stock-financial-header"><span class="stock-financial-label">单季财务</span>${panels}</div>`;
 }
 
 async function refreshNewsOnPageLoad() {
