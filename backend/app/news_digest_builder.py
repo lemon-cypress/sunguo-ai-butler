@@ -140,6 +140,8 @@ TRUSTED_DOMAINS = [
     "bbc.co.uk", "nytimes.com", "lemonde.fr", "scmp.com", "theverge.com",
     "sec.gov", "hkexnews.hk", "sse.com.cn", "szse.cn", "pbc.gov.cn", "mof.gov.cn",
     "stats.gov.cn", "ndrc.gov.cn", "csrc.gov.cn", "mofcom.gov.cn", "customs.gov.cn",
+    "miit.gov.cn", "nea.gov.cn", "samr.gov.cn", "mnr.gov.cn", "chinatax.gov.cn",
+    "news.cn", "cctv.com",
     "gov.cn", "cninfo.com.cn", "hkex.com.hk", "cs.com.cn", "stcn.com", "cls.cn",
     "caixin.com", "yicai.com", "cnstock.com", "21jingji.com", "nbd.com.cn",
     "thepaper.cn", "eeo.com.cn", "xinhuanet.com", "chinanews.com.cn", "people.com.cn",
@@ -1649,7 +1651,7 @@ def source_confidence_for(article: dict) -> str:
         clean_text(article.get("source_domain")),
         clean_text(article.get("source_name")),
     ]).lower()
-    if any(marker in url for marker in ["sec.gov", "sse.com.cn", "szse.cn", "hkexnews.hk", "pbc.gov.cn", "mof.gov.cn", "stats.gov.cn", "ndrc.gov.cn", "whitehouse.gov", "defense.gov"]):
+    if any(marker in url for marker in ["sec.gov", "sse.com.cn", "szse.cn", "hkexnews.hk", "pbc.gov.cn", "mof.gov.cn", "stats.gov.cn", "ndrc.gov.cn", "mofcom.gov.cn", "customs.gov.cn", "miit.gov.cn", "nea.gov.cn", "csrc.gov.cn", "samr.gov.cn", "mnr.gov.cn", "chinatax.gov.cn", "gov.cn", "whitehouse.gov", "defense.gov"]):
         return "high"
     if any(marker in url for marker in TRUSTED_DOMAINS):
         return "medium"

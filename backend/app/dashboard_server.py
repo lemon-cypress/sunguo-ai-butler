@@ -72,6 +72,15 @@ def latest_bundle_is_fresh() -> bool:
     latest_path = PROJECT_ROOT / "demos" / "latest.json"
     if not latest_path.exists():
         return False
+    try:
+        latest = read_json(latest_path)
+        bundle_path = PROJECT_ROOT / "demos" / str(latest.get("bundle_path") or "")
+        if not bundle_path.exists():
+            return False
+        modified_at = datetime.fromtimestamp(bundle_path.stat().st_mtime, tz=timezone.utc)
+        return datetime.now(timezone.utc) - modified_at < NEWS_REFRESH_MIN_INTERVAL
+    except (OSError, ValueError, json.JSONDecodeError):
+        return False
 
 
 def stock_snapshot_is_fresh() -> bool:
@@ -114,15 +123,6 @@ def get_stock_snapshot(force: bool = False) -> dict:
                 "error": str(error),
             })
         return {"items": STOCK_SNAPSHOT_CACHE["items"], "cached": False, "error": STOCK_SNAPSHOT_CACHE["error"]}
-    try:
-        latest = read_json(latest_path)
-        bundle_path = PROJECT_ROOT / "demos" / str(latest.get("bundle_path") or "")
-        if not bundle_path.exists():
-            return False
-        modified_at = datetime.fromtimestamp(bundle_path.stat().st_mtime, tz=timezone.utc)
-        return datetime.now(timezone.utc) - modified_at < NEWS_REFRESH_MIN_INTERVAL
-    except (OSError, ValueError, json.JSONDecodeError):
-        return False
 
 
 def read_todos() -> dict:
