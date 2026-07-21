@@ -36,7 +36,6 @@ from gdelt_client import GdeltClientError, fetch_gdelt_news
 from newsapi_client import NewsApiClientError, fetch_newsapi_news
 from finnhub_news_client import FinnhubNewsClientError, fetch_finnhub_news
 from x_client import XClientError, fetch_x_lead_snapshot
-from wechat_manual import build_news_snapshot as build_wechat_manual_snapshot
 from mock_data import build_mock_brief
 from news_enrichment import enrich_company_snapshot, enrich_news_snapshot
 from article_content_client import enrich_news_with_public_content
@@ -686,12 +685,6 @@ def build_combined_news_data(settings) -> dict:
             ))
         except XClientError as error:
             errors.append(f"X leads: {error}")
-
-    # WeChat is user-curated only: the dashboard stores article metadata the
-    # user pasted from public links and deliberately does not crawl WeChat.
-    wechat_snapshot = build_wechat_manual_snapshot(PROJECT_ROOT / "backend" / "data" / "wechat_manual_articles.json")
-    if wechat_snapshot.get("categories"):
-        snapshots.append(wechat_snapshot)
 
     try:
         feeds = load_news_feeds(settings.news_feeds_path) + build_selected_stock_news_feeds(settings)

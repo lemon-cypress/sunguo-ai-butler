@@ -112,6 +112,13 @@
     "url": "https://www.chinanews.com.cn/rss/importnews.xml"
   },
   {
+    "category": "finance",
+    "label": "China News Service Finance",
+    "region": "china",
+    "topics": ["china", "finance", "markets", "companies", "macro"],
+    "url": "https://www.chinanews.com.cn/rss/finance.xml"
+  },
+  {
     "category": "macro",
     "label": "Xinhua Politics Direct",
     "region": "china",
@@ -124,6 +131,20 @@
     "region": "china",
     "topics": ["china", "official-media", "finance", "economy", "consumption"],
     "url": "https://www.people.com.cn/rss/finance.xml"
+  },
+  {
+    "category": "china",
+    "label": "China Daily China Direct",
+    "region": "china",
+    "topics": ["china", "policy", "economy", "trade", "society"],
+    "url": "https://www.chinadaily.com.cn/rss/china_rss.xml"
+  },
+  {
+    "category": "world",
+    "label": "China Daily World Direct",
+    "region": "global",
+    "topics": ["geopolitics", "security", "trade", "china"],
+    "url": "https://www.chinadaily.com.cn/rss/world_rss.xml"
   },
   {
     "category": "technology",
