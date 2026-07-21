@@ -35,6 +35,13 @@ const stockSearchInput = document.querySelector("#stockSearchInput");
 const stockSearchResults = document.querySelector("#stockSearchResults");
 const stockWatchlist = document.querySelector("#stockWatchlist");
 const refreshStocksBtn = document.querySelector("#refreshStocksBtn");
+const wechatImportForm = document.querySelector("#wechatImportForm");
+const wechatAccountSelect = document.querySelector("#wechatAccountSelect");
+const wechatTitleInput = document.querySelector("#wechatTitleInput");
+const wechatUrlInput = document.querySelector("#wechatUrlInput");
+const wechatSummaryInput = document.querySelector("#wechatSummaryInput");
+const wechatImportStatus = document.querySelector("#wechatImportStatus");
+const wechatImportedList = document.querySelector("#wechatImportedList");
 
 bootstrap();
 
@@ -60,7 +67,64 @@ deleteSelectedBtn.addEventListener("click", async () => {
 async function bootstrap() {
   await Promise.all([refreshNewsOnPageLoad(), loadTodos()]);
   loadStockWatchlist();
+  loadWechatImports();
   await loadBundle();
+}
+
+wechatImportForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  wechatImportStatus.textContent = "正在导入…";
+  try {
+    const result = await postJson("/api/news/wechat/add", {
+      account: wechatAccountSelect.value,
+      title: wechatTitleInput.value.trim(),
+      url: wechatUrlInput.value.trim(),
+      summary: wechatSummaryInput.value.trim(),
+    });
+    wechatTitleInput.value = "";
+    wechatUrlInput.value = "";
+    wechatSummaryInput.value = "";
+    wechatImportStatus.textContent = "已导入为待核实线索；下次新闻刷新时进入新闻池。";
+    renderWechatImports(result.articles || []);
+  } catch (error) {
+    wechatImportStatus.textContent = error.message;
+  }
+});
+
+async function loadWechatImports() {
+  try {
+    const response = await fetchWithTimeout("/api/news/wechat", { cache: "no-store" }, 10000);
+    if (!response.ok) throw new Error("无法读取公众号导入项");
+    const result = await response.json();
+    wechatAccountSelect.innerHTML = `<option value="">选择公众号</option>${(result.whitelist || []).map((item) => `<option value="${escapeAttribute(item.name)}">${escapeHtml(item.name)}${item.category ? ` · ${escapeHtml(item.category)}` : ""}</option>`).join("")}`;
+    renderWechatImports(result.articles || []);
+  } catch (error) {
+    wechatImportStatus.textContent = error.message;
+  }
+}
+
+function renderWechatImports(articles) {
+  if (!articles.length) {
+    wechatImportedList.innerHTML = "";
+    return;
+  }
+  wechatImportedList.innerHTML = articles.map((article) => `
+    <div class="wechat-imported-item">
+      <span class="wechat-imported-status">待核实</span>
+      <a href="${escapeAttribute(safeExternalUrl(article.url))}" target="_blank" rel="noopener noreferrer">${escapeHtml(article.title)}</a>
+      <span>${escapeHtml(article.account)}</span>
+      <button type="button" data-wechat-id="${escapeAttribute(article.id)}">删除</button>
+    </div>`).join("");
+  wechatImportedList.querySelectorAll("button[data-wechat-id]").forEach((node) => {
+    node.addEventListener("click", async () => {
+      try {
+        const result = await postJson("/api/news/wechat/remove", { id: node.dataset.wechatId });
+        renderWechatImports(result.articles || []);
+      } catch (error) {
+        wechatImportStatus.textContent = error.message;
+      }
+    });
+  });
 }
 
 stockSearchForm.addEventListener("submit", async (event) => {

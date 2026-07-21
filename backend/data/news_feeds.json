@@ -98,6 +98,34 @@
     "url": "https://www.scmp.com/rss/4/feed"
   },
   {
+    "category": "china",
+    "label": "China News Service Rolling",
+    "region": "china",
+    "topics": ["china", "policy", "economy", "industry", "society"],
+    "url": "https://www.chinanews.com.cn/rss/scroll-news.xml"
+  },
+  {
+    "category": "china",
+    "label": "China News Service Key News",
+    "region": "china",
+    "topics": ["china", "policy", "macro", "trade", "geopolitics"],
+    "url": "https://www.chinanews.com.cn/rss/importnews.xml"
+  },
+  {
+    "category": "macro",
+    "label": "Xinhua Politics Direct",
+    "region": "china",
+    "topics": ["china", "official-media", "policy", "macro"],
+    "url": "https://www.news.cn/politics/news_politics.xml"
+  },
+  {
+    "category": "finance",
+    "label": "People Daily Finance Direct",
+    "region": "china",
+    "topics": ["china", "official-media", "finance", "economy", "consumption"],
+    "url": "https://www.people.com.cn/rss/finance.xml"
+  },
+  {
     "category": "technology",
     "label": "The Verge",
     "region": "us",

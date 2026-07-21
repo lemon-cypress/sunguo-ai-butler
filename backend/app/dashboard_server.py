@@ -17,6 +17,7 @@ from qa_builder import answer_question, load_latest_bundle
 from config import get_settings
 from stock_watchlist import add_stock, load_stock_watchlist, remove_stock, search_stock
 from touzid_client import TouzidClientError, fetch_stock_watchlist_snapshot
+from wechat_manual import add_article as add_wechat_article, load_articles as load_wechat_articles, load_whitelist as load_wechat_whitelist, remove_article as remove_wechat_article
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 REMINDERS_PATH = PROJECT_ROOT / "backend" / "data" / "reminders.json"
@@ -24,10 +25,13 @@ USER_PROFILE_PATH = PROJECT_ROOT / "backend" / "data" / "user_profile.json"
 MOTION_CONFIG_PATH = PROJECT_ROOT / "frontend" / "avatar_motion_clips.json"
 TODOS_PATH = PROJECT_ROOT / "backend" / "data" / "todos.json"
 STOCK_WATCHLIST_PATH = PROJECT_ROOT / "backend" / "data" / "stock_watchlist.json"
+WECHAT_WHITELIST_PATH = PROJECT_ROOT / "backend" / "data" / "wechat_source_whitelist.json"
+WECHAT_ARTICLES_PATH = PROJECT_ROOT / "backend" / "data" / "wechat_manual_articles.json"
 MEMORY_SECTIONS = {"regions", "industries", "companies", "markets", "news_topics", "life_reminders"}
 NEWS_REFRESH_LOCK = threading.Lock()
 TODO_LOCK = threading.Lock()
 STOCK_LOCK = threading.Lock()
+WECHAT_LOCK = threading.Lock()
 NEWS_REFRESH_STATE = {"running": False, "last_error": "", "last_finished_at": ""}
 NEWS_REFRESH_MIN_INTERVAL = timedelta(minutes=5)
 STOCK_SNAPSHOT_CACHE = {"items": [], "updated_at": "", "error": ""}
@@ -210,6 +214,8 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             return self.get_stock_watchlist()
         if parsed.path == "/api/news/status":
             return self.write_json_response({"ok": True, **NEWS_REFRESH_STATE})
+        if parsed.path == "/api/news/wechat":
+            return self.get_wechat_articles()
         return super().do_GET()
 
     def do_POST(self) -> None:
@@ -229,6 +235,10 @@ class DashboardHandler(SimpleHTTPRequestHandler):
                 return self.regenerate_brief()
             if parsed.path == "/api/news/refresh":
                 return self.refresh_news()
+            if parsed.path == "/api/news/wechat/add":
+                return self.add_wechat_article()
+            if parsed.path == "/api/news/wechat/remove":
+                return self.remove_wechat_article()
             if parsed.path == "/api/ask":
                 return self.answer_question()
             if parsed.path == "/api/memory/add":
@@ -446,6 +456,30 @@ class DashboardHandler(SimpleHTTPRequestHandler):
         NEWS_REFRESH_STATE["last_error"] = ""
         threading.Thread(target=run_news_refresh, name="sunguo-news-refresh", daemon=True).start()
         self.write_json_response({"ok": True, "running": True, "message": "已开始刷新新闻池"}, status=202)
+
+    def get_wechat_articles(self) -> None:
+        self.write_json_response({
+            "ok": True,
+            "whitelist": load_wechat_whitelist(WECHAT_WHITELIST_PATH).get("accounts", []),
+            "articles": load_wechat_articles(WECHAT_ARTICLES_PATH).get("articles", []),
+        })
+
+    def add_wechat_article(self) -> None:
+        with WECHAT_LOCK:
+            saved = add_wechat_article(
+                WECHAT_ARTICLES_PATH,
+                load_wechat_whitelist(WECHAT_WHITELIST_PATH),
+                self.read_body_json(),
+            )
+        self.write_json_response({"ok": True, "articles": saved["articles"]})
+
+    def remove_wechat_article(self) -> None:
+        article_id = str(self.read_body_json().get("id", "")).strip()
+        if not article_id:
+            raise ValueError("缺少文章 ID")
+        with WECHAT_LOCK:
+            saved = remove_wechat_article(WECHAT_ARTICLES_PATH, article_id)
+        self.write_json_response({"ok": True, "articles": saved["articles"]})
 
 
 

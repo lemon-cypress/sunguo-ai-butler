@@ -50,6 +50,18 @@
           <h2>新闻</h2>
           <div class="news-source-strip" id="newsSourceStrip"></div>
         </div>
+        <details class="wechat-import" id="wechatImportPanel">
+          <summary>公众号文章导入 <span>仅白名单、公开链接、待核实</span></summary>
+          <form id="wechatImportForm" class="wechat-import-form">
+            <select id="wechatAccountSelect" required><option value="">选择公众号</option></select>
+            <input id="wechatTitleInput" type="text" maxlength="180" placeholder="文章标题" required />
+            <input id="wechatUrlInput" type="url" placeholder="https://mp.weixin.qq.com/s/..." required />
+            <input id="wechatSummaryInput" type="text" maxlength="1200" placeholder="摘要或关键观点（可选，不会自动抓正文）" />
+            <button type="submit">导入线索</button>
+          </form>
+          <p id="wechatImportStatus" class="wechat-import-status">导入后会在下次新闻刷新时进入新闻池，且始终标为待核实。</p>
+          <div id="wechatImportedList" class="wechat-imported-list"></div>
+        </details>
         <div id="newsSections" class="news-sections"></div>
       </section>
     </main>
