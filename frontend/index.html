@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>松果早报</title>
-    <link rel="stylesheet" href="./styles.css?v=brief-v13-20260721" />
+    <link rel="stylesheet" href="./styles.css?v=brief-v17-20260722" />
   </head>
   <body>
     <main class="shell">
@@ -31,6 +31,16 @@
         </form>
       </section>
 
+      <section class="module meal-module" aria-label="餐谱">
+        <div class="section-heading">
+          <h2>餐谱</h2>
+          <span class="meal-serving">4 位成人份 · 婴儿暂不计入</span>
+        </div>
+        <p class="meal-intro">少油、少盐、食材好买、约 30 分钟可完成；每一餐卡片内都可单独写下口味、忌口或现有食材。</p>
+        <p id="mealStatus" class="meal-status" aria-live="polite"></p>
+        <div id="mealPlan" class="meal-grid"></div>
+      </section>
+
       <section class="module stock-module" aria-label="自选">
         <div class="section-heading">
           <h2>自选</h2>
@@ -54,6 +64,6 @@
       </section>
     </main>
 
-    <script src="./app.js?v=brief-v13-20260721"></script>
+    <script src="./app.js?v=brief-v17-20260722"></script>
   </body>
 </html>

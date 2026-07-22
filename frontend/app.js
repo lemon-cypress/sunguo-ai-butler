@@ -21,6 +21,7 @@ const state = {
   awaitingFirstNews: false,
   stockWatchlist: [],
   stockSnapshot: [],
+  mealPlan: null,
 };
 
 const newsSections = document.querySelector("#newsSections");
@@ -35,6 +36,8 @@ const stockSearchInput = document.querySelector("#stockSearchInput");
 const stockSearchResults = document.querySelector("#stockSearchResults");
 const stockWatchlist = document.querySelector("#stockWatchlist");
 const refreshStocksBtn = document.querySelector("#refreshStocksBtn");
+const mealPlan = document.querySelector("#mealPlan");
+const mealStatus = document.querySelector("#mealStatus");
 
 bootstrap();
 
@@ -58,9 +61,108 @@ deleteSelectedBtn.addEventListener("click", async () => {
 });
 
 async function bootstrap() {
-  await Promise.all([refreshNewsOnPageLoad(), loadTodos()]);
+  await Promise.all([refreshNewsOnPageLoad(), loadTodos(), loadMealPlan()]);
   loadStockWatchlist();
   await loadBundle();
+}
+
+async function generateMealFromPreference(event, mealType, input) {
+  event.preventDefault();
+  const preference = input.value.trim();
+  const label = mealType === "breakfast" ? "早餐" : "晚餐";
+  if (!preference) {
+    setMealStatus(`请先写下${label}想吃什么、忌口或现有食材。`, true);
+    return;
+  }
+  const button = event.currentTarget.querySelector("button");
+  button.disabled = true;
+  setMealStatus(`正在按你的描述生成${label}…`);
+  try {
+    const result = await postJson("/api/meals/generate", { meal: mealType, preference });
+    state.mealPlan[mealType] = result.data;
+    renderMealPlan();
+    setMealStatus(`已按你的描述更新${label}。`);
+  } catch (error) {
+    setMealStatus(error.message, true);
+  } finally {
+    button.disabled = false;
+  }
+}
+
+async function loadMealPlan() {
+  try {
+    const response = await fetchWithTimeout("/api/meals", { cache: "no-store" }, 10000);
+    if (!response.ok) throw new Error("无法读取餐谱");
+    const result = await response.json();
+    state.mealPlan = { breakfast: result.breakfast, dinner: result.dinner };
+    renderMealPlan();
+  } catch (error) {
+    mealPlan.innerHTML = `<p class="stock-error">${escapeHtml(error.message)}</p>`;
+  }
+}
+
+function setMealStatus(message = "", isError = false) {
+  mealStatus.textContent = message;
+  mealStatus.classList.toggle("is-error", isError);
+}
+
+function renderMealPlan() {
+  if (!state.mealPlan?.breakfast || !state.mealPlan?.dinner) return;
+  mealPlan.innerHTML = [
+    renderMealCard("breakfast", state.mealPlan.breakfast),
+    renderMealCard("dinner", state.mealPlan.dinner),
+  ].join("");
+  mealPlan.querySelectorAll(".meal-refresh-button").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const mealType = button.dataset.mealType;
+      button.disabled = true;
+      setMealStatus(`正在换一份${mealType === "breakfast" ? "早餐" : "晚餐"}…`);
+      try {
+        const result = await postJson("/api/meals/refresh", { meal: mealType });
+        state.mealPlan[mealType] = result.data;
+        renderMealPlan();
+        setMealStatus(`已换一份${mealType === "breakfast" ? "早餐" : "晚餐"}。`);
+      } catch (error) {
+        setMealStatus(error.message, true);
+      }
+    });
+  });
+  mealPlan.querySelectorAll(".meal-preference-form").forEach((form) => {
+    form.addEventListener("submit", (event) => generateMealFromPreference(
+      event,
+      form.dataset.mealType,
+      form.querySelector("input"),
+    ));
+  });
+}
+
+function renderMealCard(mealType, meal) {
+  const items = Array.isArray(meal.items) ? meal.items : [];
+  return `<article class="meal-card">
+    <div class="meal-card-heading">
+      <div class="meal-card-title"><span>${escapeHtml(meal.label || "餐谱")}</span><h3>${escapeHtml(meal.title || "今日餐谱")}</h3></div>
+      <button class="meal-refresh-button" type="button" data-meal-type="${mealType}">换一换</button>
+    </div>
+    <form class="meal-preference-form" data-meal-type="${mealType}">
+      <label>${mealType === "breakfast" ? "早餐想吃什么" : "晚餐想吃什么"}</label>
+      <input type="text" maxlength="500" placeholder="${mealType === "breakfast" ? "例如：想吃热乎、不要甜，家里有鸡蛋和菠菜" : "例如：想吃清淡鱼类，家里有番茄和豆腐，不要辣"}" />
+      <button type="submit">按描述生成${mealType === "breakfast" ? "早餐" : "晚餐"}</button>
+    </form>
+    <p class="meal-note">${escapeHtml(meal.summary || "")}</p>
+    ${items.map((dish) => renderMealDish(dish)).join("")}
+  </article>`;
+}
+
+function renderMealDish(dish) {
+  const ingredients = Array.isArray(dish.ingredients) ? dish.ingredients : [];
+  const steps = Array.isArray(dish.steps) ? dish.steps : [];
+  return `<section class="meal-dish">
+    <h4>${escapeHtml(dish.category || "菜品")}｜${escapeHtml(dish.name || "")}</h4>
+    <div class="meal-dish-details">
+      <div><h5>需要食材</h5><p>${ingredients.map((value) => escapeHtml(value)).join("、")}</p></div>
+      <div><h5>制作步骤</h5><ol>${steps.map((value) => `<li>${escapeHtml(value)}</li>`).join("")}</ol></div>
+    </div>
+  </section>`;
 }
 
 stockSearchForm.addEventListener("submit", async (event) => {

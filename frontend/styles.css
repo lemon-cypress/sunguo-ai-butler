@@ -187,6 +187,142 @@ h2 {
   margin-top: 22px;
 }
 
+.meal-module {
+  margin-top: 22px;
+}
+
+.meal-serving {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.meal-intro {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.meal-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.meal-preference-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 180px;
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.meal-preference-form label {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.meal-preference-form input,
+.meal-preference-form button,
+.meal-refresh-button {
+  min-width: 0;
+  height: 32px;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+}
+
+.meal-preference-form input {
+  padding: 0 8px;
+}
+
+.meal-preference-form button,
+.meal-refresh-button {
+  cursor: pointer;
+}
+
+.meal-status {
+  min-height: 18px;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.meal-status.is-error {
+  color: var(--red);
+}
+
+.meal-card {
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.meal-card-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 9px;
+}
+
+.meal-card-title {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+}
+
+.meal-card-title > span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.meal-card h3 {
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.meal-dish {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #e8e8e8;
+}
+
+.meal-dish h4 {
+  margin: 0;
+  font-size: 13px;
+}
+
+.meal-dish-details {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.42fr) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.meal-dish h5 {
+  margin: 8px 0 1px;
+  font-size: 12px;
+}
+
+.meal-card p,
+.meal-dish p,
+.meal-dish ol {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.meal-dish ol {
+  padding-left: 20px;
+}
+
+.meal-note {
+  margin-top: 5px !important;
+  color: var(--muted);
+}
+
 .stock-help,
 .stock-empty,
 .stock-search-empty,
@@ -631,6 +767,18 @@ h2 {
 
   .stock-search-form {
     grid-template-columns: 1fr;
+  }
+
+  .meal-preference-form {
+    grid-template-columns: 1fr;
+  }
+
+  .meal-dish-details {
+    grid-template-columns: 1fr;
+  }
+
+  .meal-preference-form label {
+    grid-column: auto;
   }
 
   .news-line {

@@ -15,6 +15,7 @@ from urllib.parse import unquote, urlparse
 from local_memory import add_list_item, load_user_profile, remove_list_item, save_user_profile, summarize_profile
 from qa_builder import answer_question, load_latest_bundle
 from config import get_settings
+from meal_plan import MealPlanError, generate_meal_from_preference, random_meal, random_plan
 from stock_watchlist import add_stock, load_stock_watchlist, remove_stock, search_stock
 from touzid_client import TouzidClientError, fetch_stock_watchlist_snapshot
 
@@ -208,6 +209,8 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             return self.get_memory()
         if parsed.path == "/api/stocks/watchlist":
             return self.get_stock_watchlist()
+        if parsed.path == "/api/meals":
+            return self.write_json_response({"ok": True, **random_plan()})
         if parsed.path == "/api/news/status":
             return self.write_json_response({"ok": True, **NEWS_REFRESH_STATE})
         return super().do_GET()
@@ -243,6 +246,10 @@ class DashboardHandler(SimpleHTTPRequestHandler):
                 return self.remove_stock_watchlist()
             if parsed.path == "/api/stocks/refresh":
                 return self.refresh_stock_watchlist()
+            if parsed.path == "/api/meals/refresh":
+                return self.refresh_meal()
+            if parsed.path == "/api/meals/generate":
+                return self.generate_meal_plan()
             if parsed.path == "/api/motion/save":
                 return self.save_motion_config()
         except Exception as error:
@@ -388,6 +395,23 @@ class DashboardHandler(SimpleHTTPRequestHandler):
 
     def refresh_stock_watchlist(self) -> None:
         self.write_json_response({"ok": True, "watchlist": load_stock_watchlist(STOCK_WATCHLIST_PATH), **get_stock_snapshot(force=True)})
+
+    def refresh_meal(self) -> None:
+        meal_type = str(self.read_body_json().get("meal", "")).strip().lower()
+        if meal_type not in {"breakfast", "dinner"}:
+            raise ValueError("请选择早餐或晚餐")
+        self.write_json_response({"ok": True, "meal": meal_type, "data": random_meal(meal_type), "source": "random"})
+
+    def generate_meal_plan(self) -> None:
+        payload = self.read_body_json()
+        preference = str(payload.get("preference", "")).strip()
+        meal_type = str(payload.get("meal", "")).strip().lower()
+        try:
+            meal = generate_meal_from_preference(meal_type, preference, get_settings())
+        except MealPlanError as error:
+            raise ValueError(str(error)) from error
+        self.write_json_response({"ok": True, "meal": meal_type, "data": meal, "source": "preference"})
+
     def answer_question(self) -> None:
         payload = self.read_body_json()
         question = str(payload.get("question", "")).strip()
