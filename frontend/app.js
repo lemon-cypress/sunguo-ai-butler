@@ -118,7 +118,7 @@ function renderMealPlan() {
       button.disabled = true;
       setMealStatus(`正在换一份${mealType === "breakfast" ? "早餐" : "晚餐"}…`);
       try {
-        const result = await postJson("/api/meals/refresh", { meal: mealType });
+        const result = await postJson("/api/meals/refresh", { meal: mealType }, { retries: 1 });
         state.mealPlan[mealType] = result.data;
         renderMealPlan();
         setMealStatus(`已换一份${mealType === "breakfast" ? "早餐" : "晚餐"}。`);
@@ -673,17 +673,35 @@ function formatNewsTime(value) {
   return text.length >= 16 ? text.slice(5, 16) : text;
 }
 
-async function postJson(url, payload) {
-  const response = await fetchWithTimeout(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-  const result = await response.json();
-  if (!response.ok || result.ok === false) {
-    throw new Error(result.error || response.statusText);
+async function postJson(url, payload, { retries = 0 } = {}) {
+  let lastError;
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    try {
+      const response = await fetchWithTimeout(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const raw = await response.text();
+      if (!raw.trim()) {
+        throw new Error("服务未返回内容，可能正在重启，请稍后重试。");
+      }
+      let result;
+      try {
+        result = JSON.parse(raw);
+      } catch (error) {
+        throw new Error(`服务返回异常（HTTP ${response.status}），请稍后重试。`);
+      }
+      if (!response.ok || result.ok === false) {
+        throw new Error(result.error || response.statusText || "请求失败");
+      }
+      return result;
+    } catch (error) {
+      lastError = error;
+      if (attempt === retries) throw error;
+    }
   }
-  return result;
+  throw lastError || new Error("请求失败");
 }
 
 function setNewsLoading(message) {

@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import random
 import re
+import threading
 from collections import deque
 
 from deepseek_client import DeepSeekClientError, create_chat_completion
@@ -155,6 +156,7 @@ DINNER_VEGETABLES = [
 RECENT_BREAKFASTS: deque[str] = deque(maxlen=5)
 RECENT_DINNER_PARTS: deque[str] = deque(maxlen=9)
 RECENT_PROTEIN_GROUPS: deque[str] = deque(maxlen=5)
+MEAL_SELECTION_LOCK = threading.Lock()
 
 
 def _pick_fresh(options: list[dict], recent: deque[str]) -> dict:
@@ -185,12 +187,15 @@ def _build_combined_dinner() -> dict:
 def random_meal(meal_type: str) -> dict:
     if meal_type not in MEALS:
         raise MealPlanError("餐别仅支持 breakfast 或 dinner")
-    if meal_type == "breakfast":
-        candidates = [meal for meal in BREAKFAST_LIBRARY if meal["title"] not in RECENT_BREAKFASTS] or BREAKFAST_LIBRARY
-        chosen = random.choice(candidates)
-        RECENT_BREAKFASTS.append(chosen["title"])
-        return chosen
-    return _build_combined_dinner()
+    # The dashboard is a ThreadingHTTPServer. Serialize the small history
+    # update so several open tabs cannot select/mutate the rotation at once.
+    with MEAL_SELECTION_LOCK:
+        if meal_type == "breakfast":
+            candidates = [meal for meal in BREAKFAST_LIBRARY if meal["title"] not in RECENT_BREAKFASTS] or BREAKFAST_LIBRARY
+            chosen = random.choice(candidates)
+            RECENT_BREAKFASTS.append(chosen["title"])
+            return chosen
+        return _build_combined_dinner()
 
 
 def random_plan() -> dict:
